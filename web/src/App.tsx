@@ -4,7 +4,6 @@ import NotFoundPage from './pages/NotFoundPage'
 import CommonPage from './pages/CommonPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
-import LibraryPage from './pages/LibraryPage'
 import HomePage from './pages/HomePage'
 
 function App() {

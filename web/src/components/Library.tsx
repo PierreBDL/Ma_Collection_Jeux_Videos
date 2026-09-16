@@ -1,11 +1,18 @@
 import {useEffect, useState} from 'react'
 import GameCard from './GameCard'
 import {type JeuxProps} from '../interfaces/gameInt'
+import SearchBar from '../components/SearchBar'
 
 export default function Library () {
     const [games, setGames] = useState<JeuxProps[] | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [error, setError] = useState<string>("")
+    const [searchTherme, setSearchTherme] = useState<string>('')
+
+
+    /* ---------------------
+        Récup depuis BDD
+    ----------------------*/
 
     useEffect(() => {
         const getGames = (async () => {
@@ -29,6 +36,19 @@ export default function Library () {
         getGames()
     }, [])
 
+
+    /* ---------------------
+            Recherche
+    ----------------------*/
+
+    const searchTab = games?.filter(game => 
+        game.nom.toLowerCase().includes(searchTherme.trim().toLowerCase())
+    ) ?? []
+
+    /* ---------------------
+            Affichage
+    ----------------------*/
+
     if (error !== "") {
         return (
             <p>Erreur: {error}</p>
@@ -43,13 +63,14 @@ export default function Library () {
 
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+            <SearchBar search={searchTherme} searchFunction={setSearchTherme}></SearchBar>
             <h2 className="mb-6 text-2xl font-bold text-slate-900">Jeux actuellement sur le site</h2>
             <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {
-                    games?.length === 0 ? (<p>Pas de jeux</p>) : null
+                    searchTab.length === 0 ? (<p>Pas de jeux</p>) : null
                 }
                 {
-                    games?.map(game => (
+                    searchTab.map(game => (
                         <li className="min-w-0" key={game.id}>
                             <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre}></GameCard>
                         </li>
