@@ -1,18 +1,17 @@
 import { Link, Outlet } from 'react-router-dom'
-import '../css/Common.css'
 
 export default function CommonPage () {
     return (
-        <div className="bodyDiv">
-            <header>
-                <nav>
-                    <Link to="/">Accueil</Link>
-                    <Link to="/register">S'inscrire</Link>
-                    <Link to="/login">Se connecter</Link>
+        <div className="min-h-screen bg-gray-100 text-gray-800 flex flex-col">
+            <header className="p-4 bg-white shadow-sm">
+                <nav className="flex gap-6 max-w-4xl mx-auto">
+                    <Link to="/" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Accueil</Link>
+                    <Link to="/register" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
+                    <Link to="/login" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
                 </nav>
             </header>
 
-            <main>
+            <main className="flex-1 flex flex-col items-center justify-center p-4">
                 <Outlet />
             </main>
         </div>

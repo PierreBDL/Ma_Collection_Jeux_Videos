@@ -1,10 +1,12 @@
-import '../css/NotFoundPage.css'
+import erreur404 from '../assets/404.png'
 
 export default function NotFoundPage() {
   return (
-    <div className="not-found-page">
-      <h1>404 - Page introuvable</h1>
-      <p>La page est introuvable.</p>
+    <div className="text-center">
+      <img src="" alt="" />
+      <h1 className="text-3xl font-bold">404 - Page introuvable</h1>
+      <p className="text-lg">La page est introuvable.</p>
+      <img src={erreur404} alt="Erreur 404" />
     </div>
   )
 }

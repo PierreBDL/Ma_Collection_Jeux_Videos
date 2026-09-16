@@ -1,4 +1,3 @@
-import '../css/Login.css'
 import {useState} from 'react'
 import Form from '../components/Form'
 
@@ -27,7 +26,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="login-page">
+        <div className="p-4 bg-white border-solid border-gray-800">
             <Form title="Se connecter" setters={fonctions} getters={values} action={loginCheck} error={error}></Form>
         </div>
     )

@@ -1,4 +1,5 @@
 import Button from './Button'
+import React from 'react'
 
 interface FormProps {
     title: string
@@ -21,16 +22,18 @@ export default function Form ({title, setters, getters, action, error}: FormProp
     }
 
     return (
-        <div>
-            <h1>{title}</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Email :</label>
-                <input type="email" value={getters.email} onChange={(e) => setters.setEmail(e.target.value)} required />
-                <label>Mot de passe :</label>
-                <input type="password" value={getters.password} onChange={(e) => setters.setPassword(e.target.value)} required />
+        <div className="w-full max-w-sm bg-white p-6 rounded-lg border border-black">
+            <h1 className="text-xl font-semibold text-center mb-4 text-gray-800">{title}</h1>
+            <form onSubmit={handleSubmit} className="flex flex-col font-medium gap-4">
+
+                <label className="hover:text-blue-600 transition-colors">Email :</label>
+                <input className="p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="email" value={getters.email} onChange={(e) => setters.setEmail(e.target.value)} required />
+                
+                <label className="hover:text-blue-600 transition-colors">Mot de passe :</label>
+                <input className="p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="password" value={getters.password} onChange={(e) => setters.setPassword(e.target.value)} required />
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <Button isDisable={false} handleClick={() => {}}>{title}</Button>
+                <Button style="rounded-lg mt-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={() => {}}>{title}</Button>
             </form>
         </div>
     )

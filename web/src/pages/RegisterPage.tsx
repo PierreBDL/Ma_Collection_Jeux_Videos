@@ -1,4 +1,3 @@
-import '../css/Register.css'
 import {useState} from 'react'
 import Form from '../components/Form'
 
@@ -25,7 +24,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="register-page">
+        <div>
             <Form title="S'inscrire" setters={fonctions} getters={values} action={submitCheck} error={error}></Form>
         </div>
     )
