@@ -12,7 +12,7 @@ export default function CommonPage () {
                 </nav>
             </header>
 
-            <main className="flex-1 flex flex-col items-center justify-start p-4">
+            <main className="flex-1 flex flex-col items-center justify-center p-4">
                 <Outlet />
             </main>
         </div>

@@ -24,7 +24,7 @@ export default function RegisterPage() {
     }
 
     return (
-        <div>
+        <div className="w-full flex-1 flex justify-center items-center">
             <Form title="S'inscrire" setters={fonctions} getters={values} action={submitCheck} error={error}></Form>
         </div>
     )

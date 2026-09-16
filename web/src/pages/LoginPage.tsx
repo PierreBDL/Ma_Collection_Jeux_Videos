@@ -26,7 +26,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="p-4 bg-white border-solid border-gray-800">
+        <div className="flex-1 flex items-center justify-center w-full">
             <Form title="Se connecter" setters={fonctions} getters={values} action={loginCheck} error={error}></Form>
         </div>
     )
