@@ -5,7 +5,7 @@ export default function NotFoundPage() {
     <div className="text-center">
       <img src="" alt="" />
       <h1 className="text-3xl font-bold">404 - Page introuvable</h1>
-      <p className="text-lg">La page est introuvable.</p>
+      <p className="text-lg">La page n'existe pas :(</p>
       <img src={erreur404} alt="Erreur 404" />
     </div>
   )
