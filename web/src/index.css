@@ -4,11 +4,17 @@
   box-sizing: border-box;
 }
 
+:root {
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-text: #1E293B;
+  --color-text-secondary: #64748B;
+  --color-primary: #4F46E5;
+}
+
 body {
-  min-height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
-  color: #222;
-  overflow: hidden;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 

@@ -1,12 +1,13 @@
 import { Link, Outlet } from 'react-router-dom'
 import '../css/Common.css'
 
-export default function Common () {
+export default function CommonPage () {
     return (
         <body>
             <header>
                 <nav>
-                    <Link to="/">Home</Link>
+                    <Link to="/">Accueil</Link>
+                    <Link to="/register">S'inscrire</Link>
                 </nav>
             </header>
 

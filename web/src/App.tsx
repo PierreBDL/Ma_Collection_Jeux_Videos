@@ -1,15 +1,17 @@
 import './App.css'
 import {Routes, Route} from 'react-router-dom'
 import NotFoundPage from './pages/NotFoundPage'
-import Common from './pages/Common'
+import CommonPage from './pages/CommonPage'
+import RegisterPage from './pages/RegisterPage'
 
 function App() {
 
   return (
     <Routes>
-      <Route element={<Common />}>
+      <Route element={<CommonPage />}>
         <Route path="/" element={<div>Home</div>} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
     </Routes>
   )
