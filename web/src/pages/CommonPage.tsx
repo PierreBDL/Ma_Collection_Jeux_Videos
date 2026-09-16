@@ -3,7 +3,7 @@ import '../css/Common.css'
 
 export default function CommonPage () {
     return (
-        <body>
+        <div className="bodyDiv">
             <header>
                 <nav>
                     <Link to="/">Accueil</Link>
@@ -14,6 +14,6 @@ export default function CommonPage () {
             <main>
                 <Outlet />
             </main>
-        </body>
+        </div>
     )
 }

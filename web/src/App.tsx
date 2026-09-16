@@ -10,8 +10,8 @@ function App() {
     <Routes>
       <Route element={<CommonPage />}>
         <Route path="/" element={<div>Home</div>} />
-        <Route path="*" element={<NotFoundPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )
