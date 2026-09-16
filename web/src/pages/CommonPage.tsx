@@ -8,6 +8,7 @@ export default function CommonPage () {
                 <nav>
                     <Link to="/">Accueil</Link>
                     <Link to="/register">S'inscrire</Link>
+                    <Link to="/login">Se connecter</Link>
                 </nav>
             </header>
 
