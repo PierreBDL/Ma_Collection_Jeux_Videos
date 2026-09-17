@@ -1,7 +1,11 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Form from '../components/Form'
 
 export default function LoginPage() {
+
+    /* ------------------------
+        States Identifiants
+    -------------------------*/
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [error, setError] = useState<string>("")
@@ -9,19 +13,46 @@ export default function LoginPage() {
     const fonctions = {setEmail, setPassword}
     const values = {email, password}
 
-    function loginCheck () {
+    /* --------------------------
+        States Connexions BDD
+    ---------------------------*/
+
+    /* ----------------------------
+        Approuver le formulaire
+    -----------------------------*/
+
+    async function loginCheck () {
         if (email.trim() === "") {
             setError("Courriel obligatoire")
+            return
         }
         if (!email.includes("@")) {
             setError("L'email doit contenir un @")
+            return
         }
 
-        // Tests
-        if (email === "test@test" && password === "test") {
-            setError("Connecté")
-        } else {
-            setError("Informations incorrectes")
+        /* ----------------------------
+                Demander à l'API
+        -----------------------------*/
+        try {
+            const response = await fetch('http://127.0.0.1:8000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                setError(data.detail)
+                return
+            }
+
+            alert("Connecté")
+        } catch {
+            setError("Serveur indisponible")
         }
     }
 
