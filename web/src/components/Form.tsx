@@ -1,6 +1,8 @@
 import Button from './Button'
 import React from 'react'
 
+import {UseTheme} from '../hooks/Theme'
+
 interface FormProps {
     title: string
     setters: {
@@ -16,14 +18,18 @@ interface FormProps {
 }
 
 export default function Form ({title, setters, getters, action, error}: FormProps) {
+    
+    // Hook Theme
+    const { theme, ToggleTheme } = UseTheme()
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         action()
     }
 
     return (
-        <div className="w-full max-w-sm bg-white p-6 rounded-lg border border-black">
-            <h1 className="text-xl font-semibold text-center mb-4 text-gray-800">{title}</h1>
+        <div className={`w-full max-w-sm p-6 rounded-lg border ${theme === "light" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" }`}>
+            <h1 className="text-xl font-semibold text-center mb-4">{title}</h1>
             <form onSubmit={handleSubmit} className="flex flex-col font-medium gap-4">
 
                 <label className="hover:text-blue-600 transition-colors">Email :</label>

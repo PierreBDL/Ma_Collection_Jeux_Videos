@@ -7,7 +7,7 @@ import SearchFilter from '../components/SearchFilter'
 import {type JeuxProps} from '../interfaces/gameInt'
 import {type searchType} from '../interfaces/SearchType'
 
-
+import {UseTheme} from '../hooks/Theme'
 
 
 export default function Library () {
@@ -17,6 +17,9 @@ export default function Library () {
     const [searchTherme, setSearchTherme] = useState<string>('')
     const [searchOrigin, setSearchOrigin] = useState<searchType>("bySearchBar")
 
+
+    // Hook Theme
+    const { theme, ToggleTheme } = UseTheme()
 
     /* ---------------------
         Récup depuis BDD
@@ -81,7 +84,7 @@ export default function Library () {
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
             <SearchBar search={searchTherme} searchFunction={setSearchTherme} searchOrigin={searchOrigin} searchOriginFunction={setSearchOrigin}></SearchBar>
             <SearchFilter search={searchTherme} searchFunction={setSearchTherme} searchOrigin={searchOrigin} searchOriginFunction={setSearchOrigin}></SearchFilter>
-            <h2 className="mb-6 text-2xl font-bold text-slate-900">Jeux actuellement sur le site</h2>
+            <h2 className={`mb-6 text-2xl font-bold ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement sur le site</h2>
             <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {
                     searchTab.length === 0 ? (<p>Pas de jeux</p>) : null
