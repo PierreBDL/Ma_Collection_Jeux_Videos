@@ -15,7 +15,7 @@ jeux = [
         "id": 1,
         "nom": "Zelda a link to the past",
         "studio": "Nintendo",
-        "plateforme": "GameBoy Advance",
+        "plateforme": "Nintendo - GameBoy Advance",
         "annee": "1992",
         "genre": "Retro"
     },
@@ -39,7 +39,7 @@ jeux = [
         "id": 4,
         "nom": "Elden Ring",
         "studio": "FromSoftware",
-        "plateforme": "PS5",
+        "plateforme": "PlayStation 5",
         "annee": "2022",
         "genre": "Action-RPG"
     },
@@ -63,7 +63,7 @@ jeux = [
         "id": 7,
         "nom": "God of War Ragnarök",
         "studio": "Santa Monica Studio",
-        "plateforme": "PS5",
+        "plateforme": "PlayStation 5",
         "annee": "2022",
         "genre": "Action-Adventure"
     },
@@ -71,7 +71,7 @@ jeux = [
         "id": 8,
         "nom": "Red Dead Redemption 2",
         "studio": "Rockstar Games",
-        "plateforme": "PS4",
+        "plateforme": "PlayStation 4",
         "annee": "2018",
         "genre": "Action-Adventure"
     },
@@ -87,7 +87,7 @@ jeux = [
         "id": 10,
         "nom": "Grand Theft Auto V",
         "studio": "Rockstar North",
-        "plateforme": "PS5",
+        "plateforme": "PlayStation 5",
         "annee": "2013",
         "genre": "Action-Adventure"
     },
@@ -95,7 +95,7 @@ jeux = [
         "id": 11,
         "nom": "Super Mario Odyssey",
         "studio": "Nintendo",
-        "plateforme": "Switch",
+        "plateforme": "Nintendo - Switch",
         "annee": "2017",
         "genre": "Platformer"
     },
@@ -103,7 +103,7 @@ jeux = [
         "id": 12,
         "nom": "Breath of the Wild",
         "studio": "Nintendo",
-        "plateforme": "Switch",
+        "plateforme": "Nintendo - Switch",
         "annee": "2017",
         "genre": "Action-Adventure"
     },
@@ -135,7 +135,7 @@ jeux = [
         "id": 16,
         "nom": "Resident Evil 4 Remake",
         "studio": "Capcom",
-        "plateforme": "PS5",
+        "plateforme": "PlayStation 5",
         "annee": "2023",
         "genre": "Survival Horror"
     },
@@ -143,7 +143,7 @@ jeux = [
         "id": 17,
         "nom": "Monster Hunter Wilds",
         "studio": "Capcom",
-        "plateforme": "PS5",
+        "plateforme": "PlayStation 5",
         "annee": "2025",
         "genre": "Action-RPG"
     },
@@ -151,7 +151,7 @@ jeux = [
         "id": 18,
         "nom": "Grand Theft Auto VI",
         "studio": "Rockstar Games",
-        "plateforme": "PS5",
+        "plateforme": "PlayStation 5",
         "annee": "2025",
         "genre": "Action-Adventure"
     },
@@ -167,7 +167,7 @@ jeux = [
         "id": 20,
         "nom": "Metroid Prime 4: Beyond",
         "studio": "Nintendo",
-        "plateforme": "Switch",
+        "plateforme": "Nitendo - Switch",
         "annee": "2025",
         "genre": "FPS"
     }

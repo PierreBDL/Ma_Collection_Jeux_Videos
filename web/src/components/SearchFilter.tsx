@@ -1,6 +1,6 @@
 import Button from './Button'
 import Effacer from '../assets/effacer.png'
-import {type searchType, filtersType} from '../interfaces/SearchType'
+import {type searchType, gameType, gamePlateforme} from '../interfaces/SearchType'
 
 interface SearchFilterProps {
     search: string
@@ -25,17 +25,39 @@ export default function SearchFilter ({search, searchFunction, searchOrigin, sea
             <div className="w-full max-w-md mx-auto flex flex-row gap-1.5">
                 <h3 className="block text-xs font-semibold uppercase text-slate-500 mb-1.5 ml-1">Filtres</h3>
             </div>
-            <div className="w-full max-w-md mx-auto flex flex-row gap-1.5">
-                {
-                    filtersType.map(filter => (
-                        <Button key={filter} 
-                        style={search === filter ? 
-                            "p-2 bg-red-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer" 
-                            : "p-2 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"} 
-                            isDisable={false} 
-                            handleClick={() => handleFilter(filter)}>{filter.toUpperCase()}</Button>
-                    ))
-                }
+
+            <div>
+                <span className="block text-mg font-medium text-slate-600 mb-1">Type</span>
+                <div className="w-full max-w-md mx-auto flex flex-row gap-1.5">
+                    {
+                        gameType.map(filter => (
+                            <Button key={filter} 
+                            style={search === filter ? 
+                                "p-2 bg-red-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer" 
+                                : "p-2 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"} 
+                                isDisable={false} 
+                                handleClick={() => handleFilter(filter)}>{filter.toUpperCase()}</Button>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <br />
+            
+            <div>
+                <span className="block text-mg font-medium text-slate-600 mb-1">Plateforme</span>
+                <div className="w-full max-w-md mx-auto flex flex-row gap-1.5">
+                    {
+                        gamePlateforme.map(filter => (
+                            <Button key={filter} 
+                            style={search === filter ? 
+                                "p-2 bg-red-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer" 
+                                : "p-2 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"} 
+                                isDisable={false} 
+                                handleClick={() => handleFilter(filter)}>{filter.toUpperCase()}</Button>
+                        ))
+                    }
+                </div>
             </div>
         </div>
     )

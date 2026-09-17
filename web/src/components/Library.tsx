@@ -55,7 +55,7 @@ export default function Library () {
         }
 
         if (searchOrigin === "byFilters") {
-            return game.genre.toLowerCase().includes(searchTherme.toLowerCase())
+            return (game.genre.toLowerCase().includes(searchTherme.toLowerCase()) || game.plateforme.toLowerCase().includes(searchTherme.trim().toLowerCase()))
         }
 
         return true
