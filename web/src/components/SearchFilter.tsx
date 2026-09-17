@@ -33,8 +33,8 @@ export default function SearchFilter ({search, searchFunction, searchOrigin, sea
                         gameType.map(filter => (
                             <Button key={filter} 
                             style={search === filter ? 
-                                "p-2 bg-red-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer" 
-                                : "p-2 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"} 
+                                "p-2 px-4 bg-slate-500 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer" 
+                                : "p-2 px-4 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"} 
                                 isDisable={false} 
                                 handleClick={() => handleFilter(filter)}>{filter.toUpperCase()}</Button>
                         ))
@@ -51,8 +51,8 @@ export default function SearchFilter ({search, searchFunction, searchOrigin, sea
                         gamePlateforme.map(filter => (
                             <Button key={filter} 
                             style={search === filter ? 
-                                "p-2 bg-red-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer" 
-                                : "p-2 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"} 
+                                "p-2 px-4 bg-slate-500 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer" 
+                                : "p-2 px-4 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"} 
                                 isDisable={false} 
                                 handleClick={() => handleFilter(filter)}>{filter.toUpperCase()}</Button>
                         ))
