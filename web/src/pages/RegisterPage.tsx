@@ -12,14 +12,17 @@ export default function RegisterPage() {
     function submitCheck () {
         if (!email.includes("@")) {
             setError("L'email doit contenir un @")
+            return
         }
         if (password.length < 8) {
             setError("Le mot de passe doit contenir au moins 8 caractères")
+            return
         }
 
         // Tests
         if (email.includes("@") && password.length >= 8) {
             setError("C'est bon !")
+            return
         }
     }
 

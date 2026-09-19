@@ -23,8 +23,8 @@ export default function CommonPage() {
                     <Button style="bg-white w-12 h-12 rounded-2xl mt-2 hover:bg-blue-100 font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={ToggleTheme}>
                         {
                             theme === "light"
-                                ? (<img className="w-7 h-7 flex self-center place-self-center" src={luneImg}></img>)
-                                : (<img className="w-7 h-7 flex self-center place-self-center" src={soleilImg}></img>)
+                                ? (<img className="w-7 h-7 flex self-center place-self-center" alt="Thème sombre" src={luneImg}></img>)
+                                : (<img className="w-7 h-7 flex self-center place-self-center" alt="Thème clair" src={soleilImg}></img>)
                         }
                     </Button>
                 </div>

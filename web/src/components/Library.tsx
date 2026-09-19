@@ -6,6 +6,7 @@ import SearchFilter from '../components/SearchFilter'
 
 import {type JeuxProps} from '../interfaces/gameInt'
 import {type searchType} from '../interfaces/SearchType'
+import { URL_API } from '../interfaces/Links'
 
 import {UseTheme} from '../hooks/Theme'
 
@@ -28,10 +29,11 @@ export default function Library () {
     useEffect(() => {
         const getGames = (async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/jeux')
+                const response = await fetch(`${URL_API}/jeux`)
 
                 if (!response.ok) {
                     setError("Le serveur a renvoyé une erreur")
+                    throw new Error ("Le serveur a renvoyé une erreur")
                 }
 
                 const data: JeuxProps[] = await response.json()

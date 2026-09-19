@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react'
 import Form from '../components/Form'
+import { URL_API } from '../interfaces/Links'
+
 
 export default function LoginPage() {
 
@@ -35,7 +37,7 @@ export default function LoginPage() {
                 Demander à l'API
         -----------------------------*/
         try {
-            const response = await fetch('http://127.0.0.1:8000/login', {
+            const response = await fetch(`${URL_API}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
