@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import Form from '../components/Form'
-import { URL_API } from '../interfaces/Links'
+import { URL_API } from '../utils/Links'
 
 
 export default function LoginPage() {

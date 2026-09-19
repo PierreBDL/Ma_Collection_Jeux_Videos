@@ -6,7 +6,7 @@ import SearchFilter from '../components/SearchFilter'
 
 import {type JeuxProps} from '../interfaces/gameInt'
 import {type searchType} from '../interfaces/SearchType'
-import { URL_API } from '../interfaces/Links'
+import { URL_API } from '../utils/Links'
 
 import {UseTheme} from '../hooks/Theme'
 

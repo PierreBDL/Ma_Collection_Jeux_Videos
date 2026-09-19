@@ -14,6 +14,12 @@ export default function RegisterPage() {
             setError("L'email doit contenir un @")
             return
         }
+
+        if (!email.includes(".")) {
+            setError("L'email est invalide")
+            return
+        }
+
         if (password.length < 8) {
             setError("Le mot de passe doit contenir au moins 8 caractères")
             return
