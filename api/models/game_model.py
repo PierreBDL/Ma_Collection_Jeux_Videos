@@ -7,5 +7,6 @@ class Jeu(BaseModel):
     plateforme: str
     annee: str
     genre: str
-
+    description: str
+    image: str
     

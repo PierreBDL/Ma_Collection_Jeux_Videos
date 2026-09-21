@@ -66,19 +66,20 @@ export default function Library () {
         return true
     }) ?? []
 
+
     /* ---------------------
             Affichage
     ----------------------*/
 
     if (error !== "") {
         return (
-            <p>Erreur: {error}</p>
+            <p className="p-4 text-red-500">Erreur: {error}</p>
         )
     }
 
     if (isLoading) {
         return (
-            <p>Chargement...</p>
+            <p className="p-4">Chargement...</p>
         )
     }
 

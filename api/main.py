@@ -27,6 +27,13 @@ app.add_middleware(
 def get_jeux () :
     return jeux
 
+@app.get("/game/{game_id}")
+def get_game_by_id (game_id: int) :
+    for i in jeux:
+        if game_id == i["id"] :
+            return i
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jeu introuvable")
+
 @app.post("/login")
 async def login(user: AccountInput):
     result = await test_login(user)
