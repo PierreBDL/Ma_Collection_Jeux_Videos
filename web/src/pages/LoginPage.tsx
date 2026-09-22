@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
-
+import {useLocalStorage} from '../hooks/LocalStorage'
 
 export default function LoginPage() {
 
@@ -16,8 +16,10 @@ export default function LoginPage() {
     const values = {email, password}
 
     /* --------------------------
-        States Connexions BDD
+            States Connexions
     ---------------------------*/
+
+    const [token, setToken] = useLocalStorage<string | null>("token", null)
 
     /* ----------------------------
         Approuver le formulaire
@@ -51,6 +53,9 @@ export default function LoginPage() {
                 setError(data.detail)
                 return
             }
+
+            // Stockage du token dans la bdd
+            setToken(data)
 
             alert("Connecté")
         } catch {

@@ -12,6 +12,9 @@ from models.account_model import *
 # Logique métier
 from services.account_services import *
 
+# Hash mdp
+hash_mdp()
+
 
 app = FastAPI()
 
@@ -22,6 +25,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Get games
 
 @app.get("/jeux")
 def get_jeux () :
@@ -34,11 +39,14 @@ def get_game_by_id (game_id: int) :
             return i
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jeu introuvable")
 
+
+# Login
+
 @app.post("/login")
 async def login(user: AccountInput):
     result = await test_login(user)
 
-    if result == False :
+    if result == {} :
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Courriel ou mot de passe incorrect !")
 
-    return {"message": "Connexion réussie"}
+    return {"token": result}
