@@ -1,8 +1,13 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {useAuth} from '../context/Auth'
 import {UseTheme} from '../hooks/Theme'
 import GameCard from '../components/GameCard'
 import { URL_API } from '../utils/Links'
+import Button from '../components/Button'
+
+import erreur404 from '../assets/404.png'
 
 export default function MyLibraryPage () {
 
@@ -11,6 +16,9 @@ export default function MyLibraryPage () {
 
     // Hook Theme
     const { theme, ToggleTheme } = UseTheme()
+
+    // Navigate 
+    const navigate = useNavigate()
 
     /* ----------------------------------------------
         Vérif syncro entre favoris back et front
@@ -43,6 +51,26 @@ export default function MyLibraryPage () {
 
         checkBdd()
     })
+
+    if (!auth) {
+        return (
+            <div className="text-center w-full flex-1 flex flex-col justify-center items-center">
+                <h1 className="text-3xl font-bold">Vous n'êtes pas connecté</h1>
+                <img src={erreur404} alt="Erreur" />
+                <Button style="rounded-lg mt-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={() => navigate("/login")}>Se connecter</Button>
+            </div>
+        )
+    }
+
+    if (auth?.favorites !== undefined && auth?.favorites.length <= 0) {
+        return (
+            <div className="text-center w-full flex-1 flex flex-col justify-center items-center">
+                <h1 className="text-3xl font-bold">Vous n'avez pas de jeu favoris</h1>
+                <img src={erreur404} alt="Erreur" />
+                <Button style="rounded-lg mt-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={() => navigate("/")}>Revenir à l'accueil</Button>
+            </div>
+        )
+    }
 
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
