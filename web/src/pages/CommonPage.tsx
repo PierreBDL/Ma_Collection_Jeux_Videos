@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
-import { ThemeProvider, UseTheme } from '../../context/Theme'
+import { ThemeProvider, UseTheme } from '../hooks/Theme'
 import Button from '../components/Button'
 
 import soleilImg from '../assets/soleil.png'
