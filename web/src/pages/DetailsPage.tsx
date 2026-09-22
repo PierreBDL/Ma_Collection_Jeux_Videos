@@ -1,9 +1,10 @@
 import {useEffect, useState} from 'react'
+import { useParams } from 'react-router-dom';
 
 import {type JeuxProps} from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
 import {UseTheme} from '../hooks/Theme'
-import { useParams } from 'react-router-dom';
+import {useAuth} from '../context/Auth'
 import Button from '../components/Button'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
@@ -53,6 +54,38 @@ export default function DetailsPage () {
         getGame()
     }, [id])
 
+
+    /* ---------------------
+            Favoris
+    ----------------------*/
+
+    const {auth, setAuth} = useAuth()
+
+    function handleFavorite () {
+        // Si l'utilisateur pas connecté
+        if (!auth) {
+            return
+        }
+
+        // Si la page de détail est vide
+        if (!game) {
+            return
+        }
+
+        // Chercher si le jeu est déjà favoris
+        const searchFavoris = auth.favorites.filter(favoriteGame => favoriteGame.id === game.id)
+        
+        let newListFavorites: JeuxProps[]
+
+        if (searchFavoris.length > 0) {
+            newListFavorites = auth.favorites.filter(favoriteGame => favoriteGame.id !== game.id)
+        } else {
+            newListFavorites = [...auth.favorites, game]
+        }
+
+        setAuth({...auth, favorites: newListFavorites})
+    }
+
     /* ---------------------
             Affichage
     ----------------------*/
@@ -97,8 +130,15 @@ export default function DetailsPage () {
                     <p className="mt-4"><strong>Description :</strong> {game.description}</p>
 
                     <Button style="absolute bg-gray-400 bottom-5 right-5 w-9 h-9 rounded-2xl mt-2 hover:bg-slate-300 font-medium text-sm transition-colors cursor-pointer" 
-                            handleClick={() => {}} isDisable={false}>
-                        <img className="w-6 h-6 flex place-self-center justify-self-center" src={notFavoriteImg} alt="Ajouter aux favoris" />
+                            handleClick={() => handleFavorite()} isDisable={false}>
+                        {
+                            // Gestion logo
+                            (auth != null && auth.favorites.filter(favoriteGame => favoriteGame.id === game.id).length > 0) ? (
+                                <img className="w-6 h-6 flex place-self-center justify-self-center" src={favoriteImg} alt="Retirer des favoris" />
+                            ) : (
+                                <img className="w-6 h-6 flex place-self-center justify-self-center" src={notFavoriteImg} alt="Ajouter aux favoris" />
+                            )
+                        }
                     </Button>
                 </div>
             </div>

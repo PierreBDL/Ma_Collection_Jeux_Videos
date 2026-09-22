@@ -69,7 +69,7 @@ export default function RegisterPage() {
 
             // Stockage du token
             setToken(data.token)
-            setAuth({token: data.token, name: data.name})
+            setAuth({token: data.token, name: data.name, favorites: data.favorites})
 
             alert("Inscrit")
         } catch {

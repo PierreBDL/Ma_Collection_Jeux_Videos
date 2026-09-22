@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field
 
-class Jeu(BaseModel):
+class Game(BaseModel):
     id: int
     nom: str
     studio: str

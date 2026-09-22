@@ -58,7 +58,7 @@ export default function LoginPage() {
 
             // Stockage du token
             setToken(data.token)
-            setAuth({token: data.token, name: data.name})
+            setAuth({token: data.token, name: data.name, favorites: data.favorites === undefined ? [] : data.favorites})
 
             alert("Connecté")
         } catch {

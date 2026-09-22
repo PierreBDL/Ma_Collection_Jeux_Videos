@@ -28,8 +28,8 @@ app.add_middleware(
 
 # Get games
 
-@app.get("/jeux")
-def get_jeux () :
+@app.get("/games")
+def get_games () :
     return jeux
 
 @app.get("/game/{game_id}")
@@ -60,3 +60,11 @@ async def register(user: AccountRegisterInput):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Courriel déjà pris !")
 
     return result
+
+# Update Favorites
+@app.put('/updateFavorite')
+async def update_favorites (updateInfos: AccountInputUpdateFavorite, user: dict = Depends(check_token)):
+    result = await update_of_favorites(updateInfos)
+    if result :
+        return
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")

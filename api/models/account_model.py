@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
+from models.game_model import *
 
 class AccountInput(BaseModel):
     email: EmailStr = Field(...)
@@ -11,3 +12,8 @@ class AccountOutput(BaseModel):
     id: int
     name: str
     email: EmailStr
+    favorites: list[Game] = []
+
+class AccountInputUpdateFavorite(BaseModel):
+    name: str
+    favorites: list[Game] = []

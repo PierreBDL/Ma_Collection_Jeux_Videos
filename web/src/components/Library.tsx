@@ -29,7 +29,7 @@ export default function Library () {
     useEffect(() => {
         const getGames = (async () => {
             try {
-                const response = await fetch(`${URL_API}/jeux`)
+                const response = await fetch(`${URL_API}/games`)
 
                 if (!response.ok) {
                     setError("Le serveur a renvoyé une erreur")

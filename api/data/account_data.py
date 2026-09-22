@@ -4,5 +4,6 @@ account = [
         "name": "Test",
         "email": "test@test.com",
         "password": "testtest",
+        "favorites": []
     }
 ]
