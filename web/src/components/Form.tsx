@@ -15,9 +15,16 @@ interface FormProps {
     }
     action: () => void
     error?: string
+
+    // Pour le nom
+    isRegisterPage: boolean
+    name?: {
+        valueName: string
+        setValueName: (value: string) => void
+    }
 }
 
-export default function Form ({title, setters, getters, action, error}: FormProps) {
+export default function Form ({title, setters, getters, action, error, isRegisterPage, name}: FormProps) {
     
     // Hook Theme
     const { theme, ToggleTheme } = UseTheme()
@@ -32,10 +39,17 @@ export default function Form ({title, setters, getters, action, error}: FormProp
             <h1 className="text-xl font-semibold text-center mb-4">{title}</h1>
             <form onSubmit={handleSubmit} className="flex flex-col font-medium gap-4">
 
-                <label className="hover:text-blue-600 transition-colors">Email :</label>
+                {isRegisterPage && (
+                    <div className="flex flex-col font-medium gap-4">
+                        <label>Name :</label>
+                        <input className={`${theme === "dark" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white"} p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`} type="text" value={name?.valueName} onChange={(e) => name?.setValueName(e.target.value)} required />    
+                    </div>
+                )}
+
+                <label>Email :</label>
                 <input className="p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="email" value={getters.email} onChange={(e) => setters.setEmail(e.target.value)} required />
                 
-                <label className="hover:text-blue-600 transition-colors">Mot de passe :</label>
+                <label>Mot de passe :</label>
                 <input className="p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="password" value={getters.password} onChange={(e) => setters.setPassword(e.target.value)} required />
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}

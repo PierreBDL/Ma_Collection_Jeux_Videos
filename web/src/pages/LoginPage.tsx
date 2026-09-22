@@ -41,7 +41,7 @@ export default function LoginPage() {
                 Demander à l'API
         -----------------------------*/
         try {
-            const response = await fetch(`${URL_API}/login`, {
+            const response = await fetch(`${URL_API}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex-1 flex items-center justify-center w-full">
-            <Form title="Se connecter" setters={fonctions} getters={values} action={loginCheck} error={error}></Form>
+            <Form title="Se connecter" setters={fonctions} getters={values} action={loginCheck} error={error} isRegisterPage={false}></Form>
         </div>
     )
 }

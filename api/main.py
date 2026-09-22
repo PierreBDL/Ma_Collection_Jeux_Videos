@@ -42,11 +42,21 @@ def get_game_by_id (game_id: int) :
 
 # Login
 
-@app.post("/login")
-async def login(user: AccountInput):
+@app.post("/auth/login")
+async def login(user: AccountInput, status_code=status.HTTP_200_OK):
     result = await test_login(user)
 
     if result == {} :
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Courriel ou mot de passe incorrect !")
+
+    return result
+
+# Register
+@app.post("/auth/register", status_code=status.HTTP_201_CREATED)
+async def register(user: AccountRegisterInput):
+    result = await test_register(user)
+
+    if result == {} :
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Courriel déjà pris !")
 
     return result

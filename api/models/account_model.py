@@ -4,6 +4,10 @@ class AccountInput(BaseModel):
     email: EmailStr = Field(...)
     password: str = Field(..., min_length=8, description="Le mot de passe doit contenir 8 caractères")
 
-class AccountOutput(AccountInput):
+class AccountRegisterInput(AccountInput):
+    name: str = Field(..., min_length=3, max_length=20)
+
+class AccountOutput(BaseModel):
     id: int
     name: str
+    email: EmailStr

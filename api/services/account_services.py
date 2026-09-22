@@ -23,4 +23,19 @@ async def test_login(user: AccountInput):
             token = jwt.encode({"sub": i["name"]}, secretKey, algorithm="HS256")
             return {"token" : token, "name": i["name"]}
     return {}
+
+# Register
+async def test_register(user: AccountRegisterInput):
+    for i in account:
+        if i["email"] == user.email:
+            return {}
+
+    newAccount = {
+        "id": (max([i["id"] for i in account], default=0) + 1),
+        "name": user.name,
+        "email": user.email,
+        "password": pwd.hash(user.password)
+    }
+    account.append(newAccount)
+    return newAccount
     
