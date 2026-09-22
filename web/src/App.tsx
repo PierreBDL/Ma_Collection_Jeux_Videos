@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import DetailsPage from './pages/DetailsPage'
+import MyLibraryPage from './pages/MyLibraryPage'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/details/:id" element={<DetailsPage />} />
+        <Route path="/myLibrary" element={<MyLibraryPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

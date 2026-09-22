@@ -41,7 +41,7 @@ export default function CommonPage() {
                     <Link to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
                     <Link to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
                     <Link to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
-                    <Link to="/games" className="hover:text-blue-600 font-medium transition-colors">Ma librarie</Link>
+                    <Link to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma librarie</Link>
                 </nav>
 
                 <div>
