@@ -39,4 +39,4 @@ async def test_register(user: AccountRegisterInput):
         "favorites": []
     }
     account.append(newAccount)
-    return create_tokens(user)
+    return create_tokens(newAccount)

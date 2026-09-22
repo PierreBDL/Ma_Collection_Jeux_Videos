@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
@@ -7,9 +8,9 @@ import {useLocalStorage} from '../hooks/LocalStorage'
 import {useAuth} from '../context/Auth'
 
 export default function RegisterPage() {
-    /* ------------------------
-        States Identifiants
-    -------------------------*/
+    /* ----------------------------------
+        States Identifiants & hooks
+    -----------------------------------*/
 
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -18,6 +19,9 @@ export default function RegisterPage() {
 
     const fonctions = {setEmail, setPassword}
     const values = {email, password}
+
+    // Navigate
+    const navigate = useNavigate()
 
     
     /* --------------------------
@@ -65,13 +69,16 @@ export default function RegisterPage() {
             if (!response.ok) {
                 setError(data.detail)
                 return
+            } else {
+                setError("")
             }
 
             // Stockage du token
             setToken(data.token)
             setAuth({token: data.token, name: data.name, favorites: data.favorites})
 
-            alert("Inscrit")
+            // Redirection
+            navigate("/")
         } catch {
             setError("Serveur indisponible")
         }

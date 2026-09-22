@@ -1,4 +1,6 @@
 import {useEffect, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
 import {useLocalStorage} from '../hooks/LocalStorage'
@@ -17,11 +19,15 @@ export default function LoginPage() {
     const values = {email, password}
 
     /* --------------------------
-                Token
+                Hooks
     ---------------------------*/
 
     const [token, setToken] = useLocalStorage<string | null>("token", null)
     const {auth, setAuth} = useAuth()
+
+
+    // Navigate
+    const navigate = useNavigate()
 
     /* ----------------------------
         Approuver le formulaire
@@ -60,7 +66,8 @@ export default function LoginPage() {
             setToken(data.token)
             setAuth({token: data.token, name: data.name, favorites: data.favorites === undefined ? [] : data.favorites})
 
-            alert("Connecté")
+            // Redirection
+            navigate("/")
         } catch {
             setError("Serveur indisponible")
         }
