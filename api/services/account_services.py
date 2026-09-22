@@ -3,6 +3,8 @@ from data.account_data import *
 from passlib.context import CryptContext
 import jwt
 
+from services.token_services import *
+
 # Charger env
 from dotenv import load_dotenv
 import os
@@ -20,8 +22,7 @@ def hash_mdp () :
 async def test_login(user: AccountInput):
     for i in account:
         if i["email"] == user.email and pwd.verify(user.password, i["password"]):
-            token = jwt.encode({"sub": i["name"]}, secretKey, algorithm="HS256")
-            return {"token" : token, "name": i["name"], "favorites": i["favorites"]}
+            return create_tokens(i)
     return {}
 
 # Register
@@ -38,4 +39,4 @@ async def test_register(user: AccountRegisterInput):
         "favorites": []
     }
     account.append(newAccount)
-    return newAccount
+    return create_tokens(user)

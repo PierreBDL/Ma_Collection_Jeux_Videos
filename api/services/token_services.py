@@ -3,6 +3,8 @@ from fastapi.security import OAuth2PasswordBearer
 import jwt
 from passlib.context import CryptContext
 
+from models.account_model import *
+
 # Charger env
 from dotenv import load_dotenv
 import os
@@ -20,3 +22,8 @@ def check_token (token: str = Depends(oauth)) :
         return result
     except jwt.PyJWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token incorrect")
+
+# Création de tokens
+def create_tokens (user: AccountInput):
+    token = jwt.encode({"sub": user["name"]}, secretKey, algorithm="HS256")
+    return {"token" : token, "name": user["name"], "favorites": user["favorites"]}
