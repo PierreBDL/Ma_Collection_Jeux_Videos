@@ -1,5 +1,4 @@
 import Button from './Button'
-import Effacer from '../assets/effacer.png'
 import {type searchType, gameType, gamePlateforme} from '../types/SearchType'
 
 interface SearchFilterProps {

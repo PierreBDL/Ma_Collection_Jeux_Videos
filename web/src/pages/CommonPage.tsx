@@ -1,6 +1,6 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 
-import { ThemeProvider, UseTheme } from '../hooks/Theme'
+import { UseTheme } from '../hooks/Theme'
 import { useAuth } from '../context/Auth'
 
 import Button from '../components/Button'

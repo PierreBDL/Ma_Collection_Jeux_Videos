@@ -1,5 +1,4 @@
 import React, {useState, useEffect, createContext, useContext} from 'react'
-import {useLocalStorage} from '../hooks/LocalStorage'
 import {type JeuxProps} from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
 
