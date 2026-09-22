@@ -20,7 +20,7 @@ def hash_mdp () :
 async def test_login(user: AccountInput):
     for i in account:
         if i["email"] == user.email and pwd.verify(user.password, i["password"]):
-            token = jwt.encode({"sub": user.email}, secretKey, algorithm="HS256")
-            return token
+            token = jwt.encode({"sub": i["name"]}, secretKey, algorithm="HS256")
+            return {"token" : token, "name": i["name"]}
     return {}
     

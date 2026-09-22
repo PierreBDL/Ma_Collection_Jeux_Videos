@@ -6,3 +6,4 @@ class AccountInput(BaseModel):
 
 class AccountOutput(AccountInput):
     id: int
+    name: str

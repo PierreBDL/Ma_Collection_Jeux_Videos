@@ -57,8 +57,8 @@ export default function LoginPage() {
             }
 
             // Stockage du token
-            setToken(data)
-            setAuth({token: data, name: email})
+            setToken(data.token)
+            setAuth({token: data.token, name: data.name})
 
             alert("Connecté")
         } catch {

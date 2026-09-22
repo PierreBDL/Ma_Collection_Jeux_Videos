@@ -49,4 +49,4 @@ async def login(user: AccountInput):
     if result == {} :
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Courriel ou mot de passe incorrect !")
 
-    return {"token": result}
+    return result
