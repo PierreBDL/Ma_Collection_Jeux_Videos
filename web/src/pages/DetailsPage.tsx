@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import {type JeuxProps} from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
@@ -18,6 +18,9 @@ export default function DetailsPage () {
     // Hook Theme
     const { theme, ToggleTheme } = UseTheme()
 
+    // Navigate
+    const navigate = useNavigate()
+
     // Get Id
     const { id } = useParams<{ id: string }>()
 
@@ -29,6 +32,7 @@ export default function DetailsPage () {
 
         // Sécurité
         if (!id) {
+            navigate("/")
             return
         }
 
@@ -64,11 +68,13 @@ export default function DetailsPage () {
     function handleFavorite () {
         // Si l'utilisateur pas connecté
         if (!auth) {
+            navigate("/login")
             return
         }
 
         // Si la page de détail est vide
         if (!game) {
+            navigate("/")
             return
         }
 
