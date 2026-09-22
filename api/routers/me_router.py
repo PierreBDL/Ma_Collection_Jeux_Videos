@@ -16,3 +16,11 @@ async def update_favorites (updateInfos: AccountInputUpdateFavorite,_ = Depends(
     if result :
         return
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")
+
+# Get Favorites
+@router.get("/collection")
+async def get_favorites (name: str, _ = Depends(check_token)):
+    result = get_favoris_logic()
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")
+    return {"favorites": result}

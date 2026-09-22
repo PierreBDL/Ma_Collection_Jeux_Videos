@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import {useAuth} from '../context/Auth'
 import {UseTheme} from '../hooks/Theme'
 import GameCard from '../components/GameCard'
+import { URL_API } from '../utils/Links'
 
 export default function MyLibraryPage () {
 
@@ -9,6 +11,38 @@ export default function MyLibraryPage () {
 
     // Hook Theme
     const { theme, ToggleTheme } = UseTheme()
+
+    /* ----------------------------------------------
+        Vérif syncro entre favoris back et front
+    -----------------------------------------------*/
+    useEffect(() => {
+        if (!auth) {
+            return
+        }
+
+        const checkBdd = async () => {
+            const response = await fetch(`${URL_API}/me/collection`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${auth.token}`
+                },
+                body: JSON.stringify({name: auth.name}),
+            })
+
+            if (!response.ok) {
+                return
+            }
+
+            const data = await response.json()
+
+            if (data.favorites !== auth.favorites) {
+                setAuth({...auth, favorites: data.favorites})
+            }
+        }
+
+        checkBdd()
+    })
 
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">

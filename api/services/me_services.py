@@ -10,3 +10,10 @@ async def update_of_favorites(updateInfos: AccountInputUpdateFavorite):
             i["favorites"] = updateInfos.favorites
             return True
     return False
+
+# Chercher et envoyer favoris
+async def get_favoris_logic (name: str) :
+    for i in account:
+        if i["name"] == name:
+            return i["favorites"]
+    return None
