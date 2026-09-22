@@ -10,6 +10,8 @@ import { URL_API } from '../utils/Links'
 
 import {UseTheme} from '../hooks/Theme'
 
+import erreur404 from '../assets/404.png'
+
 
 export default function Library () {
     const [games, setGames] = useState<JeuxProps[] | null>(null)
@@ -73,13 +75,29 @@ export default function Library () {
 
     if (error !== "") {
         return (
-            <p className="p-4 text-red-500">Erreur: {error}</p>
+            <div className="text-center w-full flex-1 flex flex-col justify-center items-center">
+                <h1 className="text-3xl font-bold">Oups !</h1>
+                <p className="p-4 text-red-500">Erreur: {error}</p>
+                <img src={erreur404} alt="Erreur 404" />
+            </div>
         )
     }
 
     if (isLoading) {
         return (
-            <p className="p-4">Chargement...</p>
+            <div className="text-center w-full flex-1 flex flex-col justify-center items-center">
+                <p className="p-4">Chargement...</p>
+            </div>
+        )
+    }
+
+    if (games != undefined && games?.length <= 0) {
+        return (
+            <div className="text-center w-full flex-1 flex flex-col justify-center items-center">
+                <h1 className="text-3xl font-bold">Oups !</h1>
+                <h3 className="p-4">Aucun jeu</h3>
+                <img src={erreur404} alt="Erreur" />
+            </div>
         )
     }
 
