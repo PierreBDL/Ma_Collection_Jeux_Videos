@@ -9,4 +9,7 @@ class Game(BaseModel):
     genre: str
     description: str
     image: str
-    
+    etat: str = "a_decouvrir" | "en_cours" | "termine"
+    note: float = 0
+    commentaire: str = ""
+    date: str

@@ -1,3 +1,8 @@
+from datetime import datetime
+
+now = datetime.now()
+dateFr = now.strftime("%d %m %Y")
+
 jeux = [
     {
         "id": 1,
@@ -7,7 +12,9 @@ jeux = [
         "annee": "1992",
         "genre": "Retro",
         "description": "Jeu d'action-aventure légendaire où Link doit sauver la princesse Zelda et sceller le maléfique Ganon à travers le monde de la lumière et des ténébres.",
-        "image": "1.jpg"
+        "image": "1.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 2,
@@ -17,7 +24,9 @@ jeux = [
         "annee": "2020",
         "genre": "RPG",
         "description": "RPG en vue à la première personne dans la mégapole dystopique de Night City, centré sur V, un mercenaire à la recherche d'un implant d'immortalité.",
-        "image": "2.jpg"
+        "image": "2.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 3,
@@ -27,7 +36,9 @@ jeux = [
         "annee": "2024",
         "genre": "Roguelike",
         "description": "Rogue-like d'action frénétique incarnant Melinoë, la princesse des Enfers, dans sa quête pour vaincre le Titan du Temps avec la magie noire.",
-        "image": "3.jpg"
+        "image": "3.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 4,
@@ -37,7 +48,9 @@ jeux = [
         "annee": "2022",
         "genre": "Action-RPG",
         "description": "Action-RPG stimulant dans un vaste monde ouvert fantasy, où le joueur cherche à restaurer le Cercle d'Elden et devenir le Seigneur d'Elden.",
-        "image": "4.jpg"
+        "image": "4.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 5,
@@ -47,7 +60,9 @@ jeux = [
         "annee": "2023",
         "genre": "RPG",
         "description": "RPG au tour par tour immersif dans l'univers de Donjons & Dragons, riche en choix tactiques, compagnons mémorables et libertés de scénario.",
-        "image": "5.avif"
+        "image": "5.avif",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 6,
@@ -57,7 +72,9 @@ jeux = [
         "annee": "2015",
         "genre": "RPG",
         "description": "Suivez le chasseur de monstres Geralt de Riv à la recherche de sa fille adoptive Ciri, traquée par la mystérieuse Traque Sauvage.",
-        "image": "6.jpg"
+        "image": "6.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 7,
@@ -67,7 +84,9 @@ jeux = [
         "annee": "2022",
         "genre": "Action-Adventure",
         "description": "Kratos et son fils Atreus parcourent les neuf royaumes nordiques pour faire face au Ragnarök et affronter les dieux Ases.",
-        "image": "7.jpg"
+        "image": "7.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 8,
@@ -77,7 +96,9 @@ jeux = [
         "annee": "2018",
         "genre": "Action-Adventure",
         "description": "Une épopée poignante sur le déclin de l'ère du Far West à travers le regard d'Arthur Morgan, membre de la bande de Dutch van der Linde.",
-        "image": "8.jpg"
+        "image": "8.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 9,
@@ -87,7 +108,9 @@ jeux = [
         "annee": "2011",
         "genre": "Sandbox",
         "description": "Jeu de bac à sable cubique emblématique axé sur la construction, l'exploration et la survie dans un monde généré procéduralement.",
-        "image": "9.jpg"
+        "image": "9.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 10,
@@ -97,7 +120,9 @@ jeux = [
         "annee": "2013",
         "genre": "Action-Adventure",
         "description": "Suivez trois criminels très différents réalisant une série de braquages audacieux à Los Santos et dans le comté de Blaine.",
-        "image": "10.jpg"
+        "image": "10.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 11,
@@ -107,7 +132,9 @@ jeux = [
         "annee": "2017",
         "genre": "Platformer",
         "description": "Mario s'allie à Cappy dans une aventure plateforme en 3D à travers de multiples pays pour empêcher Bowser d'épouser Peach.",
-        "image": "11.jpg"
+        "image": "11.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 12,
@@ -117,7 +144,9 @@ jeux = [
         "annee": "2017",
         "genre": "Action-Adventure",
         "description": "Link se réveille après 100 ans pour explorer un Hyrule dévasté et vaincre le Ganon d'Odon dans un monde totalement ouvert.",
-        "image": "12.jpg"
+        "image": "12.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 13,
@@ -127,7 +156,9 @@ jeux = [
         "annee": "2017",
         "genre": "Metroidvania",
         "description": "Metroidvania exigeant en 2D vous plongeant dans les ruines du royaume souterrain d'Hallownest rempli de créatures et de secrets.",
-        "image": "13.jpg"
+        "image": "13.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 14,
@@ -137,7 +168,9 @@ jeux = [
         "annee": "2016",
         "genre": "Simulation",
         "description": "Simulation de vie agricole charmante où vous héritez de la vieille ferme de votre grand-père pour la restaurer et sociabiliser avec le village.",
-        "image": "14.jpg"
+        "image": "14.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 15,
@@ -147,7 +180,9 @@ jeux = [
         "annee": "2011",
         "genre": "Puzzle",
         "description": "Jeu d'énigmes basé sur la physique et la création de portails, dans lequel Chell doit échapper à nouveau aux complexes d'Aperture Science.",
-        "image": "15.avif"
+        "image": "15.avif",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 16,
@@ -157,7 +192,9 @@ jeux = [
         "annee": "2023",
         "genre": "Survival Horror",
         "description": "Remake moderne du classique du survival-horror : Leon S. Kennedy s'infiltre dans un village espagnol isolé pour secourir la fille du président.",
-        "image": "16.jpg"
+        "image": "16.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 17,
@@ -167,7 +204,9 @@ jeux = [
         "annee": "2025",
         "genre": "Action-RPG",
         "description": "Expérience de chasse aux monstres de nouvelle génération se déroulant dans des écosystèmes vivants et dynamiques soumis à des changements climatiques.",
-        "image": "17.jpg"
+        "image": "17.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 18,
@@ -177,7 +216,9 @@ jeux = [
         "annee": "2025",
         "genre": "Action-Adventure",
         "description": "Retour dans l'État de Leonida et les rues baignées de néons de Vice City pour suivre le duo criminel Lucia et Jason.",
-        "image": "18.jpg"
+        "image": "18.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 19,
@@ -187,7 +228,9 @@ jeux = [
         "annee": "2026",
         "genre": "Metroidvania",
         "description": "Suite de Hollow Knight où l'on incarne Hornet, explorant un nouveau royaume hanté par la soie et la musique.",
-        "image": "19.jpg"
+        "image": "19.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     },
     {
         "id": 20,
@@ -197,6 +240,8 @@ jeux = [
         "annee": "2025",
         "genre": "FPS",
         "description": "Le retour très attendu de la chasseuse de primes Samus Aran dans une aventure d'action et d'exploration spatiale à la première personne.",
-        "image": "20.jpg"
+        "image": "20.jpg",
+        "etat": "a_decouvrir",
+        "date": dateFr
     }
 ]
