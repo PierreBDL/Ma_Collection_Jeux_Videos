@@ -62,7 +62,7 @@ async def register(user: AccountRegisterInput):
     return result
 
 # Update Favorites
-@app.put('/updateFavorite')
+@app.put('/me/updateFavorite')
 async def update_favorites (updateInfos: AccountInputUpdateFavorite, user: dict = Depends(check_token)):
     result = await update_of_favorites(updateInfos)
     if result :

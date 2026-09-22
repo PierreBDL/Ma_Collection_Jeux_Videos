@@ -37,7 +37,7 @@ export function AuthProvider ({children} : {children: React.ReactNode}) {
 
         const saveFavoritesApi = async () => {
             try {
-                const response = await fetch(`${URL_API}/updateFavorite`, {
+                const response = await fetch(`${URL_API}/me/updateFavorite`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
