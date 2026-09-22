@@ -102,13 +102,13 @@ export default function Library () {
     }
 
     return (
-        <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <SearchBar search={searchTherme} searchFunction={setSearchTherme} searchOrigin={searchOrigin} searchOriginFunction={setSearchOrigin}></SearchBar>
             <SearchFilter search={searchTherme} searchFunction={setSearchTherme} searchOrigin={searchOrigin} searchOriginFunction={setSearchOrigin}></SearchFilter>
-            <h2 className={`mb-6 text-2xl font-bold ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement sur le site</h2>
-            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <h2 className={`mb-6 text-2xl font-black sm:text-3xl ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement sur le site</h2>
+            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {
-                    searchTab.length === 0 ? (<p>Pas de jeux</p>) : null
+                    searchTab.length === 0 ? (<p className={`rounded-2xl border px-4 py-6 text-sm font-medium ${theme === "dark" ? "border-slate-700 bg-slate-900 text-slate-300" : "border-slate-200 bg-white text-slate-600"}`}>Pas de jeux</p>) : null
                 }
                 {
                     searchTab.map(game => (
