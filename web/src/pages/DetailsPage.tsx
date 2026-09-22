@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 
 import {type JeuxProps} from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
-import {UseTheme} from '../hooks/Theme'
+import {UseTheme} from '../../context/Theme'
 import { useParams } from 'react-router-dom';
 import Button from '../components/Button'
 

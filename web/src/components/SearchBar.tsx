@@ -1,6 +1,6 @@
 import Button from './Button'
 import Effacer from '../assets/effacer.png'
-import {type searchType} from '../interfaces/SearchType'
+import {type searchType} from '../types/SearchType'
 
 interface SearchBarProps {
     search: string
