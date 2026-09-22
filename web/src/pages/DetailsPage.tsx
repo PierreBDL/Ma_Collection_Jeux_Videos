@@ -34,7 +34,7 @@ export default function DetailsPage () {
 
         const getGame = (async () => {
             try {
-                const response = await fetch(`${URL_API}/game/${id}`)
+                const response = await fetch(`${URL_API}/games/${id}`)
 
                 if (!response.ok) {
                     setError("Le serveur a renvoyé une erreur")
