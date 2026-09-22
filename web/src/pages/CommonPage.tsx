@@ -1,4 +1,5 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom'
+import { useState } from 'react';
 
 import { UseTheme } from '../hooks/Theme'
 import { useAuth } from '../context/Auth'
@@ -7,8 +8,17 @@ import Button from '../components/Button'
 
 import soleilImg from '../assets/soleil.png'
 import luneImg from '../assets/lune.png'
+import burgerImg from '../assets/burger.png'
+import closeBurgerImg from '../assets/close.png'
 
 export default function CommonPage() {
+    // State pour le menu burger
+    const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false)
+
+    function toggleMenu() {
+        setMenuIsOpen(!menuIsOpen)
+    }
+
     // Hook Theme
     const { theme, ToggleTheme } = UseTheme()
 
@@ -25,9 +35,9 @@ export default function CommonPage() {
     }
 
     return (
-        <div className={`min-h-screen ${theme === "light" ? "bg-white text-gray-800" : "bg-black text-white"} flex flex-col`}>
-            <header className={`grid  grid-cols-3 p-4 ${theme === "light" ? "bg-white text-gray-600" : "bg-black text-white"} shadow-sm gap-7`}>
-                <div>
+        <div className={`relative min-h-screen ${theme === "light" ? "bg-white text-gray-800" : "bg-black text-white"} flex flex-col`}>
+            <header className={`relative grid grid-cols-2 md:grid-cols-[1fr_auto_1fr] items-center px-6 py-4 ${theme === "light" ? "bg-white text-gray-600" : "bg-black text-white"}`}>
+                <div className="flex items-center justify-start">
                     <Button style="bg-white w-12 h-12 rounded-2xl mt-2 hover:bg-blue-100 font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={ToggleTheme}>
                         {
                             theme === "light"
@@ -37,21 +47,39 @@ export default function CommonPage() {
                     </Button>
                 </div>
 
-                <nav className="flex gap-6 max-w-4xl mx-auto justify-center place-content-center">
+                <nav className="hidden md:flex items-center gap-6 justify-center">
                     <Link to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
                     <Link to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
                     <Link to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
                     <Link to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
                 </nav>
 
-                <div>
+                <div className="hidden md:flex items-center justify-end">
                     {auth?.name && (
-                        <div className="w-auto flex flex-row gap-4 justify-self-end place-self-center">                     
-                            <p className={theme === "light" ? "text-black" : "text-white"}>Connecté en tant que {auth.name}</p>
+                        <div className="w-auto flex flex-row gap-4 justify-self-end place-self-center">
+                            <p className={`${theme === "light" ? "text-black" : "text-white"}`}>Connecté en tant que {auth.name}</p>
                             <Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
                         </div>
                     )}
                 </div>
+
+                {/* Menu burger */}
+                <div className="md:hidden flex items-center justify-end">
+                    <Button style="bg-white rounded-xl p-2 max-w-[50px] max-h-[50px]" isDisable={false} handleClick={() => toggleMenu()}>
+                        {
+                            menuIsOpen ? (<img src={closeBurgerImg} alt="Menu" />) : (<img src={burgerImg} alt="Menu" />)
+                        }
+                    </Button>
+                </div>
+
+                {menuIsOpen && (
+                    <nav className={`absolute justify-end ${theme === "dark" ? "bg-slate-800" : "bg-slate-300"} top-full right-0 w-full z-50 flex flex-col p-6 space-y-4 md:hidden`}>
+                        <Link onClick={() => toggleMenu()} to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
+                        <Link onClick={() => toggleMenu()} to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
+                        <Link onClick={() => toggleMenu()} to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
+                        <Link onClick={() => toggleMenu()} to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
+                    </nav>
+                )}
             </header>
 
             <main className="flex-1 flex flex-col items-center justify-start p-4">
