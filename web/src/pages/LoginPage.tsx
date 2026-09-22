@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
 import {useLocalStorage} from '../hooks/LocalStorage'
+import {useAuth} from '../context/Auth'
 
 export default function LoginPage() {
 
@@ -16,10 +17,11 @@ export default function LoginPage() {
     const values = {email, password}
 
     /* --------------------------
-            States Connexions
+                Token
     ---------------------------*/
 
     const [token, setToken] = useLocalStorage<string | null>("token", null)
+    const {auth, setAuth} = useAuth()
 
     /* ----------------------------
         Approuver le formulaire
@@ -54,8 +56,9 @@ export default function LoginPage() {
                 return
             }
 
-            // Stockage du token dans la bdd
+            // Stockage du token
             setToken(data)
+            setAuth({token: data, name: email})
 
             alert("Connecté")
         } catch {
