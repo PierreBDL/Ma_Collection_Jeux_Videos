@@ -2,8 +2,6 @@ from models.account_model import *
 from data.account_data import *
 from passlib.context import CryptContext
 import jwt
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
 
 # Charger env
 from dotenv import load_dotenv
@@ -12,16 +10,6 @@ load_dotenv()
 
 pwd = CryptContext(schemes=["pbkdf2_sha256"])
 secretKey = os.getenv('SECRET')
-
-# Vérif du token
-oauth = OAuth2PasswordBearer(tokenUrl="sub")
-
-def check_token (token: str = Depends(oauth)) :
-    try:
-        result = jwt.decode(token, secretKey, algorithms=["HS256"])
-        return result
-    except jwt.PyJWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token incorrect")
 
 # Hash du mdp hardcodé
 def hash_mdp () :
@@ -51,11 +39,3 @@ async def test_register(user: AccountRegisterInput):
     }
     account.append(newAccount)
     return newAccount
-
-# Mise à jour des favoris
-async def update_of_favorites(updateInfos: AccountInputUpdateFavorite):
-    for i in account:
-        if updateInfos.name == i["name"]:
-            i["favorites"] = updateInfos.favorites
-            return True
-    return False
