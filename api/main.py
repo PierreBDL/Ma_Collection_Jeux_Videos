@@ -16,7 +16,6 @@ app.include_router(authRouter)
 app.include_router(gameRouter)
 app.include_router(meRouter)
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, status, HTTPException, Header
 
 from data.account_data import *
 from models.account_model import *
@@ -29,3 +29,22 @@ async def register(user: AccountRegisterInput):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Courriel déjà pris !")
 
     return result
+
+# Refresh du token
+@router.post("/refresh")
+async def refresh (long_token: str = Header(...)):
+    try:
+        token = jwt.decode(long_token, secretKey, algorithms=[Algorithm])
+
+        if token["type"] != "refresh":
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token invalide")
+
+        username = token["name"]
+
+        access_expire = datetime.now(timezone.utc) + timedelta(minutes=20)
+        access_token = jwt.encode({"sub": username, "exp": access_expire, "type": "access"}, secretKey, algorithm=Algorithm)
+
+        return {"access_token": access_token, "token_type": "bearer"}
+
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expiré")

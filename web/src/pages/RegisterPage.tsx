@@ -73,9 +73,9 @@ export default function RegisterPage() {
                 setError("")
             }
 
-            // Stockage du token
-            setToken(data.token)
-            setAuth({token: data.token, name: data.name, favorites: data.favorites})
+            // Stockage du token et du username
+            setToken(data.access_token)
+            setAuth({token: data.access_token, refreshToken: data.refresh_token, name: data.name, favorites: data.favorites})
 
             // Redirection
             navigate("/")

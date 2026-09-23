@@ -1,17 +1,18 @@
 from models.account_model import *
 from data.account_data import *
 from passlib.context import CryptContext
-import jwt
 
-from services.token_services import *
+from security.token_services import *
 
 # Charger env
 from dotenv import load_dotenv
 import os
 load_dotenv()
 
-pwd = CryptContext(schemes=["pbkdf2_sha256"])
+PwdAlgo = os.getenv("PWD_ALGORITHM")
+pwd = CryptContext(schemes=[PwdAlgo])
 secretKey = os.getenv('SECRET')
+Algorithm = os.getenv('ALGORITHM')
 
 # Hash du mdp hardcodé
 def hash_mdp () :
