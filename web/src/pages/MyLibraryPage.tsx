@@ -46,11 +46,12 @@ export default function MyLibraryPage () {
 
             if (data.favorites !== auth.favorites) {
                 setAuth({...auth, favorites: data.favorites})
+                return
             }
         }
 
         checkBdd()
-    })
+    }, [auth?.token])
 
     if (!auth) {
         return (
