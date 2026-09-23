@@ -78,6 +78,7 @@ export default function CommonPage() {
                         <Link onClick={() => toggleMenu()} to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
                         <Link onClick={() => toggleMenu()} to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
                         <Link onClick={() => toggleMenu()} to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
+                        <Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
                     </nav>
                 )}
             </header>
