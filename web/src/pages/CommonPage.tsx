@@ -49,18 +49,22 @@ export default function CommonPage() {
 
                 <nav className="hidden md:flex items-center gap-6 justify-center">
                     <Link to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
-                    <Link to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
-                    <Link to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
                     <Link to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
                 </nav>
 
                 <div className="hidden md:flex items-center justify-end">
-                    {auth?.name && (
+                    {auth?.name != null && auth.name != "" ? (
                         <div className="w-auto flex flex-row gap-4 justify-self-end place-self-center">
                             <p className={`${theme === "light" ? "text-black" : "text-white"}`}>Connecté en tant que {auth.name}</p>
                             <Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
                         </div>
-                    )}
+                    ) : (
+                        <div className="flex flex-raw space-x-4">
+                            <Link to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
+                            <Link to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
+                        </div>
+                    )
+                    }
                 </div>
 
                 {/* Menu burger */}
@@ -75,10 +79,16 @@ export default function CommonPage() {
                 {menuIsOpen && (
                     <nav className={`absolute justify-end ${theme === "dark" ? "bg-slate-800" : "bg-slate-300"} top-full right-0 w-full z-50 flex flex-col p-6 space-y-4 md:hidden`}>
                         <Link onClick={() => toggleMenu()} to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
-                        <Link onClick={() => toggleMenu()} to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
-                        <Link onClick={() => toggleMenu()} to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
                         <Link onClick={() => toggleMenu()} to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
-                        <Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
+                        {
+                            auth !== null ? (<Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>) 
+                            : (
+                                <div className="flex flex-col space-y-4">
+                                    <Link onClick={() => toggleMenu()} to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>
+                                    <Link onClick={() => toggleMenu()} to="/login" className="hover:text-blue-600 font-medium transition-colors">Se connecter</Link>
+                                </div>
+                            )
+                        }
                     </nav>
                 )}
             </header>
