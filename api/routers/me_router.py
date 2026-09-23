@@ -19,8 +19,9 @@ async def update_favorites (updateInfos: AccountInputUpdateFavorite,_ = Depends(
 
 # Get Favorites
 @router.post("/collection")
-async def get_favorites (name: str, _ = Depends(check_token)):
-    result = get_favoris_logic()
+async def get_favorites (token_data = Depends(check_token)):
+    name = token_data["sub"]
+    result = await get_favoris_logic(name)
     if result is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")
     return {"favorites": result}

@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import DetailsPage from './pages/DetailsPage'
 import MyLibraryPage from './pages/MyLibraryPage'
+import StatsPage from './pages/StatsPage'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/details/:id" element={<DetailsPage />} />
         <Route path="/myLibrary" element={<MyLibraryPage />} />
+        <Route path="/stats" element={<StatsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

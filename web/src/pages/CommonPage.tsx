@@ -50,6 +50,7 @@ export default function CommonPage() {
                 <nav className="hidden md:flex items-center gap-6 justify-center">
                     <Link to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
                     <Link to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
+                    <Link to="/stats" className="hover:text-blue-600 font-medium transition-colors">Mes stats</Link>
                 </nav>
 
                 <div className="hidden md:flex items-center justify-end">
@@ -80,6 +81,7 @@ export default function CommonPage() {
                     <nav className={`absolute justify-end ${theme === "dark" ? "bg-slate-800" : "bg-slate-300"} top-full right-0 w-full z-50 flex flex-col p-6 space-y-4 md:hidden`}>
                         <Link onClick={() => toggleMenu()} to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
                         <Link onClick={() => toggleMenu()} to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
+                        <Link onClick={() => toggleMenu()} to="/stats" className="hover:text-blue-600 font-medium transition-colors">Mes stats</Link>
                         {
                             auth !== null ? (<Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>) 
                             : (

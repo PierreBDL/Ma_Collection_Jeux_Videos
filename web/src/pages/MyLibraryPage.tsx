@@ -30,7 +30,7 @@ export default function MyLibraryPage () {
 
         const checkBdd = async () => {
             const response = await fetch(`${URL_API}/me/collection`, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${auth.token}`
