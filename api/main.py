@@ -7,14 +7,18 @@ from routers.account_router import router as authRouter
 from routers.game_router import router as gameRouter
 from routers.me_router import router as meRouter
 
+# BDD
+from database import *
+
+
 # Hash mdp
 hash_mdp()
 
+# Remplir bdd
+fill_bdd()
+
 
 app = FastAPI()
-app.include_router(authRouter)
-app.include_router(gameRouter)
-app.include_router(meRouter)
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,3 +27,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(authRouter)
+app.include_router(gameRouter)
+app.include_router(meRouter)
