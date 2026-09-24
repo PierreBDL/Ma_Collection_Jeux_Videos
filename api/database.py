@@ -4,6 +4,7 @@ from data.game_data import *
 from fastapi import Depends
 from schemas.base_class import Base
 from schemas.games_table import GamesTable
+from schemas.users_table import UsersTable
 
 # Charger env
 from dotenv import load_dotenv
@@ -15,15 +16,6 @@ URL_DB = os.getenv("DATABASE_URL")
 # Création de l'entrée de la bdd
 engine = create_engine(URL_DB)
 SessionLocal = sessionmaker(bind=engine)
-
-# Tables
-class UsersTable(Base):
-    __tablename__ = "users"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    email: Mapped[str]
-    password: Mapped[str]
 
 # Créer les tables
 Base.metadata.create_all(engine)

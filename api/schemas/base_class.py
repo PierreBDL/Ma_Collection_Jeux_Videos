@@ -1,5 +1,4 @@
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import sessionmaker, Mapped, mapped_column, DeclarativeBase, Session
+from sqlalchemy.orm import DeclarativeBase
 
 # Classe de base
 class Base(DeclarativeBase):

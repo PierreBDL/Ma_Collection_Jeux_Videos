@@ -29,11 +29,11 @@ def check_token (token: str = Depends(oauth)) :
 def create_tokens (user: AccountInput):
     # Access
     access_expire = datetime.now(timezone.utc) + timedelta(minutes=20)
-    access_token = jwt.encode({"sub": user["name"], "exp": access_expire, "type": "access"}, secretKey, algorithm=Algorithm)
+    access_token = jwt.encode({"sub": user.name, "exp": access_expire, "type": "access"}, secretKey, algorithm=Algorithm)
 
     # Refresh
     refresh_expire = datetime.now(timezone.utc) + timedelta(days=1)
-    refresh_token = jwt.encode({"sub": user["name"], "exp": refresh_expire, "type": "refresh"}, secretKey, algorithm=Algorithm)
+    refresh_token = jwt.encode({"sub": user.name, "exp": refresh_expire, "type": "refresh"}, secretKey, algorithm=Algorithm)
 
-    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer", "name": user["name"], "favorites": user["favorites"]}
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer", "name": user.name, "favorites": user.favorites}
 
