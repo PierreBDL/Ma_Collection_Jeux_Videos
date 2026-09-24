@@ -15,3 +15,5 @@ class GamesTable(Base):
     note: Mapped[str]
     commentaire: Mapped[str]
     date: Mapped[str]
+    image: Mapped[str]
+    studio: Mapped[str]

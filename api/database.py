@@ -50,6 +50,8 @@ def fill_bdd ():
             game = GamesTable(
                 id=i["id"],
                 nom=i["nom"],
+                image=i["image"],
+                studio=i["studio"],
                 plateforme=i["plateforme"],
                 annee=i["annee"],
                 genre=i["genre"],
