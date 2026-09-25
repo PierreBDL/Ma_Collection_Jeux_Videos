@@ -3,8 +3,10 @@ from sqlalchemy.orm import sessionmaker, Mapped, mapped_column, DeclarativeBase,
 from data.game_data import *
 from fastapi import Depends
 from schemas.base_class import Base
+
 from schemas.games_table import GamesTable
 from schemas.users_table import UsersTable
+from schemas.users_favorites_table import UserFavorite
 
 # Charger env
 from dotenv import load_dotenv
@@ -28,34 +30,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# Remplir la bdd
-def fill_bdd ():
-    db = next(get_db())
-    
-    try:
-        statement = select(GamesTable)
-        if db.scalars(statement).first() is not None:
-            return
-
-        for i in jeux:
-            game = GamesTable(
-                id=i["id"],
-                nom=i["nom"],
-                image=i["image"],
-                studio=i["studio"],
-                plateforme=i["plateforme"],
-                annee=i["annee"],
-                genre=i["genre"],
-                description=i["description"],
-                etat="a_decouvrir",
-                note=0,
-                commentaire="",
-                date="",
-            )
-            db.add(game)
-        
-        db.commit()
-    finally:
-        db.close()
-

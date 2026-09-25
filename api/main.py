@@ -9,6 +9,7 @@ from routers.me_router import router as meRouter
 
 # BDD
 from database import *
+from data.seed import fill_bdd
 
 
 # Hash mdp
