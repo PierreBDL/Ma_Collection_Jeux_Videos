@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'refresh_token': auth.refreshToken
+                            'refresh-token': auth.refreshToken
                         },
                     })
 
@@ -73,12 +73,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     const dataNewToken = await newTokenResponse.json()
                     setAuth({ ...auth, token: dataNewToken.access_token })
 
+                    const newToken = dataNewToken.access_token
+
                     // Réessayer
                     response = await fetch(`${URL_API}/me/updateFavorite`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${auth.token}`
+                            'Authorization': `Bearer ${newToken}`
                         },
                         body: JSON.stringify({ name: auth.name, favorites: auth.favorites }),
                     })

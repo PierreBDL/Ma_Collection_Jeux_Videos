@@ -12,7 +12,7 @@ import erreur404 from '../assets/404.png'
 export default function MyLibraryPage () {
 
     // Hook Auth
-    const { auth, setAuth } = useAuth()
+    const { auth } = useAuth()
 
     // Hook Theme
     const { theme, ToggleTheme } = UseTheme()
@@ -42,12 +42,7 @@ export default function MyLibraryPage () {
                 return
             }
 
-            const data = await response.json()
-
-            if (data.favorites !== auth.favorites) {
-                setAuth({...auth, favorites: data.favorites})
-                return
-            }
+            await response.json()
         }
 
         checkBdd()

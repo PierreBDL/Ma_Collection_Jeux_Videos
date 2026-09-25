@@ -63,7 +63,7 @@ export default function LoginPage() {
             }
 
             // Stockage du token
-            setToken(data.token)
+            setToken(data.access_token)
             setAuth({token: data.access_token, refreshToken: data.refresh_token, name: data.name, favorites: data.favorites === undefined ? [] : data.favorites})
 
             // Redirection
