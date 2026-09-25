@@ -28,6 +28,12 @@ export default function CommonPage() {
     // Hook navigate
     const navigate = useNavigate()
 
+    // Majuscule sur l'initiale
+    let username
+    if (auth?.name) {
+        username = auth?.name.charAt(0).toUpperCase() + auth?.name.slice(1);
+    }
+
     // Déconnexion
     function handleLogout() {
         setAuth(null)
@@ -56,7 +62,7 @@ export default function CommonPage() {
                 <div className="hidden md:flex items-center justify-end">
                     {auth?.name != null && auth.name != "" ? (
                         <div className="w-auto flex flex-row gap-4 justify-self-end place-self-center">
-                            <p className={`${theme === "light" ? "text-black" : "text-white"}`}>Connecté en tant que {auth.name}</p>
+                            <p className={`${theme === "light" ? "text-black" : "text-white"}`}>Connecté en tant que {username}</p>
                             <Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
                         </div>
                     ) : (
