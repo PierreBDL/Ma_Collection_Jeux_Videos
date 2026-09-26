@@ -13,7 +13,3 @@ class AccountOutput(BaseModel):
     name: str
     email: EmailStr
     favorites: list[Game] = []
-
-class AccountInputUpdateFavorite(BaseModel):
-    name: str
-    favorites: list[Game] = []

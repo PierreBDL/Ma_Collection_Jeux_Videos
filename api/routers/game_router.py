@@ -26,4 +26,4 @@ def get_game_by_id (game_id: int, db: Session = Depends(get_db)) :
     statement = db.get(GamesTable, game_id)
     if statement is None :
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jeu introuvable")
-    return statement
+    return {"game": statement}

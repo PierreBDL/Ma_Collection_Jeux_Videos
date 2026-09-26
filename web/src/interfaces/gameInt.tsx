@@ -5,6 +5,6 @@ export interface JeuxProps {
     plateforme: string
     annee: string
     genre: string
-    description?: string
-    image?: string
+    description: string
+    image: string
 }

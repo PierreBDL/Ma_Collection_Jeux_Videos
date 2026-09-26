@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from services.me_services import *
 from security.token_services import *
 from models.account_model import *
+from models.me_model import *
 from database import get_db
 
 router = APIRouter (
@@ -28,3 +29,12 @@ async def get_favorites (token_data = Depends(check_token), db: Session = Depend
     if result is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")
     return {"favorites": result}
+
+# Sauvegarde commentaire et avis
+@router.put("/saveGrade")
+async def save_grade (updateInfos: SaveGradeInput,token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
+    updateInfos.name = token_data["sub"]
+    result = save_the_grade(updateInfos, db)
+    if result :
+        return
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")
