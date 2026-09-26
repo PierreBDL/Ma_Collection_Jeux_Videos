@@ -34,9 +34,11 @@ async def register(user: AccountRegisterInput, db: Session = Depends(get_db)):
 
 # Refresh du token
 @router.post("/refresh")
-async def refresh (refresh_token: str = Header(...)):
+async def refresh (refreshToken: str = Header(...)):
     try:
-        token = jwt.decode(refresh_token, secretKey, algorithms=[Algorithm])
+        refreshToken = refreshToken.replace("Bearer ", "").strip()
+
+        token = jwt.decode(refreshToken, secretKey, algorithms=[Algorithm])
 
         if token["type"] != "refresh":
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token invalide")
@@ -46,7 +48,7 @@ async def refresh (refresh_token: str = Header(...)):
         access_expire = datetime.now(timezone.utc) + timedelta(minutes=20)
         access_token = jwt.encode({"sub": username, "exp": access_expire, "type": "access"}, secretKey, algorithm=Algorithm)
 
-        return {"access_token": access_token, "token_type": "bearer"}
+        return access_token
 
     except jwt.PyJWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token expiré")
