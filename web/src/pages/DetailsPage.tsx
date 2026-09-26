@@ -102,7 +102,7 @@ export default function DetailsPage () {
     return (
         <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-6 px-4 py-8 lg:grid-cols-2 lg:gap-8 justify-center">
             <CardDetailsGame state={"a_decouvrir"} id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} genre={game.genre} annee={game.annee} image={game.image} description={game.description} handleFavorite={() => handleFavorite()}></CardDetailsGame>
-            <UserFormDetails gameId={game.id} opinionBdd={"Lorem ipsum dolor sit amet"} gradeBdd={3} ></UserFormDetails>
+            <UserFormDetails gameId={game.id}></UserFormDetails>
         </div>
     )
 }

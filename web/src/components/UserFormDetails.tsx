@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Button from './Button'
 import {UseTheme} from '../hooks/Theme'
@@ -9,15 +9,14 @@ import {useAuth} from '../context/Auth'
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
 
-interface UserFormDetailsProps {
-    gameId: number
-    opinionBdd?: string
-    gradeBdd: number
+interface GradeResponse {
+    grade: number
+    opinion: string
 }
 
-export default function UserFormDetails ({gameId, opinionBdd, gradeBdd}: UserFormDetailsProps) {
-    const [grade, setGrade] = useState<number>(gradeBdd | 0)
-    const [opinion, setOpinion] = useState<string>(opinionBdd || "")
+export default function UserFormDetails ({gameId}: {gameId: number}) {
+    const [grade, setGrade] = useState<number>(0)
+    const [opinion, setOpinion] = useState<string>("")
     const [error, setError] = useState<string>("")
     const [isSuccess, setIsSuccess] = useState<boolean | null>(null)
     
@@ -40,7 +39,7 @@ export default function UserFormDetails ({gameId, opinionBdd, gradeBdd}: UserFor
             return
         }
 
-        const response = await MeDB({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade })})
+        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade })})
     
         if (response.responseType === "Success") {
             setIsSuccess(true)
@@ -49,6 +48,29 @@ export default function UserFormDetails ({gameId, opinionBdd, gradeBdd}: UserFor
             setError("Erreur lors de l'enregistrement")
         }
     }
+
+    // Récup infos bdd
+    useEffect(() => {
+        // Vérif connecté
+        if (!auth) {
+            return
+        }
+
+        const getBdd = async () => {
+            const response = await MeDB<GradeResponse>({url: `${URL_API}/me/getGrade?game_id=${gameId}`, methodToSend: 'GET', token: auth.token})
+
+            if (response.responseType === "Success" && response.dataToResponse) {
+                setGrade(response.dataToResponse.grade)
+                setOpinion(response.dataToResponse.opinion)
+                setError("")
+            } else {
+                setIsSuccess(false)
+                setError("Erreur lors de la récupération depuis le serveur")
+            }
+        }
+
+        getBdd()
+    }, [auth?.token, gameId])
 
 
     return (

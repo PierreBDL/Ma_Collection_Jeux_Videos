@@ -38,3 +38,10 @@ async def save_grade (updateInfos: SaveGradeInput,token_data: dict = Depends(che
     if result :
         return
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")
+
+@router.get("/getGrade")
+async def get_grade (game_id: int, token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
+    result = get_the_grade(token_data["sub"], game_id, db)
+    if result is not None :
+        return result
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur ou jeu introuvable")

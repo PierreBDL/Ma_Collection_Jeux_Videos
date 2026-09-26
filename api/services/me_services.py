@@ -51,3 +51,15 @@ def save_the_grade(updateInfos: SaveGradeInput, db: Session):
         db.refresh(user_favo)
         return True
     return False
+
+# Récup de la note
+def get_the_grade (username: str, game_id: int, db: Session):
+    statement_user = select(UsersTable).where(UsersTable.name == username)
+    user = db.scalars(statement_user).first()
+
+    statement = db.get(UserFavorite, (user.id, game_id))
+
+    if statement is None : 
+        return {"opinion": "", "grade": 0}
+
+    return statement
