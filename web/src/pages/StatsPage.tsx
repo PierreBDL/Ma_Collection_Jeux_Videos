@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { URL_API } from '../utils/Links'
 import { useAuth } from '../context/Auth'
 import { type JeuxProps } from '../interfaces/gameInt'
+import {MeDB} from '../connection/RequestsDb'
 
 interface partOfGraph {
     label: string;
@@ -23,23 +24,10 @@ export default function StatsPage() {
         }
 
         const collectionQuery = async () => {
-            try {
-                const response = await fetch(`${URL_API}/me/collection`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${auth.token}`
-                    },
-                });
-
-                if (!response.ok) {
-                    return
-                };
-
-                const data = await response.json();
-                setFavoris(data.favorites || []);
-            } catch (error) {
-
+            const response = await MeDB({url: `${URL_API}/me/collection`, methodToSend: "POST", token: auth.token})
+            
+            if (response.dataToResponse) {
+                setFavoris(response.favorites || []);
             }
         };
 

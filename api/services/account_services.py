@@ -31,6 +31,8 @@ async def test_login(user: AccountInput, db: Session):
         return create_tokens(db_user)
 
     return {}
+
+
 # Register
 async def test_register(user: AccountRegisterInput, db: Session):
     

@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react'
 import { type JeuxProps } from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
 import { useNavigate } from 'react-router-dom';
+import {MeDB, RefrechTokenDB} from '../connection/RequestsDb'
 
 interface AuthValue {
     token: string
@@ -41,52 +42,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         const saveFavoritesApi = async () => {
             try {
-                let response = await fetch(`${URL_API}/me/updateFavorite`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${auth.token}`
-                    },
-                    body: JSON.stringify({ name: auth.name, favorites: auth.favorites }),
-                })
+                let response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PUT',token: auth.token, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
 
-                if (!response.ok && auth.refreshToken) {
+                if (response.responseType === "Error" && auth.refreshToken) {
 
                     // Refresh token
-                    const newTokenResponse = await fetch(`${URL_API}/auth/refresh`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'refresh-token': auth.refreshToken
-                        },
-                    })
+                    const newTokenResponse = await RefrechTokenDB({url: `${URL_API}/auth/refresh`, token: auth.refreshToken})
 
-                    if (!newTokenResponse.ok) {
+                    if (newTokenResponse.responseType === "Error") {
                         localStorage.removeItem("auth")
                         localStorage.removeItem("token")
                         setAuth(null)
                         navigate("/login")
                         return
+                    } else {
+                        // Sauvegarder nouveau token
+                        setAuth({ ...auth, token: newTokenResponse.response})
+
+                        const newToken = newTokenResponse.response
+
+                        // Réessayer
+                        response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PUT', token: newToken, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
                     }
-
-                    // Sauvegarder nouveau token
-                    const dataNewToken = await newTokenResponse.json()
-                    setAuth({ ...auth, token: dataNewToken.access_token })
-
-                    const newToken = dataNewToken.access_token
-
-                    // Réessayer
-                    response = await fetch(`${URL_API}/me/updateFavorite`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${newToken}`
-                        },
-                        body: JSON.stringify({ name: auth.name, favorites: auth.favorites }),
-                    })
                 }
 
-                if (!response.ok) {
+                if (response.responseType === "Error") {
                     alert("Modifications non sauvegardées")
                 }
             } catch {

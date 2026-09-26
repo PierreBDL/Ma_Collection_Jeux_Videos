@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { data, useNavigate } from 'react-router-dom';
 
 import {useAuth} from '../context/Auth'
 import {UseTheme} from '../hooks/Theme'
 import GameCard from '../components/GameCard'
 import { URL_API } from '../utils/Links'
 import Button from '../components/Button'
+import { type JeuxProps } from '../interfaces/gameInt';
+import {MeDB} from '../connection/RequestsDb'
 
 import erreur404 from '../assets/404.png'
 
 export default function MyLibraryPage () {
+    const [games, setGames] = useState<JeuxProps[]>([])
 
     // Hook Auth
     const { auth } = useAuth()
@@ -29,20 +32,15 @@ export default function MyLibraryPage () {
         }
 
         const checkBdd = async () => {
-            const response = await fetch(`${URL_API}/me/collection`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${auth.token}`
-                },
-                body: JSON.stringify({name: auth.name}),
-            })
+            const response = await MeDB({url: `${URL_API}/me/collection`, methodToSend: 'POST', token: auth.token})
 
-            if (!response.ok) {
+            if (response.responseType === "Error") {
                 return
             }
-
-            await response.json()
+            
+            if (response.favorites) {
+                setGames(response.favorites)
+            }
         }
 
         checkBdd()
@@ -73,7 +71,7 @@ export default function MyLibraryPage () {
             <h2 className={`mb-6 text-2xl font-bold ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement en favoris</h2>
             <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {
-                    auth?.favorites.map(game => (
+                    games.map(game => (
                         <li className="min-w-0" key={game.id}>
                             <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre}></GameCard>
                         </li>

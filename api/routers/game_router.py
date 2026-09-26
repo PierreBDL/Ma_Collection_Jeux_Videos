@@ -19,7 +19,7 @@ router = APIRouter (
 @router.get("")
 def get_games (counterResult: dict = Depends(counter), db: Session = Depends(get_db)) :
     result = get_see_more(counterResult, db)
-    return result
+    return {"games": result}
 
 @router.get("/{game_id}")
 def get_game_by_id (game_id: int, db: Session = Depends(get_db)) :

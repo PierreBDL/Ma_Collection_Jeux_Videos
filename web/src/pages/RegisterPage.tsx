@@ -3,9 +3,18 @@ import { useNavigate } from 'react-router-dom';
 
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
+import {AuthDB} from '../connection/RequestsDb'
+import {type JeuxProps} from '../interfaces/gameInt'
 
 import {useLocalStorage} from '../hooks/LocalStorage'
 import {useAuth} from '../context/Auth'
+
+interface AuthResponse {
+    access_token: string
+    refresh_token: string
+    name: string
+    favorites: JeuxProps[]
+}
 
 export default function RegisterPage() {
     /* ----------------------------------
@@ -55,32 +64,18 @@ export default function RegisterPage() {
         /* ----------------------------
                 Demander à l'API
         -----------------------------*/
-        try {
-            const response = await fetch(`${URL_API}/auth/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, password }),
-            })
 
-            const data = await response.json()
+        const response = await AuthDB<AuthResponse>({url: `${URL_API}/auth/register`, setError: setError , dataToSend: JSON.stringify({ name, email, password })})
 
-            if (!response.ok) {
-                setError(data.detail)
-                return
-            } else {
-                setError("")
-            }
+        if (response.dataToResponse) {
+            const { access_token, refresh_token, name, favorites } = response.dataToResponse
 
             // Stockage du token et du username
-            setToken(data.access_token)
-            setAuth({token: data.access_token, refreshToken: data.refresh_token, name: data.name, favorites: data.favorites})
+            setToken(access_token)
+            setAuth({token: access_token, refreshToken: refresh_token, name: name, favorites: favorites})
 
             // Redirection
             navigate("/")
-        } catch {
-            setError("Serveur indisponible")
         }
     }
 

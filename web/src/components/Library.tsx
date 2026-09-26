@@ -3,15 +3,13 @@ import { useEffect, useState } from 'react'
 import GameCard from './GameCard'
 import SearchBar from '../components/SearchBar'
 import SearchFilter from '../components/SearchFilter'
-
 import { type JeuxProps } from '../interfaces/gameInt'
 import { type searchType } from '../types/SearchType'
 import { URL_API } from '../utils/Links'
-
 import { UseTheme } from '../hooks/Theme'
-
 import erreur404 from '../assets/404.png'
 import Button from './Button';
+import {GetGamesDB} from '../connection/RequestsDb'
 
 
 export default function Library() {
@@ -22,28 +20,23 @@ export default function Library() {
     const [searchOrigin, setSearchOrigin] = useState<searchType>("bySearchBar")
 
     // Défilement infini
-    const [limit, setLimit] = useState<number>(12)
+    const limit = 12
     const [skip, setSkip] = useState<number>(0)
     const [isEnoughtGames, setIsEnoughtGame] = useState<boolean>(true)
 
 
     // Hook Theme
-    const { theme, ToggleTheme } = UseTheme()
+    const { theme } = UseTheme()
 
     /* ---------------------
         Récup depuis BDD
     ----------------------*/
 
     const getGames = async (skipNumber: number) => {
-        try {
-            const response = await fetch(`${URL_API}/games?limit=${limit}&skip=${skipNumber}`)
+        let response = await GetGamesDB({url: `${URL_API}/games?limit=${limit}&skip=${skipNumber}`, setError: setError})
+        const data = response.dataToResponse
 
-            if (!response.ok) {
-                setError("Le serveur a renvoyé une erreur")
-                throw new Error("Le serveur a renvoyé une erreur")
-            }
-
-            const data: JeuxProps[] = await response.json()
+        if (data !== null) {
             
             // Eviter les doubles requêtes
             if (games.length > 0) {
@@ -58,11 +51,9 @@ export default function Library() {
             }
 
             setSkip(skipNumber)
-        } catch {
-            setError("Serveur indisponible")
-        } finally {
-            setIsLoading(false)
         }
+
+        setIsLoading(false)
     }
 
     useEffect(() => {
