@@ -36,7 +36,7 @@ export default function Library() {
         let response = await GetGamesDB({url: `${URL_API}/games?limit=${limit}&skip=${skipNumber}`, setError: setError})
         const data = response.dataToResponse
 
-        if (data !== null) {
+        if (data !== null && data) {
             
             // Eviter les doubles requêtes
             if (games.length > 0) {
