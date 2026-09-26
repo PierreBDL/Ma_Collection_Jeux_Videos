@@ -121,7 +121,8 @@ interface getGameInput {
 }
 
 interface getGameOutput {
-    dataToResponse: JeuxProps[] | null
+    dataToResponse?: JeuxProps[] | null
+    dataToResponseSolo?: JeuxProps | null
 }
 
 export async function GetGamesDB({url, setError}: getGameInput): Promise<getGameOutput> {
@@ -140,7 +141,11 @@ export async function GetGamesDB({url, setError}: getGameInput): Promise<getGame
             return { dataToResponse: null }
         } else {
             setError("")
-            return { dataToResponse: data.games }
+            if (Array.isArray(data.games)) {
+                return { dataToResponse: data.games }
+            } else {
+                return { dataToResponseSolo: data.game }
+            }
         }
     } catch {
         setError("Serveur indisponible")

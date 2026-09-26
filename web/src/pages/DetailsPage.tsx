@@ -6,6 +6,7 @@ import { URL_API } from '../utils/Links'
 import {UseTheme} from '../hooks/Theme'
 import {useAuth} from '../context/Auth'
 import Button from '../components/Button'
+import {GetGamesDB} from '../connection/RequestsDb'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
@@ -37,20 +38,10 @@ export default function DetailsPage () {
         }
 
         const getGame = (async () => {
-            try {
-                const response = await fetch(`${URL_API}/games/${id}`)
-
-                if (!response.ok) {
-                    setError("Le serveur a renvoyé une erreur")
-                    throw new Error ("Le serveur a renvoyé une erreur")
-                }
-
-                const data: JeuxProps = await response.json()
-
-                setGame(data)
-            } catch {
-                setError("Serveur indisponible")
-            } finally {
+            const response = await GetGamesDB({url: `${URL_API}/games/${id}`, setError: setError})
+            
+            if (response.dataToResponseSolo !== null && response.dataToResponseSolo) {
+                setGame(response.dataToResponseSolo)
                 setIsLoading(false)
             }
         })
