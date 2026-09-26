@@ -12,8 +12,8 @@ from database import *
 from data.seed import fill_bdd
 
 
-# Hash mdp
-hash_mdp()
+# Hash mdp (test compte hardcodé)
+#hash_mdp()
 
 # Remplir bdd
 fill_bdd()

@@ -8,6 +8,8 @@ from models.game_model import *
 
 from schemas.games_table import GamesTable
 
+from services.games_services import *
+
 router = APIRouter (
     prefix="/games",
     tags=["Games"]
@@ -15,9 +17,9 @@ router = APIRouter (
 
 # Get games
 @router.get("")
-def get_games (db: Session = Depends(get_db)) :
-    statement = select(GamesTable)
-    return db.scalars(statement).all()
+def get_games (counterResult: dict = Depends(counter), db: Session = Depends(get_db)) :
+    result = get_see_more(counterResult, db)
+    return result
 
 @router.get("/{game_id}")
 def get_game_by_id (game_id: int, db: Session = Depends(get_db)) :

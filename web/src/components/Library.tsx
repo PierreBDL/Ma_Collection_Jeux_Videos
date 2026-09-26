@@ -1,24 +1,30 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import GameCard from './GameCard'
 import SearchBar from '../components/SearchBar'
 import SearchFilter from '../components/SearchFilter'
 
-import {type JeuxProps} from '../interfaces/gameInt'
-import {type searchType} from '../types/SearchType'
+import { type JeuxProps } from '../interfaces/gameInt'
+import { type searchType } from '../types/SearchType'
 import { URL_API } from '../utils/Links'
 
-import {UseTheme} from '../hooks/Theme'
+import { UseTheme } from '../hooks/Theme'
 
 import erreur404 from '../assets/404.png'
+import Button from './Button';
 
 
-export default function Library () {
-    const [games, setGames] = useState<JeuxProps[] | null>(null)
+export default function Library() {
+    const [games, setGames] = useState<JeuxProps[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [error, setError] = useState<string>("")
     const [searchTherme, setSearchTherme] = useState<string>('')
     const [searchOrigin, setSearchOrigin] = useState<searchType>("bySearchBar")
+
+    // Défilement infini
+    const [limit, setLimit] = useState<number>(12)
+    const [skip, setSkip] = useState<number>(0)
+    const [isEnoughtGames, setIsEnoughtGame] = useState<boolean>(true)
 
 
     // Hook Theme
@@ -28,27 +34,39 @@ export default function Library () {
         Récup depuis BDD
     ----------------------*/
 
-    useEffect(() => {
-        const getGames = (async () => {
-            try {
-                const response = await fetch(`${URL_API}/games`)
+    const getGames = async (skipNumber: number) => {
+        try {
+            const response = await fetch(`${URL_API}/games?limit=${limit}&skip=${skipNumber}`)
 
-                if (!response.ok) {
-                    setError("Le serveur a renvoyé une erreur")
-                    throw new Error ("Le serveur a renvoyé une erreur")
-                }
-
-                const data: JeuxProps[] = await response.json()
-
-                setGames(data)
-            } catch {
-                setError("Serveur indisponible")
-            } finally {
-                setIsLoading(false)
+            if (!response.ok) {
+                setError("Le serveur a renvoyé une erreur")
+                throw new Error("Le serveur a renvoyé une erreur")
             }
-        })
 
-        getGames()
+            const data: JeuxProps[] = await response.json()
+            
+            // Eviter les doubles requêtes
+            if (games.length > 0) {
+                setGames(g => [...g, ...data])
+            } else {
+                setGames([...data])
+            }
+
+            // Vérif si assez de jeu dans la bdd
+            if (data.length < limit) {
+                setIsEnoughtGame(false)
+            }
+
+            setSkip(skipNumber)
+        } catch {
+            setError("Serveur indisponible")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        getGames(0)
     }, [])
 
 
@@ -56,8 +74,8 @@ export default function Library () {
             Recherche
     ----------------------*/
 
-    const searchTab = games?.filter(game => { 
-        if (searchOrigin === "bySearchBar") {   
+    const searchTab = games?.filter(game => {
+        if (searchOrigin === "bySearchBar") {
             return game.nom.toLowerCase().includes(searchTherme.trim().toLowerCase())
         }
 
@@ -118,6 +136,9 @@ export default function Library () {
                     ))
                 }
             </ul>
+            <Button isDisable={!isEnoughtGames} handleClick={() => getGames((skip + limit))} 
+                style="flex place-self-center align-self-center mt-5 rounded-xl bg-blue-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:text-black disabled:hover:bg-slate-500"
+                >Voir plus de jeux</Button>
         </section>
     )
 }
