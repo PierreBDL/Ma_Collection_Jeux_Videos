@@ -38,7 +38,10 @@ async def get_favoris_logic (name: str, db: Session) :
 def save_the_grade(updateInfos: SaveGradeInput, db: Session):
     statement_user = select(UsersTable).where(UsersTable.name == updateInfos.name)
     user = db.scalars(statement_user).first()
-    if not user:
+
+    game = db.get(GamesTable, updateInfos.game_id)
+    
+    if user is None or game is None:
         return False
 
     statement = select(UserFavorite).where(UserFavorite.game_id == updateInfos.game_id, UserFavorite.user_id == user.id)

@@ -39,6 +39,15 @@ export default function UserFormDetails ({gameId}: {gameId: number}) {
             return
         }
 
+        if (!auth.favorites.some(game => game.id === gameId)) {
+            setIsSuccess(false)
+            setError("Veuillez d'abord mettre le jeu en favoris")
+            return
+        }
+
+        setError("")
+        setIsSuccess(null)
+
         const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade })})
     
         if (response.responseType === "Success") {
@@ -57,6 +66,17 @@ export default function UserFormDetails ({gameId}: {gameId: number}) {
         }
 
         const getBdd = async () => {
+            // Vérif favoris
+            if (!auth.favorites.some(game => game.id === gameId)) {
+                setIsSuccess(false)
+                setError("Veuillez d'abord mettre le jeu en favoris")
+                return
+            }
+
+            // Reset
+            setError("")
+            setIsSuccess(null)
+
             const response = await MeDB<GradeResponse>({url: `${URL_API}/me/getGrade?game_id=${gameId}`, methodToSend: 'GET', token: auth.token})
 
             if (response.responseType === "Success" && response.dataToResponse) {
