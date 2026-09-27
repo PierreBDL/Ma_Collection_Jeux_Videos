@@ -45,3 +45,10 @@ async def get_grade (game_id: int, token_data: dict = Depends(check_token), db: 
     if result is not None :
         return result
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur ou jeu introuvable")
+
+@router.get("/getAllGrade")
+async def get_grade (token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
+    result = get_all_the_grade(token_data["sub"], db)
+    if result is not None :
+        return result
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")

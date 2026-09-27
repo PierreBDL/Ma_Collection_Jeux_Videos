@@ -1,0 +1,61 @@
+import {useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom';
+
+import { URL_API } from '../utils/Links'
+import { useAuth } from '../context/Auth'
+import {MeDB} from '../connection/RequestsDb'
+import Button from '../components/Button'
+
+interface PrintCommentsProps {
+    id: number
+    opinion: string
+    grade: number
+}
+
+export default function PrintComments () {
+
+    const [games, setGames] = useState<PrintCommentsProps[]>([])
+
+    // Hook auth
+    const { auth } = useAuth()
+
+    /* ---------------------
+        Récup depuis BDD
+    ----------------------*/
+
+    useEffect(() => {
+        // Si pas connecté
+        if (!auth) {
+            return
+        }
+
+        const getGames = (async () => {
+            const response = await MeDB<PrintCommentsProps[]>({url: `${URL_API}/me/getAllGrade`, token: auth.token, methodToSend: "GET"})
+            
+            if (response.dataToResponse !== null && response.dataToResponse && response.responseType === "Success") {
+                setGames(response.dataToResponse)
+            }
+        })
+
+        getGames()
+    }, [auth?.token])
+
+    // Redirection
+    const navigate = useNavigate()
+
+    function voirPlus (id: number) {
+        navigate(`/details/${id}`)
+    }
+
+    return (
+        <div className="grid min-w-0 grid-cols-1 gap-4 overflow-y-auto">
+            {games.map(game => (
+                <article key={game.id} className="flex min-w-0 flex-col gap-3 rounded-lg border border-slate-600 bg-slate-800 p-4 shadow-sm sm:p-5">
+                    <p className="font-semibold text-white">Note : {game.grade}/5</p>
+                    <p className="min-w-0 text-sm text-white">{game.opinion}</p>
+                    <Button isDisable={false} handleClick={() => voirPlus(game.id)} style="rounded-lg mt-2 p-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer">Aller sur la page</Button>
+                </article>
+            ))}
+        </div>
+    )
+}

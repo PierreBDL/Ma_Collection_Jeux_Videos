@@ -60,6 +60,31 @@ def get_the_grade (username: str, game_id: int, db: Session):
     statement = db.get(UserFavorite, (user.id, game_id))
 
     if statement is None : 
-        return {"opinion": "", "grade": 0}
+        return {"id": game_id,"opinion": "", "grade": 0}
 
-    return statement
+    return {"id": game_id, "opinion": statement.opinion, "grade": statement.grade}
+
+# Récup des notes
+def get_all_the_grade (username: str, db: Session):
+    statement_user = select(UsersTable).where(UsersTable.name == username)
+    user = db.scalars(statement_user).first()
+    if user is None:
+        return None
+
+    statement = select(UserFavorite).where(UserFavorite.user_id == user.id)
+    games = db.scalars(statement).all()
+
+    if statement is None : 
+        return None
+
+    games_to_return = []
+
+    for i in games :
+        game = {
+            "id": i.game_id,
+            "opinion": i.opinion,
+            "grade": i.grade
+        }
+        games_to_return.append(game)
+
+    return games_to_return
