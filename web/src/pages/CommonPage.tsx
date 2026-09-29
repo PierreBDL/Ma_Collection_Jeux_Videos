@@ -56,7 +56,9 @@ export default function CommonPage() {
                 <nav className="hidden md:flex items-center gap-6 justify-center">
                     <Link to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
                     <Link to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
-                    <Link to="/stats" className="hover:text-blue-600 font-medium transition-colors">Mes stats</Link>
+                    {
+                        auth !== null ? (<Link to="/stats" className="hover:text-blue-600 font-medium transition-colors">Mes stats</Link>) : (null)
+                    }
                 </nav>
 
                 <div className="hidden md:flex items-center justify-end">
