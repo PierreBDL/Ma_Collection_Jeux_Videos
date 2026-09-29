@@ -1,75 +1,80 @@
-# React + TypeScript + Vite
+  # Ma Collection - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+  Application web de gestion d'une collection de jeux vidéo, développée avec React et TypeScript. Le frontend permet de découvrir les jeux disponibles, de consulter leurs informations, puis de gérer ses favoris et ses avis depuis un compte utilisateur.
 
-Currently, two official plugins are available:
+  ## Fonctionnalités
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+  - Catalogue de jeux récupéré depuis l'API, avec chargement progressif par lots de 12 jeux
+  - Recherche par nom et filtres par genre ou plateforme
+  - Fiche détaillée d'un jeu : studio, plateforme, genre, année et description
+  - Création de compte et connexion
+  - Ajout et retrait de jeux favoris, synchronisés avec le compte
+  - Consultation de sa bibliothèque personnelle
+  - Dépôt d'une note et d'un commentaire sur les jeux
+  - Page de statistiques sur la collection et les avis
+  - Thème clair et sombre
+  - Navigation avec React Router
 
-## React Compiler
+  ## Stack technique
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+  | Partie | Technologie |
+  |---|---|
+  | Interface | React, TypeScript, HTML et CSS |
+  | Développement local | Vite |
+  | Styles | Tailwind CSS 4 |
+  | Navigation | React Router |
+  | API | Backend Python avec FastAPI |
+  | Base de données | PostgreSQL, via l'API |
 
-## Expanding the ESLint configuration
+  ## Prérequis
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  - Node.js et npm
+  - L'API Python du projet en cours d'exécution
+  - PostgreSQL configuré et accessible par l'API
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+  ## Installation et lancement
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+  Depuis le dossier Ma_Collection :
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+  ```bash
+  cd web
+  npm install
+  npm run dev
+  ```
 
-```
+  Vite affiche l'adresse locale dans le terminal. Par défaut, l'application est disponible sur [http://localhost:5173](http://localhost:5173).
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+  Le frontend appelle l'API à l'adresse `http://127.0.0.1:8000`. Démarrez et configurez l'API avant d'utiliser le catalogue, l'authentification ou les données de compte. La configuration de la base de données et les variables d'environnement sont à renseigner côté `api`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+  ## Parcours dans l'application
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+  | Page | Adresse | Description |
+  |---|---|---|
+  | Accueil | `/` | Parcourir, rechercher et filtrer les jeux |
+  | Inscription | `/register` | Créer un compte |
+  | Connexion | `/login` | Se connecter à son compte |
+  | Détails d'un jeu | `/details/:id` | Consulter un jeu, le mettre en favori et gérer son avis |
+  | Ma bibliothèque | `/myLibrary` | Retrouver les jeux favoris du compte connecté |
+  | Statistiques | `/stats` | Voir les données de collection et les avis |
 
-```
+  ## Structure du frontend
+
+  ```text
+  web/
+  ├── public/images/        # Images des jeux
+  └── src/
+      ├── components/       # Composants d'interface réutilisables
+      ├── connection/       # Requêtes vers l'API
+      ├── context/          # Contexte d'authentification
+      ├── hooks/            # Hooks de thème et de stockage local
+      ├── interfaces/       # Interfaces TypeScript
+      ├── pages/            # Pages associées aux routes
+      ├── types/            # Types et options de recherche
+      └── utils/            # Configuration et utilitaires
+  ```
+
+  ## Scripts disponibles
+
+  | Commande | Action |
+  |---|---|
+  | `npm run dev` | Démarrer le serveur de développement Vite |
