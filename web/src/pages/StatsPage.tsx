@@ -6,6 +6,7 @@ import { type JeuxProps } from '../interfaces/gameInt'
 import {MeDB} from '../connection/RequestsDb'
 import GraphCircle from '../components/GraphCircle'
 import PrintComments from '../components/PrintsComments'
+import {UseTheme} from '../hooks/Theme'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
@@ -16,6 +17,9 @@ export default function StatsPage() {
 
     // Hook auth
     const { auth } = useAuth()
+
+    // Hook Theme
+    const {theme} = UseTheme()
 
     // Récup favoris bdd
     useEffect(() => {
@@ -37,9 +41,9 @@ export default function StatsPage() {
     return (
         <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-start gap-8 px-4 py-6 lg:grid-cols-2">
             <div className="min-w-0 rounded-lg p-4">
-                <h1 className="text-center text-2xl border-b border-slate-100">Plateforme</h1>
+                <h1 className={`text-center text-2xl border-b ${theme === "dark" ? "border-slate-100" : "border-slate-700"}`}>Plateforme</h1>
                 <GraphCircle favoris={favoris}></GraphCircle>
-                <h1 className="text-center text-2xl border-b border-slate-100">Note moyenne</h1>
+                <h1 className={`text-center text-2xl border-b ${theme === "dark" ? "border-slate-100" : "border-slate-700"}`}>Note moyenne</h1>
                 <div className="flex flex-col items-center gap-2 py-4">
                     <p className="text-l font-semibold">{average.toFixed(2)} <span className="text-l font-normal">/ 5</span></p>
                     <div className="flex flex-row gap-4">

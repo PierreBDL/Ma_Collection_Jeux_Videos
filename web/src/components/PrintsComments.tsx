@@ -5,6 +5,7 @@ import { URL_API } from '../utils/Links'
 import { useAuth } from '../context/Auth'
 import {MeDB} from '../connection/RequestsDb'
 import Button from '../components/Button'
+import {UseTheme} from '../hooks/Theme'
 
 interface PrintCommentsProps {
     id: number
@@ -20,6 +21,9 @@ export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number
 
     // Hook auth
     const { auth } = useAuth()
+
+    // Theme
+    const {theme} = UseTheme()
 
     /* ---------------------
         Récup depuis BDD
@@ -55,15 +59,15 @@ export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number
     
     const gamesWithGrade = games.filter(game => game.grade !== null)
     gamesWithGrade.map(game => total = total + game.grade)
-    setMoyenne(total / games.length)
+    setMoyenne(total / gamesWithGrade.length)
 
     return (
         <div className="grid min-w-0 max-h-[75vh] grid-cols-1 gap-4 overflow-y-auto">
             {games.map(game => (
-                <article key={game.id} className="flex min-w-0 flex-col gap-3 rounded-lg border border-slate-600 bg-slate-800 p-4 shadow-sm sm:p-5">
-                    <h3>{game.nom}</h3>
-                    <p className="font-semibold text-white">Note : {game.grade}/5</p>
-                    <p className="min-w-0 text-sm text-white">{game.opinion}</p>
+                <article key={game.id} className={`flex min-w-0 flex-col gap-3 rounded-lg border ${theme === "dark" ? "border-slate-600 bg-slate-800 text-white" : "border-slate-600 bg-slate-300 text-black"} p-4 shadow-sm sm:p-5`}>
+                    <h3 className="min-w-0 text-sm">{game.nom}</h3>
+                    <p className="font-semibold">Note : {game.grade ? (game.grade + "/5") : ("∅")}</p>
+                    <p className="min-w-0 text-sm">Mémo: {game.opinion ? (game.opinion) : ("∅")}</p>
                     <Button isDisable={false} handleClick={() => voirPlus(game.id)} style="rounded-lg mt-2 p-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer">Aller sur la page</Button>
                 </article>
             ))}
