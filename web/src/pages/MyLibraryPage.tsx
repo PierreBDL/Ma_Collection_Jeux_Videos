@@ -13,6 +13,8 @@ import erreur404 from '../assets/404.png'
 
 export default function MyLibraryPage () {
     const [games, setGames] = useState<JeuxProps[]>([])
+    const [gamesFilters, setGamesFilters] = useState<JeuxProps[]>([])
+    const [filtreSelect, setFiltreSelect] = useState<string>("tous")
 
     // Hook Auth
     const { auth } = useAuth()
@@ -46,6 +48,26 @@ export default function MyLibraryPage () {
         checkBdd()
     }, [auth?.token])
 
+
+    /* ------------
+         Filtre
+    -------------*/
+
+    // Mettre tous les jeux
+    useEffect(() => {
+        setGamesFilters([...games])
+    }, [])
+
+    // Filtrer
+    const filtrer = (filtre: string) => {
+        if (filtre === "tous") {
+            setGamesFilters([...games])
+        } else {
+            setGamesFilters(games.filter(game => game.state === filtre))
+        }
+        setFiltreSelect(filtre)
+    }
+
     if (!auth) {
         return (
             <div className="text-center w-full flex-1 flex flex-col justify-center items-center">
@@ -66,14 +88,40 @@ export default function MyLibraryPage () {
         )
     }
 
+    const states = {
+        "a_decouvrir": {
+            label: "À découvrir",
+            color: theme === "dark" ? "border-blue-800 bg-blue-950 text-blue-200" : "border-blue-200 bg-blue-300 text-blue-800",
+        },
+        "en_cours": {
+            label: "En cours",
+            color: theme === "dark" ? "border-orange-800 bg-orange-950 text-orange-200" : "border-orange-200 bg-orange-300 text-orange-800",
+        },
+        "termine": {
+            label: "Terminé",
+            color: theme === "dark" ? "border-green-800 bg-green-950 text-green-200" : "border-green-200 bg-green-300 text-green-800",
+        }
+    }
+
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
             <h2 className={`mb-6 text-2xl font-bold ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement en favoris</h2>
-            <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className={`mb-6 flex gap-3 max-w-full justify-center justify-self-center rounded-lg border p-2 px-2.5 ${theme === "dark" ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-100"}`}>
+                <Button style={`rounded px-3 py-2 text-xs ${"tous" === filtreSelect? theme === "dark" ? "bg-blue-500 text-white" : "bg-slate-100 text-slate-700" : theme === "dark" ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-600"}`} isDisable={"tous" === filtreSelect ? true : false} handleClick={() => filtrer("tous")}>Tous</Button>
                 {
-                    games.map(game => (
+                    ["a_decouvrir", "en_cours", "termine"].map(filtre => {
+                        return (<Button style={`rounded px-3 py-2 text-xs ${filtre === filtreSelect? theme === "dark" ? "bg-blue-500 text-white" : "bg-slate-100 text-slate-700" : theme === "dark" ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-600"}`} isDisable={filtre === filtreSelect ? true : false} handleClick={() => filtrer(filtre)}>{filtre === "a_decouvrir" ? "A découvrir" : (filtre === "en_cours" ? "En cours" : (filtre === "termine" ? "terminé" : null))}</Button>)
+                    })
+                }
+            </div>
+            <ul className="grid grid-cols-1 gap-15 sm:grid-cols-2 lg:grid-cols-3 mb-4">
+                {
+                    gamesFilters.map(game => (
                         <li className="min-w-0" key={game.id}>
-                            <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre}></GameCard>
+                            <p className={`mb-2 w-full text-center place-self-center items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-semibold ${game.state && states[game.state] ? states[game.state].color : null }`}>
+                                <span className={`p-1 ${game.state && states[game.state] ? states[game.state].color : null}`}> {game.state && states[game.state] ? states[game.state].label : "Pas d'état"} </span>
+                            </p>
+                            <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre} image={game.image} description={game.description}></GameCard>
                         </li>
                     ))
                 }

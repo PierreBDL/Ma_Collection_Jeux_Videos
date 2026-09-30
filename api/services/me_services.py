@@ -28,12 +28,33 @@ def update_of_favorites(updateInfos: AccountInputUpdateFavorite, db: Session):
 
 # Chercher et envoyer favoris
 async def get_favoris_logic (name: str, db: Session) :
-    statement = select(UsersTable).where(UsersTable.name == name)
+    statement = select(UsersTable, UserFavorite).join(UserFavorite, UserFavorite.game_id == UsersTable.id).where(UsersTable.name == name)
     user = db.scalars(statement).first()
         
-    if user is not None :
-        return user.favorites
-    return None
+    if user is None :
+        return None
+
+    statement = (select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id))
+    favorites = db.execute(statement).all()
+
+    result = []
+
+    for favorite, game in favorites:
+        game = {
+            "id": favorite.game_id,
+            "nom": game.nom,
+            "studio": game.studio,
+            "plateforme": game.plateforme,
+            "annee": game.annee,
+            "genre": game.genre,
+            "description": game.description,
+            "image": game.image,
+            "opinion": favorite.opinion,
+            "grade": favorite.grade,
+            "state": favorite.state or "a_decouvrir",
+        }
+        result.append(game)
+    return result
 
 # Sauvegarde de la note
 def save_the_grade(updateInfos: SaveGradeInput, db: Session):
@@ -54,7 +75,7 @@ def save_the_grade(updateInfos: SaveGradeInput, db: Session):
         if updateInfos.opinion is not None:
             user_favo.opinion = updateInfos.opinion
         if updateInfos.state is not None:
-            user_favo.state = updateInfos.state
+            user_favo.state = updateInfos.state 
         db.commit()
         db.refresh(user_favo)
         return True

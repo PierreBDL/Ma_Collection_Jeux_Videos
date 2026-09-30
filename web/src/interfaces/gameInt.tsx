@@ -7,4 +7,7 @@ export interface JeuxProps {
     genre: string
     description: string
     image: string
+    opinion?: string
+    grade?: number
+    state?: "a_decouvrir" | "en_cours" | "termine"
 }
