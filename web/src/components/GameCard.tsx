@@ -5,7 +5,7 @@ import {UseTheme} from '../hooks/Theme'
 import {useAuth} from '../context/Auth'
 import Button from './Button';
 
-export default function GameCard ({id, nom, studio, plateforme, annee, genre }: JeuxProps) {
+export default function GameCard ({id, nom, image, studio, plateforme, annee, genre }: JeuxProps) {
 
     // Hook Theme
     const { theme, ToggleTheme } = UseTheme()
@@ -32,6 +32,7 @@ export default function GameCard ({id, nom, studio, plateforme, annee, genre }: 
                 ) : (
                     theme === "light" ? "border-slate-300 bg-slate-100 hover:border-blue-300" : "border-slate-700 bg-slate-900 hover:border-blue-400"
                 )}`}>
+            <img src={`/images/${image}`} className="w-full h-auto max-h-40 rounded-lg mb-4 mr-4"></img>
             <div className="mb-4 flex items-start justify-between gap-3">
                 <h3 className={`max-w-[70%] text-lg font-bold ${theme === "light" ? "text-slate-900" : "text-white"}`}>{nom}</h3>
                 <span className={`max-w-[30%] rounded-full px-2.5 py-1 text-[11px] font-bold ${theme === "light" ? "bg-blue-50 text-blue-700" : "bg-slate-800 text-blue-300"}`}>{annee}</span>

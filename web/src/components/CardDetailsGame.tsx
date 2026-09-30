@@ -4,6 +4,7 @@ import {useAuth} from '../context/Auth'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
+import { gamePlateforme } from '../types/SearchType';
 
 type StateGame = "a_decouvrir" | "en_cours" | "termine"
 
