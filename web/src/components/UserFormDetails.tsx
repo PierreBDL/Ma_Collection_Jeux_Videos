@@ -9,12 +9,22 @@ import {useAuth} from '../context/Auth'
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
 
+type StateType = "a_decouvrir" | "en_cours" | "termine"
+
 interface GradeResponse {
     grade: number
     opinion: string
+    state: StateType
 }
 
-export default function UserFormDetails ({gameId}: {gameId: number}) {
+interface UserFormDetailsprops {
+    gameId: number
+    state: StateType
+    setState: (value: StateType) => void
+}
+
+
+export default function UserFormDetails ({gameId, state, setState}: UserFormDetailsprops) {
     const [grade, setGrade] = useState<number>(0)
     const [opinion, setOpinion] = useState<string>("")
     const [error, setError] = useState<string>("")
@@ -48,7 +58,7 @@ export default function UserFormDetails ({gameId}: {gameId: number}) {
         setError("")
         setIsSuccess(null)
 
-        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade })})
+        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade, state: state })})
     
         if (response.responseType === "Success") {
             setIsSuccess(true)
@@ -82,6 +92,7 @@ export default function UserFormDetails ({gameId}: {gameId: number}) {
             if (response.responseType === "Success" && response.dataToResponse) {
                 setGrade(response.dataToResponse.grade)
                 setOpinion(response.dataToResponse.opinion)
+                setState(response.dataToResponse.state)
                 setError("")
             } else {
                 setIsSuccess(false)

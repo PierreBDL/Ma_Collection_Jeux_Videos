@@ -8,10 +8,15 @@ import {GetGamesDB} from '../connection/RequestsDb'
 import CardDetailsGame from '../components/CardDetailsGame'
 import UserFormDetails from '../components/UserFormDetails'
 
+type stateGame = "a_decouvrir" | "en_cours" | "termine"
+
 export default function DetailsPage () {
     const [game, setGame] = useState<JeuxProps | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [error, setError] = useState<string>("")
+
+    // Etat du jeu
+    const [state, setState] = useState<stateGame>("a_decouvrir")
 
     // Navigate
     const navigate = useNavigate()
@@ -101,8 +106,8 @@ export default function DetailsPage () {
 
     return (
         <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-6 px-4 py-8 lg:grid-cols-2 lg:gap-8 justify-center">
-            <CardDetailsGame state={"a_decouvrir"} id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} genre={game.genre} annee={game.annee} image={game.image} description={game.description} handleFavorite={() => handleFavorite()}></CardDetailsGame>
-            <UserFormDetails gameId={game.id}></UserFormDetails>
+            <CardDetailsGame state={state} setState={setState} id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} genre={game.genre} annee={game.annee} image={game.image} description={game.description} handleFavorite={() => handleFavorite()}></CardDetailsGame>
+            <UserFormDetails gameId={game.id} state={state} setState={setState}></UserFormDetails>
         </div>
     )
 }

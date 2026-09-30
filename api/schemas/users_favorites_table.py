@@ -9,3 +9,4 @@ class UserFavorite(Base):
     game_id: Mapped[int] = mapped_column(ForeignKey("games.id"), primary_key=True)
     opinion: Mapped[str | None] = mapped_column(Text, nullable=True)
     grade: Mapped[int | None] = mapped_column(nullable=True)
+    state: Mapped[str] = mapped_column(nullable=True)

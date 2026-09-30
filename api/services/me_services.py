@@ -48,8 +48,12 @@ def save_the_grade(updateInfos: SaveGradeInput, db: Session):
     user_favo = db.scalars(statement).first()
     
     if user_favo is not None :
-        user_favo.grade = updateInfos.grade
-        user_favo.opinion = updateInfos.opinion
+        if updateInfos.grade is not None:
+            user_favo.grade = updateInfos.grade
+        if updateInfos.opinion is not None:
+            user_favo.opinion = updateInfos.opinion
+        if updateInfos.state is not None:
+            user_favo.state = updateInfos.state
         db.commit()
         db.refresh(user_favo)
         return True
@@ -63,9 +67,9 @@ def get_the_grade (username: str, game_id: int, db: Session):
     statement = db.get(UserFavorite, (user.id, game_id))
 
     if statement is None : 
-        return {"id": game_id,"opinion": "", "grade": 0}
+        return {"id": game_id,"opinion": "", "grade": 0, "state": "a_decouvrir"}
 
-    return {"id": game_id, "opinion": statement.opinion, "grade": statement.grade}
+    return {"id": game_id, "opinion": statement.opinion, "grade": statement.grade, "state": statement.state}
 
 # Récup des notes
 def get_all_the_grade (username: str, db: Session):
@@ -86,7 +90,8 @@ def get_all_the_grade (username: str, db: Session):
         game = {
             "id": i.game_id,
             "opinion": i.opinion,
-            "grade": i.grade
+            "grade": i.grade,
+            "state": i.state
         }
         games_to_return.append(game)
 
