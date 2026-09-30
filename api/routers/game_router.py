@@ -17,13 +17,18 @@ router = APIRouter (
 
 # Get games
 @router.get("")
-def get_games (counterResult: dict = Depends(counter), db: Session = Depends(get_db)) :
+def get_games(counterResult: dict = Depends(counter), db: Session = Depends(get_db)):
     result = get_see_more(counterResult, db)
     return {"games": result}
 
+@router.get("/search")
+def get_all_games(therme: str = "", origin: str = "bySearchBar", counterResult: dict = Depends(counter), db: Session = Depends(get_db)):
+    result = get_see_more_research(therme, origin, counterResult, db)
+    return result
+
 @router.get("/{game_id}")
-def get_game_by_id (game_id: int, db: Session = Depends(get_db)) :
+def get_game_by_id(game_id: int, db: Session = Depends(get_db)):
     statement = db.get(GamesTable, game_id)
-    if statement is None :
+    if statement is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jeu introuvable")
     return {"game": statement}
