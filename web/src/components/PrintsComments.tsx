@@ -8,8 +8,10 @@ import Button from '../components/Button'
 
 interface PrintCommentsProps {
     id: number
+    nom: string
     opinion: string
     grade: number
+    state: "a_decouvrir" | "en_cours" | "termine"
 }
 
 export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number) => void}) {
@@ -59,6 +61,7 @@ export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number
         <div className="grid min-w-0 max-h-[75vh] grid-cols-1 gap-4 overflow-y-auto">
             {games.map(game => (
                 <article key={game.id} className="flex min-w-0 flex-col gap-3 rounded-lg border border-slate-600 bg-slate-800 p-4 shadow-sm sm:p-5">
+                    <h3>{game.nom}</h3>
                     <p className="font-semibold text-white">Note : {game.grade}/5</p>
                     <p className="min-w-0 text-sm text-white">{game.opinion}</p>
                     <Button isDisable={false} handleClick={() => voirPlus(game.id)} style="rounded-lg mt-2 p-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer">Aller sur la page</Button>

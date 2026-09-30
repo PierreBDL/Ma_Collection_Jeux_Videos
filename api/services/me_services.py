@@ -7,6 +7,7 @@ from schemas.users_table import UsersTable
 from schemas.games_table import GamesTable
 from models.me_model import *
 from schemas.users_favorites_table import UserFavorite
+from schemas.games_table import GamesTable
 
 # Mise à jour des favoris
 def update_of_favorites(updateInfos: AccountInputUpdateFavorite, db: Session):
@@ -78,20 +79,21 @@ def get_all_the_grade (username: str, db: Session):
     if user is None:
         return None
 
-    statement = select(UserFavorite).where(UserFavorite.user_id == user.id)
-    games = db.scalars(statement).all()
+    statement = (select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id))
+    games = db.execute(statement).all()
 
     if statement is None : 
         return None
 
     games_to_return = []
 
-    for i in games :
+    for favoris, game_data in games:
         game = {
-            "id": i.game_id,
-            "opinion": i.opinion,
-            "grade": i.grade,
-            "state": i.state
+            "id": favoris.game_id,
+            "nom": game_data.nom,
+            "opinion": favoris.opinion,
+            "grade": favoris.grade,
+            "state": favoris.state
         }
         games_to_return.append(game)
 
