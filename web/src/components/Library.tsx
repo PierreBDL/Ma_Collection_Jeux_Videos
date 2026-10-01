@@ -147,7 +147,7 @@ export default function Library() {
                     gameVisible.map(game => {
                         return (
                             <li className="min-w-0" key={game.id}>
-                                <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre} image={game.image} description={game.description}></GameCard>
+                                <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre} image={game.image} description={game.description} isMyLibrary={false}></GameCard>
                             </li>
                         )
                     })

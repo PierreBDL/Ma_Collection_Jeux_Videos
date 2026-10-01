@@ -55,8 +55,8 @@ export default function MyLibraryPage () {
 
     // Mettre tous les jeux
     useEffect(() => {
-        setGamesFilters([...games])
-    }, [])
+        setGamesFilters(games)
+    }, [auth?.favorites])
 
     // Filtrer
     const filtrer = (filtre: string) => {
@@ -88,21 +88,6 @@ export default function MyLibraryPage () {
         )
     }
 
-    const states = {
-        "a_decouvrir": {
-            label: "À découvrir",
-            color: theme === "dark" ? "border-blue-800 bg-blue-950 text-blue-200" : "border-blue-200 bg-blue-300 text-blue-800",
-        },
-        "en_cours": {
-            label: "En cours",
-            color: theme === "dark" ? "border-orange-800 bg-orange-950 text-orange-200" : "border-orange-200 bg-orange-300 text-orange-800",
-        },
-        "termine": {
-            label: "Terminé",
-            color: theme === "dark" ? "border-green-800 bg-green-950 text-green-200" : "border-green-200 bg-green-300 text-green-800",
-        }
-    }
-
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
             <h2 className={`mb-6 text-2xl font-bold ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement en favoris</h2>
@@ -118,10 +103,7 @@ export default function MyLibraryPage () {
                 {
                     gamesFilters.map(game => (
                         <li className="min-w-0" key={game.id}>
-                            <p className={`mb-2 w-full text-center place-self-center items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-semibold ${game.state && states[game.state] ? states[game.state].color : null }`}>
-                                <span className={`p-1 ${game.state && states[game.state] ? states[game.state].color : null}`}> {game.state && states[game.state] ? states[game.state].label : "Pas d'état"} </span>
-                            </p>
-                            <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre} image={game.image} description={game.description}></GameCard>
+                            <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre} image={game.image} description={game.description} opinion={game.opinion} grade={game.grade} state={game.state} isMyLibrary={true}></GameCard>
                         </li>
                     ))
                 }
