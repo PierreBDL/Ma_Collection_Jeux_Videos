@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { URL_API } from '../utils/Links'
 import { useAuth } from '../context/Auth'
@@ -7,9 +8,11 @@ import {MeDB} from '../connection/RequestsDb'
 import GraphCircle from '../components/GraphCircle'
 import PrintComments from '../components/PrintsComments'
 import {UseTheme} from '../hooks/Theme'
+import Button from '../components/Button'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
+import NotFoundImg from '../assets/404.png'
 
 export default function StatsPage() {
     const [favoris, setFavoris] = useState<JeuxProps[]>([])
@@ -20,6 +23,9 @@ export default function StatsPage() {
 
     // Hook Theme
     const {theme} = UseTheme()
+
+    // Navigate
+    const navigate = useNavigate()
 
     // Récup favoris bdd
     useEffect(() => {
@@ -37,6 +43,17 @@ export default function StatsPage() {
 
         collectionQuery()
     }, [auth?.token])
+
+    // Si pas de jeux
+    if (auth && auth?.favorites.length <= 0) {
+        return (
+            <div className="text-center w-full flex-1 flex flex-col justify-center items-center">
+                <h1 className="text-3xl font-bold">Vous n'avez pas de jeu favoris</h1>
+                <img src={NotFoundImg} alt="Erreur" />
+                <Button style="rounded-lg mt-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={() => navigate("/")}>Revenir à l'accueil</Button>
+            </div>
+        )
+    }
 
     return (
         <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-start gap-8 px-4 py-6 lg:grid-cols-2">
