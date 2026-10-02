@@ -21,7 +21,9 @@ oauth = OAuth2PasswordBearer(tokenUrl="sub")
 def check_token (token: str = Depends(oauth)) :
     try:
         result = jwt.decode(token, secretKey, algorithms=[Algorithm])
-        return result
+        if result.get("type") == "access":
+            return result
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token incorrect")
     except jwt.PyJWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token incorrect")
 
