@@ -1,4 +1,3 @@
-import Button from './Button'
 import { type searchType, gameType, gamePlateforme } from '../types/SearchType'
 import { UseTheme } from '../hooks/Theme'
 
@@ -10,12 +9,12 @@ interface SearchFilterProps {
 }
 
 export default function SearchFilter({ search, searchFunction, searchOrigin, searchOriginFunction }: SearchFilterProps) {
-
-    // Hook thème
-    const {theme} = UseTheme()
+    const { theme } = UseTheme()
+    const selectedType = searchOrigin === "byFilters" && gameType.includes(search) ? search : ""
+    const selectedPlatform = searchOrigin === "byFilters" && gamePlateforme.includes(search) ? search : ""
 
     const handleFilter = (filter: string) => {
-        if (search === filter && searchOrigin === "byFilters") {
+        if (filter === "") {
             searchOriginFunction("bySearchBar")
             searchFunction("")
         } else {
@@ -25,44 +24,32 @@ export default function SearchFilter({ search, searchFunction, searchOrigin, sea
     }
 
     return (
-        <div className={`top-4 z-10 w-full max-w-md mx-auto mb-8 ${theme === "dark" ? "text-black" : "text-white"}`}>
-            <div className="w-full max-w-md mx-auto flex flex-row gap-1.5">
-                <h3 className={`block text-xs font-semibold uppercase mb-1.5 ml-1`}>Filtres</h3>
-            </div>
+        <section className={`mx-auto mb-8 w-full max-w-3xl rounded-xl border p-4 shadow-sm sm:p-5 ${theme === "light" ? "border-white bg-slate-800 text-white" : "border-white bg-slate-200 text-slate-900"}`}>
+            <h3 className={`mb-4 text-xs font-bold uppercase tracking-wider ${theme === "light" ? "text-slate-300" : "text-black"}`}>Filtres</h3>
 
-            <div>
-                <span className="block text-mg font-medium mb-1">Type</span>
-                <div className="w-full max-w-md mx-auto flex flex-row gap-1.5">
-                    {
-                        gameType.map(filter => (
-                            <Button key={filter}
-                                style={search === filter ?
-                                    "p-2 px-4 bg-slate-500 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"
-                                    : "p-2 px-4 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"}
-                                isDisable={false}
-                                handleClick={() => handleFilter(filter)}>{filter.toUpperCase()}</Button>
-                        ))
-                    }
-                </div>
-            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <label className="flex flex-col gap-1.5 text-sm font-medium">
+                    Type
+                    <select value={selectedType} onChange={(e) => handleFilter(e.target.value)}
+                        className={`w-full rounded-xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === "light" ? "border-slate-600 bg-slate-800 text-white" : "border-slate-300 bg-white text-slate-900"}`}>
+                        <option value="">Tous</option>
+                        {gameType.map(filter => (
+                            <option key={filter} value={filter}>{filter}</option>
+                        ))}
+                    </select>
+                </label>
 
-            <br />
-
-            <div>
-                <span className="block text-mg font-medium mb-1">Plateforme</span>
-                <div className="w-full max-w-md mx-auto flex flex-row gap-1.5">
-                    {
-                        gamePlateforme.map(filter => (
-                            <Button key={filter}
-                                style={search === filter ?
-                                    "p-2 px-4 bg-slate-500 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"
-                                    : "p-2 px-4 bg-blue-400 rounded-lg mt-2 text-white font-medium text-sm transition-colors cursor-pointer"}
-                                isDisable={false}
-                                handleClick={() => handleFilter(filter)}>{filter.toUpperCase()}</Button>
-                        ))
-                    }
-                </div>
+                <label className="flex flex-col gap-1.5 text-sm font-medium">
+                    Plateforme
+                    <select value={selectedPlatform} onChange={(e) => handleFilter(e.target.value)}
+                        className={`w-full rounded-xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === "light" ? "border-slate-600 bg-slate-800 text-white" : "border-slate-300 bg-white text-slate-900"}`}>
+                        <option value="">Toutes</option>
+                        {gamePlateforme.map(filter => (
+                            <option key={filter} value={filter}>{filter}</option>
+                        ))}
+                    </select>
+                </label>
             </div>
-        </div>
+        </section>
     )
 }

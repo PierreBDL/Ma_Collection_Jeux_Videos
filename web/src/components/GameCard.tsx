@@ -42,7 +42,7 @@ export default function GameCard({ id, nom, image, studio, plateforme, annee, ge
     return (
         <article className={`flex h-full min-h-65 flex-col rounded-xl border p-5 text-left transition duration-200 hover:-translate-y-1 
                 ${auth != null && auth.favorites.filter(favoriteGame => favoriteGame.id === id).length > 0 ? (
-                    theme === "dark" ? "border-yellow-500 bg-gray-400 hover:border-yellow-500" : "border-yellow-700 bg-gray-950 hover:border-yellow-500"
+                    theme === "dark" ? "border-amber-200 bg-gray-400 hover:border-amber-400" : "border-amber-500 bg-gray-950 hover:border-amber-500"
                 ) : (
                     theme === "dark" ? "border-slate-300 bg-slate-300 hover:border-blue-300" : "border-slate-700 bg-slate-900 hover:border-blue-400"
                 )}`}>
