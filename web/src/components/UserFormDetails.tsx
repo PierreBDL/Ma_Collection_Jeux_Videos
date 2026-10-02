@@ -105,7 +105,7 @@ export default function UserFormDetails ({gameId, state, setState}: UserFormDeta
 
 
     return (
-        <div className={`w-full mt-4 relative pt-8 max-w-3xl lg:mb-30 flex flex-col p-6 rounded-lg border ${theme === "light" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" }`}>
+        <div className={`w-full mt-4 relative pt-8 max-w-3xl lg:mb-30 flex flex-col p-6 rounded-lg border ${theme === "dark" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" }`}>
             <h1 className="text-xl font-semibold text-center mb-2">Votre mémo sur le jeu</h1>
             <form onSubmit={(e) => e.preventDefault()} className="flex flex-col font-medium gap-3">
 

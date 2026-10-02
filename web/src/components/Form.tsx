@@ -35,14 +35,14 @@ export default function Form ({title, setters, getters, action, error, isRegiste
     }
 
     return (
-        <div className={`w-full max-w-sm p-6 rounded-lg border ${theme === "light" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" }`}>
+        <div className={`w-full max-w-sm p-6 rounded-lg border ${theme === "dark" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" }`}>
             <h1 className="text-xl font-semibold text-center mb-4">{title}</h1>
             <form onSubmit={handleSubmit} className="flex flex-col font-medium gap-4">
 
                 {isRegisterPage && (
                     <div className="flex flex-col font-medium gap-4">
                         <label>Name :</label>
-                        <input className={`${theme === "dark" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white"} p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`} type="text" value={name?.valueName} onChange={(e) => name?.setValueName(e.target.value)} required />    
+                        <input className={`${theme === "light" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white"} p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`} type="text" value={name?.valueName} onChange={(e) => name?.setValueName(e.target.value)} required />    
                     </div>
                 )}
 

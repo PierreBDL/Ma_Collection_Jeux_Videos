@@ -58,11 +58,11 @@ export default function StatsPage() {
     return (
         <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-start gap-8 px-4 py-6 lg:grid-cols-2">
             <div className="min-w-0 rounded-lg p-4">
-                <h1 className={`text-center text-2xl border-b text-black ${theme === "dark" ? "border-black" : "border-slate-700"}`}>Plateforme</h1>
+                <h1 className={`text-center text-2xl border-b ${theme === "light" ? "border-white text-white" : "text-black border-black"}`}>Plateforme</h1>
                 <GraphCircle favoris={favoris}></GraphCircle>
-                <h1 className={`text-center text-2xl border-b text-black ${theme === "dark" ? "border-black" : "border-slate-700"}`}>Note moyenne</h1>
+                <h1 className={`text-center text-2xl border-b ${theme === "light" ? "border-white text-white" : "border-black text-black"}`}>Note moyenne</h1>
                 <div className="flex flex-col items-center gap-2 py-4">
-                    <p className="text-l font-semibold text-black">{average.toFixed(2)} <span className="text-l font-normal">/ 5</span></p>
+                    <p className={`text-l font-semibold ${theme === "light" ? "border-slate-800 text-white" : "text-black border-slate-600"}`}>{average.toFixed(2)} <span className="text-l font-normal">/ 5</span></p>
                     <div className="flex flex-row gap-4">
                     {
                         [1, 2, 3, 4, 5].map(star => (

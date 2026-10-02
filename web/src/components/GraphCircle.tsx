@@ -1,4 +1,5 @@
 import { type JeuxProps } from '../interfaces/gameInt'
+import { UseTheme } from '../hooks/Theme'
 
 interface partOfGraph {
     label: string;
@@ -7,6 +8,9 @@ interface partOfGraph {
 }
 
 export default function Graph({ favoris }: { favoris: JeuxProps[] }) {
+    // Hook thème
+    const {theme} = UseTheme()
+
     // Valeurs pour le render
     const rayon: number = 15.9155
     let total: number = 0
@@ -75,7 +79,7 @@ export default function Graph({ favoris }: { favoris: JeuxProps[] }) {
 
             <div className="flex flex-col gap-4 justify-center">
                 {jeuxRepartition.map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm font-medium text-black">
+                    <div key={i} className={`flex items-center gap-2 text-sm font-medium ${theme === "dark" ? "text-black" : "text-white"}`}>
                         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
                         <span>{item.label} ({Math.round(item.val)}%)</span>
                     </div>

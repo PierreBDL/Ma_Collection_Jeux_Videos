@@ -12,6 +12,7 @@ import luneImg from '../assets/lune.png'
 import burgerImg from '../assets/burger.png'
 import closeBurgerImg from '../assets/close.png'
 import bgImg from '../assets/bg-body.jpg'
+import bgDarkImg from '../assets/bg-body-dark.jpg'
 import avatarImg from '../assets/avatar.png'
 
 export default function CommonPage() {
@@ -44,14 +45,14 @@ export default function CommonPage() {
     }
 
     return (
-        <div className={`relative min-h-screen ${theme === "light" ? "text-gray-800" : "text-white"} flex flex-col`}
-            style={{ backgroundImage: `url(${bgImg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed' }}>
-            <header className={`relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 px-6 py-4 md:grid-cols-3 ${theme === "light" ? "bg-white text-gray-600" : "bg-black text-white"}`}
+        <div className={`relative min-h-screen text-whit"} flex flex-col`}
+            style={{ backgroundImage: `url(${theme === "dark" ? bgImg : bgDarkImg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed' }}>
+            <header className={`relative grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 px-6 py-4 md:grid-cols-3 bg-black text-white`}
                 style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                 <div className="w-full h-full flex items-center justify-start gap-12">
                     <Button style="bg-white w-12 h-12 p-2 rounded-2xl mt-2 hover:bg-blue-100 font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={ToggleTheme}>
                         {
-                            theme === "light"
+                            theme === "dark"
                                 ? (<img className="w-7 h-auto flex self-center place-self-center" alt="Thème sombre" src={luneImg}></img>)
                                 : (<img className="w-7 h-auto flex self-center place-self-center" alt="Thème clair" src={soleilImg}></img>)
                         }
@@ -76,7 +77,7 @@ export default function CommonPage() {
                                 <div className="w-7 h-7 bg-white rounded-full flex justify-center p-2 border-black border">
                                     <img src={avatarImg} className="w-full h-full" alt="Avatar" />
                                 </div>
-                                <p className={`${theme === "light" ? "text-black" : "text-white"}`}>{username}</p>
+                                <p className={`text-white`}>{username}</p>
                             </div>
                             <Button style="p-1.5 px-2.5 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
                         </div>
@@ -99,7 +100,7 @@ export default function CommonPage() {
                 </div>
 
                 {menuIsOpen && (
-                    <nav className={`absolute justify-end ${theme === "dark" ? "bg-slate-800" : "bg-slate-300"} top-full right-0 w-full z-50 flex flex-col p-6 space-y-4 md:hidden`}>
+                    <nav className={`absolute justify-end ${theme === "dark" ? "bg-slate-800" : "bg-slate-800"} top-full right-0 w-full z-50 flex flex-col p-6 space-y-4 md:hidden`}>
                         <Link onClick={() => toggleMenu()} to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
                         <Link onClick={() => toggleMenu()} to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
                         <Link onClick={() => toggleMenu()} to="/stats" className="hover:text-blue-600 font-medium transition-colors">Mes stats</Link>

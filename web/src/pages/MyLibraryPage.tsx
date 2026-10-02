@@ -90,12 +90,12 @@ export default function MyLibraryPage () {
 
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-            <h2 className={`mb-6 text-2xl font-bold ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement en favoris</h2>
-            <div className={`mb-6 flex gap-3 max-w-full justify-center justify-self-center rounded-lg border p-2 px-2.5 ${theme === "dark" ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-100"}`}>
-                <Button style={`rounded px-3 py-2 text-xs ${"tous" === filtreSelect? theme === "dark" ? "bg-blue-500 text-white" : "bg-slate-100 text-slate-700" : theme === "dark" ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-600"}`} isDisable={"tous" === filtreSelect ? true : false} handleClick={() => filtrer("tous")}>Tous</Button>
+            <h2 className={`justify-self-center mb-6 text-2xl font-bold ${theme === "light" ? "text-white" : "text-slate-900"}`}>Jeux actuellement en favoris</h2>
+            <div className={`mb-6 flex gap-3 max-w-full justify-center justify-self-center rounded-lg border p-2 px-2.5 ${theme === "light" ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-100"}`}>
+                <Button style={`rounded px-3 py-2 text-xs ${"tous" === filtreSelect? theme === "light" ? "bg-blue-500 text-white" : "bg-blue-400 text-slate-700" : theme === "light" ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-600"}`} isDisable={"tous" === filtreSelect ? true : false} handleClick={() => filtrer("tous")}>Tous</Button>
                 {
                     ["a_decouvrir", "en_cours", "termine"].map(filtre => {
-                        return (<Button style={`rounded px-3 py-2 text-xs ${filtre === filtreSelect? theme === "dark" ? "bg-blue-500 text-white" : "bg-slate-100 text-slate-700" : theme === "dark" ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-600"}`} isDisable={filtre === filtreSelect ? true : false} handleClick={() => filtrer(filtre)}>{filtre === "a_decouvrir" ? "A découvrir" : (filtre === "en_cours" ? "En cours" : (filtre === "termine" ? "terminé" : null))}</Button>)
+                        return (<Button style={`rounded px-3 py-2 text-xs ${filtre === filtreSelect? theme === "light" ? "bg-blue-500 text-white" : "bg-blue-400 text-slate-700" : theme === "light" ? "bg-slate-800 text-slate-300" : "bg-slate-200 text-slate-600"}`} isDisable={filtre === filtreSelect ? true : false} handleClick={() => filtrer(filtre)}>{filtre === "a_decouvrir" ? "A découvrir" : (filtre === "en_cours" ? "En cours" : (filtre === "termine" ? "terminé" : null))}</Button>)
                     })
                 }
             </div>
