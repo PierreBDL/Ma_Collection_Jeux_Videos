@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import GameCard from './GameCard'
-import SearchBar from '../components/SearchBar'
 import SearchFilter from '../components/SearchFilter'
 import { type JeuxProps } from '../interfaces/gameInt'
-import { type searchType } from '../types/SearchType'
 import { URL_API } from '../utils/Links'
 import { UseTheme } from '../hooks/Theme'
+import { UseSearch } from '../hooks/Research'
 import erreur404 from '../assets/404.png'
 import Button from './Button';
 import { GetGamesDB } from '../connection/RequestsDb'
@@ -23,8 +22,7 @@ export default function Library() {
     const [isEnoughtGames, setIsEnoughtGame] = useState<boolean>(true)
 
     // Recherche
-    const [searchTherme, setSearchTherme] = useState<string>('')
-    const [searchOrigin, setSearchOrigin] = useState<searchType>("bySearchBar")
+    const { search: searchTherme, setSearch: setSearchTherme, searchOrigin, setSearchOrigin } = UseSearch()
     const [searchResult, setSearchResult] = useState<JeuxProps[]>([])
     const [limitSearch, setLimitSearch] = useState<number>(12)
 
@@ -70,15 +68,12 @@ export default function Library() {
 
     // Recherche du jeu dans la bdd
     const searchBDD = async (skipNumber: number) => {
-        const response = await GetGamesDB({
-            url: `${URL_API}/games/search?therme=${encodeURIComponent(searchTherme.trim())}&origin=${searchOrigin}&limit=${limit}&skip=${skipNumber}`,
-            setError: setError
-        })
+        const response = await GetGamesDB({url: `${URL_API}/games/search?therme=${encodeURIComponent(searchTherme.trim())}&origin=${searchOrigin}&limit=${limit}&skip=${skipNumber}`, setError: setError})
         const data = response.dataToResponse
 
         if (Array.isArray(data)) {
             setSearchResult(c => skipNumber === 0 ? data : [...c, ...data])
-            setIsEnoughtGame(data.length === limit)
+            setIsEnoughtGame(data.length <= limit ? true : false)
         } else {
             setSearchResult([])
             setIsEnoughtGame(false)
@@ -136,9 +131,8 @@ export default function Library() {
 
     return (
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <SearchBar search={searchTherme} searchFunction={setSearchTherme} searchOrigin={searchOrigin} searchOriginFunction={setSearchOrigin}></SearchBar>
             <SearchFilter search={searchTherme} searchFunction={setSearchTherme} searchOrigin={searchOrigin} searchOriginFunction={setSearchOrigin}></SearchFilter>
-            <h2 className={`mb-6 text-2xl font-black sm:text-3xl ${theme === "dark" ? "text-white" : "text-slate-900"}`}>Jeux actuellement sur le site</h2>
+            <h2 className={`mb-6 text-2xl font-black sm:text-3xl ${theme === "dark" ? "text-slate-900" : "text-white"}`}>Jeux actuellement sur le site</h2>
             <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {
                     gameVisible.length === 0 ? (<p className={`rounded-2xl border px-4 py-6 text-sm font-medium ${theme === "dark" ? "border-slate-700 bg-slate-900 text-slate-300" : "border-slate-200 bg-white text-slate-600"}`}>Pas de jeux</p>) : null

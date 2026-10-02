@@ -6,7 +6,7 @@ dateFr = now.strftime("%d %m %Y")
 jeux = [
     {
         "id": 1,
-        "nom": "Zelda a link to the past",
+        "nom": "The Legend of Zelda: A Link To The Past",
         "studio": "Nintendo",
         "plateforme": "Nintendo - GameBoy Advance",
         "annee": "1992",

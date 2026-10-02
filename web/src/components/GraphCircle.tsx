@@ -75,7 +75,7 @@ export default function Graph({ favoris }: { favoris: JeuxProps[] }) {
 
             <div className="flex flex-col gap-4 justify-center">
                 {jeuxRepartition.map((item, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm font-medium">
+                    <div key={i} className="flex items-center gap-2 text-sm font-medium text-black">
                         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
                         <span>{item.label} ({Math.round(item.val)}%)</span>
                     </div>
