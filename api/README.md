@@ -92,16 +92,16 @@ L'API est alors accessible sur `http://127.0.0.1:8000`. Pour arrêter PostgreSQL
 Créez `api/.env` à partir de `api/.env.example`, puis renseignez les variables. Les mêmes valeurs de base de données (`DB_NAME`, `DB_USER`, `DB_PASSWORD` et `PORT`) sont utilisées par Docker Compose et doivent correspondre à l'URL SQLAlchemy :
 
 ```dotenv
-DB_USER=ma_collection
-DB_PASSWORD=changez_ce_mot_de_passe
-DB_NAME=ma_collection
-PORT=5432
+DB_USER=username
+DB_PASSWORD=mdp_bdd
+DB_NAME=nom_bdd
+PORT=port
 
-DATABASE_URL=postgresql+psycopg://ma_collection:changez_ce_mot_de_passe@localhost:5432/ma_collection
+DATABASE_URL=postgresql+psycopg://username:mdp_bdd@localhost:port/nom_bdd
 
-SECRET=remplacez_par_une_cle_aleatoire_longue
-ALGORITHM=remplacer_par_un_algorithme
-PWD_ALGORITHM=remplacer_par_un_algorithme
+SECRET=mettre_cle
+ALGORITHM=mettre_algorithme
+PWD_ALGORITHM=mettre_algorithme
 ```
 
 ### Connexion au frontend

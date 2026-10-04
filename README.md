@@ -13,9 +13,11 @@ Le projet est composé d'un frontend en React et TypeScript, d'une API en Python
 - Consulter la fiche détaillée d'un jeu
 - Créer un compte et se connecter
 - Gérer sa bibliothèque de jeux favoris
-- Noter les jeux et publier des commentaires
+- Filtrer sa bibliothèque par statut : à découvrir, en cours ou terminé
+- Noter les jeux, publier des commentaires et consulter la date de mise à jour
 - Consulter des statistiques sur sa collection et ses avis
 - Choisir entre un thème clair et un thème sombre
+- Revenir en haut de la page avec un bouton
 
 ## Structure du projet
 

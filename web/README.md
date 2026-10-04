@@ -9,11 +9,11 @@
   - Fiche détaillée d'un jeu : studio, plateforme, genre, année et description
   - Création de compte et connexion
   - Ajout et retrait de jeux favoris, synchronisés avec le compte
-  - Consultation de sa bibliothèque personnelle
-  - Dépôt d'une note et d'un commentaire sur les jeux
+  - Consultation et filtrage de sa bibliothèque personnelle par statut : à découvrir, en cours ou terminé
+  - Possibilité de mettre un status (à découvrir, en cours ou terminé) une note et un commentaire, avec affichage de la date de mise à jour
   - Page de statistiques sur la collection et les avis
   - Thème clair et sombre
-  - Navigation avec React Router
+  - Bouton pour revenir en haut de la page
 
   ## Stack technique
 
@@ -53,8 +53,8 @@
   | Accueil | `/` | Parcourir, rechercher et filtrer les jeux |
   | Inscription | `/register` | Créer un compte |
   | Connexion | `/login` | Se connecter à son compte |
-  | Détails d'un jeu | `/details/:id` | Consulter un jeu, le mettre en favori et gérer son avis |
-  | Ma bibliothèque | `/myLibrary` | Retrouver les jeux favoris du compte connecté |
+  | Détails d'un jeu | `/details/:id` | Consulter un jeu, le mettre en favori et gérer son avis et son statut |
+  | Ma bibliothèque | `/myLibrary` | Retrouver les jeux favoris du compte connecté et les filtrer par statut |
   | Statistiques | `/stats` | Voir les données de collection et les avis |
 
   ## Structure du frontend
