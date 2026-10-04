@@ -10,3 +10,4 @@ class UserFavorite(Base):
     opinion: Mapped[str | None] = mapped_column(Text, nullable=True)
     grade: Mapped[int | None] = mapped_column(nullable=True)
     state: Mapped[str] = mapped_column(nullable=True)
+    date: Mapped[str] = mapped_column(nullable=True)

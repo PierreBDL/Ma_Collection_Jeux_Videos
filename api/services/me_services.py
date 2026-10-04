@@ -52,6 +52,7 @@ async def get_favoris_logic (name: str, db: Session) :
             "opinion": favorite.opinion,
             "grade": favorite.grade,
             "state": favorite.state or "a_decouvrir",
+            "date": favorite.date
         }
         result.append(game)
     return result
@@ -75,7 +76,9 @@ def save_the_grade(updateInfos: SaveGradeInput, db: Session):
         if updateInfos.opinion is not None:
             user_favo.opinion = updateInfos.opinion
         if updateInfos.state is not None:
-            user_favo.state = updateInfos.state 
+            user_favo.state = updateInfos.state
+        if updateInfos.date is not None:
+            user_favo.date = updateInfos.date 
         db.commit()
         db.refresh(user_favo)
         return True
@@ -89,9 +92,9 @@ def get_the_grade (username: str, game_id: int, db: Session):
     statement = db.get(UserFavorite, (user.id, game_id))
 
     if statement is None : 
-        return {"id": game_id,"opinion": "", "grade": 0, "state": "a_decouvrir"}
+        return {"id": game_id, "opinion": "", "grade": 0, "state": "a_decouvrir", "date": None}
 
-    return {"id": game_id, "opinion": statement.opinion, "grade": statement.grade, "state": statement.state}
+    return {"id": game_id, "opinion": statement.opinion, "grade": statement.grade, "state": statement.state, "date": statement.date}
 
 # Récup des notes
 def get_all_the_grade (username: str, db: Session):

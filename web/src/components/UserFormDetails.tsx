@@ -15,6 +15,7 @@ interface GradeResponse {
     grade: number
     opinion: string
     state: StateType
+    date: string | null
 }
 
 interface UserFormDetailsprops {
@@ -27,6 +28,7 @@ interface UserFormDetailsprops {
 export default function UserFormDetails ({gameId, state, setState}: UserFormDetailsprops) {
     const [grade, setGrade] = useState<number>(0)
     const [opinion, setOpinion] = useState<string>("")
+    const [date, setDate] = useState<string>("")
     const [error, setError] = useState<string>("")
     const [isSuccess, setIsSuccess] = useState<boolean | null>(null)
     
@@ -58,9 +60,11 @@ export default function UserFormDetails ({gameId, state, setState}: UserFormDeta
         setError("")
         setIsSuccess(null)
 
-        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade, state: state })})
+        const createdAt = new Date().toLocaleString();
+        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade, state: state, date: createdAt })})
     
         if (response.responseType === "Success") {
+            setDate(createdAt)
             setIsSuccess(true)
         } else {
             setIsSuccess(false)
@@ -93,6 +97,7 @@ export default function UserFormDetails ({gameId, state, setState}: UserFormDeta
                 setGrade(response.dataToResponse.grade)
                 setOpinion(response.dataToResponse.opinion)
                 setState(response.dataToResponse.state)
+                setDate(response.dataToResponse.date ?? "")
                 setError("")
             } else {
                 setIsSuccess(false)
@@ -123,9 +128,11 @@ export default function UserFormDetails ({gameId, state, setState}: UserFormDeta
                 <label>Votre avis</label>
                 <textarea className="p-2 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" value={opinion} onChange={(event) => setOpinion(event.target.value)} rows={4} />
 
+                {date !== "" && (<label>Mis à jour le {date.split(" ")[0]} à {date.split(" ")[1]}</label>)}
+
                 {isSuccess !== null && (
-                    <div className={isSuccess ? "text-green-500" : "text-red-400"}>
-                        {isSuccess ? <p>Avis posté</p> : <p>{error}</p>}
+                    <div className={isSuccess  === true ? "text-green-500" : "text-red-400"}>
+                        {isSuccess === true ? <p>Avis posté</p> : <p>{error}</p>}
                     </div>
                 )}
                 <Button style="mt-2 w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors disabled:bg-slate-700 disabled:text-white disabled:hover:bg-slate-800 disabled:cursor-not-allowed hover:bg-blue-700" isDisable={grade <= 0 ? true : false} handleClick={() => handleSaveForm()}>Enregistrer</Button>

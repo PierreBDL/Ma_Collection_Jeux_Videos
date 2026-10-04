@@ -42,15 +42,15 @@ export default function Form ({title, setters, getters, action, error, isRegiste
                 {isRegisterPage && (
                     <div className="flex flex-col font-medium gap-4">
                         <label>Name :</label>
-                        <input className={`${theme === "light" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white"} p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`} type="text" value={name?.valueName} onChange={(e) => name?.setValueName(e.target.value)} required />    
+                        <input className={`p-1 bg-white border text-gray-800 border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm`} type="text" value={name?.valueName} onChange={(e) => name?.setValueName(e.target.value)} required />    
                     </div>
                 )}
 
                 <label>Email :</label>
-                <input className="p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="email" value={getters.email} onChange={(e) => setters.setEmail(e.target.value)} required />
+                <input className="p-1 bg-white border text-gray-800 border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="email" value={getters.email} onChange={(e) => setters.setEmail(e.target.value)} required />
                 
                 <label>Mot de passe :</label>
-                <input className="p-1 border border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="password" value={getters.password} onChange={(e) => setters.setPassword(e.target.value)} required />
+                <input className="p-1 bg-white border text-gray-800 border-gray-400 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm" type="password" value={getters.password} onChange={(e) => setters.setPassword(e.target.value)} required />
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <Button style="rounded-lg mt-2 p-2 bg-blue-500 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer" isDisable={false} handleClick={() => {}}>{title}</Button>

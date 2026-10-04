@@ -13,6 +13,7 @@ class SaveGradeInput(BaseModel):
     opinion: str | None = Field(default=None, max_length=500)
     grade: int | None = Field(default=None, ge=1, le=5)
     state: Literal["a_decouvrir", "en_cours", "termine"] = "a_decouvrir"
+    date: str | None = Field(default=None)
 
 class GetGradeInput(BaseModel):
     name: str = Field(...)

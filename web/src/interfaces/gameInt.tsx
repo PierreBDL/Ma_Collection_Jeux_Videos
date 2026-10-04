@@ -10,4 +10,5 @@ export interface JeuxProps {
     opinion?: string
     grade?: number
     state?: "a_decouvrir" | "en_cours" | "termine"
+    date?: string
 }

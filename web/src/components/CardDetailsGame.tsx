@@ -4,7 +4,6 @@ import {useAuth} from '../context/Auth'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
-import { gamePlateforme } from '../types/SearchType';
 
 type StateGame = "a_decouvrir" | "en_cours" | "termine"
 
@@ -13,7 +12,7 @@ interface MoreDetailsProps {
     setState: (value: StateGame) => void
     grade?: number
     opinion?: string
-    date?: Date
+    date?: string
     id: number
     nom: string
     studio: string
@@ -28,10 +27,10 @@ interface MoreDetailsProps {
 export default function CardDetailsGame ({state, setState, grade, opinion, date, id, nom, studio, plateforme, genre, annee, image, description, handleFavorite}: MoreDetailsProps) {
     
     // Hook Theme
-    const { theme, ToggleTheme } = UseTheme()
+    const { theme } = UseTheme()
 
     // Hook Auth
-    const {auth, setAuth} = useAuth()
+    const {auth} = useAuth()
     
     return (
         <div className="relative pt-8 max-w-3xl lg:mb-30">
