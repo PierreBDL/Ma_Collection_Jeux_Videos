@@ -30,7 +30,7 @@ def check_token (token: str = Depends(oauth)) :
 # Création
 def create_tokens (user: AccountInput):
     # Access
-    access_expire = datetime.now(timezone.utc) + timedelta(minutes=20)
+    access_expire = datetime.now(timezone.utc) + timedelta(minutes=30)
     access_token = jwt.encode({"sub": user.name, "exp": access_expire, "type": "access"}, secretKey, algorithm=Algorithm)
 
     # Refresh
