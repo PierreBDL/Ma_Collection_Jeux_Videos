@@ -22,10 +22,11 @@ interface UserFormDetailsprops {
     gameId: number
     state: StateType
     setState: (value: StateType) => void
+    canSave: boolean | null
 }
 
 
-export default function UserFormDetails ({gameId, state, setState}: UserFormDetailsprops) {
+export default function UserFormDetails ({gameId, state, setState, canSave}: UserFormDetailsprops) {
     const [grade, setGrade] = useState<number>(0)
     const [opinion, setOpinion] = useState<string>("")
     const [date, setDate] = useState<string>("")
@@ -135,7 +136,7 @@ export default function UserFormDetails ({gameId, state, setState}: UserFormDeta
                         {isSuccess === true ? <p>Avis posté</p> : <p>{error}</p>}
                     </div>
                 )}
-                <Button style="mt-2 w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors disabled:bg-slate-700 disabled:text-white disabled:hover:bg-slate-800 disabled:cursor-not-allowed hover:bg-blue-700" isDisable={grade <= 0 ? true : false} handleClick={() => handleSaveForm()}>Enregistrer</Button>
+                <Button style="mt-2 w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors disabled:bg-slate-700 disabled:text-white disabled:hover:bg-slate-800 disabled:cursor-not-allowed hover:bg-blue-700" isDisable={!canSave && grade <= 0} handleClick={() => handleSaveForm()}>Enregistrer</Button>
             </form>
         </div>
     )

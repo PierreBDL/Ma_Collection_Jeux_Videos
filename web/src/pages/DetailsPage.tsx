@@ -14,6 +14,8 @@ export default function DetailsPage () {
     const [game, setGame] = useState<JeuxProps | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [error, setError] = useState<string>("")
+    
+    const [canSave, setCanSave] = useState<boolean | null>(null) // Sauvegarder dans la  bdd
 
     // Etat du jeu
     const [state, setState] = useState<stateGame>("a_decouvrir")
@@ -106,8 +108,8 @@ export default function DetailsPage () {
 
     return (
         <div className="mx-auto grid w-full max-w-7xl flex-1 grid-cols-1 items-center gap-6 px-4 py-8 lg:grid-cols-2 lg:gap-8 justify-center">
-            <CardDetailsGame state={state} setState={setState} id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} genre={game.genre} annee={game.annee} image={game.image} description={game.description} handleFavorite={() => handleFavorite()}></CardDetailsGame>
-            <UserFormDetails gameId={game.id} state={state} setState={setState}></UserFormDetails>
+            <CardDetailsGame state={state} setState={setState} id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} genre={game.genre} annee={game.annee} image={game.image} description={game.description} handleFavorite={() => handleFavorite()} canSaveFunc={setCanSave}></CardDetailsGame>
+            <UserFormDetails gameId={game.id} state={state} setState={setState} canSave={canSave}></UserFormDetails>
         </div>
     )
 }

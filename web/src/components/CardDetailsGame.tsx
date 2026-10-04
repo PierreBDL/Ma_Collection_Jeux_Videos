@@ -22,9 +22,10 @@ interface MoreDetailsProps {
     image: string
     description: string
     handleFavorite: () => void
+    canSaveFunc: (value: boolean) => void
 }
 
-export default function CardDetailsGame ({state, setState, grade, opinion, date, id, nom, studio, plateforme, genre, annee, image, description, handleFavorite}: MoreDetailsProps) {
+export default function CardDetailsGame ({state, setState, grade, opinion, date, id, nom, studio, plateforme, genre, annee, image, description, handleFavorite, canSaveFunc}: MoreDetailsProps) {
     
     // Hook Theme
     const { theme } = UseTheme()
@@ -35,7 +36,7 @@ export default function CardDetailsGame ({state, setState, grade, opinion, date,
     return (
         <div className="relative pt-8 max-w-3xl lg:mb-30">
                 <div className={`absolute h-8 top-0 right-0 px-4 py-1 text-center mx-auto border ${theme === "dark" ? "border-slate-600 bg-slate-300" : "border-white bg-slate-600"} rounded-t-2xl`}>
-                    <select name="state" value={state} onChange={(e) => setState(e.target.value as StateGame)}
+                    <select name="state" value={state} onChange={(e) => {setState(e.target.value as StateGame); canSaveFunc(true)}}
                     >
                         <option value="a_decouvrir" className={`${theme === "dark" ? "text-black bg-slate-400" : "text-white bg-slate-800"}`} defaultChecked >A découvrir</option>
                         <option value="en_cours" className={`${theme === "dark" ? "text-black bg-slate-400" : "text-white bg-slate-800"}`} >En cours</option>
