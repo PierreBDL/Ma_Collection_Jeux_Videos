@@ -24,7 +24,7 @@ export default function SearchFilter({ search, searchFunction, searchOrigin, sea
     }
 
     return (
-        <section className={`mx-auto mb-8 w-full max-w-3xl rounded-xl border p-4 shadow-sm sm:p-5 ${theme === "light" ? "border-white bg-slate-800 text-white" : "border-white bg-slate-200 text-slate-900"}`}>
+        <section className={`mx-auto mb-8 w-full max-w-3xl rounded-lg border p-4 shadow-sm sm:p-5 ${theme === "light" ? "border-white bg-slate-800 text-white" : "border-white bg-slate-200 text-slate-900"}`}>
             <h3 className={`mb-4 text-xs font-bold uppercase tracking-wider ${theme === "light" ? "text-slate-300" : "text-black"}`}>Filtres</h3>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -43,7 +43,7 @@ export default function SearchFilter({ search, searchFunction, searchOrigin, sea
                     Plateforme
                     <select value={selectedPlatform} onChange={(e) => handleFilter(e.target.value)}
                         className={`w-full rounded-xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === "light" ? "border-slate-600 bg-slate-800 text-white" : "border-slate-300 bg-white text-slate-900"}`}>
-                        <option value="">Toutes</option>
+                        <option value="">Tous</option>
                         {gamePlateforme.map(filter => (
                             <option key={filter} value={filter}>{filter}</option>
                         ))}

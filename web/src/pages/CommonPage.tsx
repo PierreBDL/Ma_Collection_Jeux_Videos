@@ -6,6 +6,7 @@ import { useAuth } from '../context/Auth'
 
 import Button from '../components/Button'
 import SearchBar from '../components/SearchBar'
+import GoTop from '../components/GoTop'
 
 import soleilImg from '../assets/soleil.png'
 import luneImg from '../assets/lune.png'
@@ -120,6 +121,10 @@ export default function CommonPage() {
             <main className="flex-1 flex flex-col items-center justify-start p-4">
                 <Outlet />
             </main>
+
+            <footer className={`fixed bottom-0 w-full bg-transparent`}>
+                <GoTop />
+            </footer>
         </div>
     )
 }
