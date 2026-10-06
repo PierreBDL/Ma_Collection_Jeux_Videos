@@ -5,6 +5,7 @@ from data.account_data import *
 from models.account_model import *
 from services.account_services import *
 from database import get_db
+from security.token_services import check_token
 
 router = APIRouter (
     prefix="/auth",
@@ -16,20 +17,24 @@ router = APIRouter (
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def login(user: AccountInput, db: Session = Depends(get_db)):
     result = await test_login(user, db)
-
     if result == {} :
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Courriel ou mot de passe incorrect !")
-
     return result
 
 # Register
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(user: AccountRegisterInput, db: Session = Depends(get_db)):
     result = await test_register(user, db)
-
     if result == {} :
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Identifiants déjà pris !")
+    return result
 
+# Me
+@router.get("/me")
+async def get_me (token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
+    result = get_user(token_data["sub"], db)
+    if result is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Informations incorrectes")
     return result
 
 # Refresh du token

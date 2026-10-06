@@ -62,7 +62,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
         setIsSuccess(null)
 
         const createdAt = new Date().toLocaleString();
-        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PUT', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade, state: state, date: createdAt })})
+        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade, state: state, date: createdAt })})
     
         if (response.responseType === "Success") {
             setDate(createdAt)

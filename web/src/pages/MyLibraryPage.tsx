@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../context/Auth'
 import { UseTheme } from '../hooks/Theme'
@@ -14,13 +14,13 @@ import erreur404 from '../assets/404.png'
 export default function MyLibraryPage() {
     const [games, setGames] = useState<JeuxProps[]>([])
     const [filtreSelect, setFiltreSelect] = useState<string>("tous")
-    const gamesFilters = filtreSelect === "tous" ? games : games.filter(game => game.state === filtreSelect)
+    let gamesFilters: JeuxProps[] = filtreSelect === "tous" ? games : games.filter(game => game.state === filtreSelect)
 
     // Hook Auth
     const { auth } = useAuth()
 
     // Hook Theme
-    const { theme, ToggleTheme } = UseTheme()
+    const { theme } = UseTheme()
 
     // Navigate 
     const navigate = useNavigate()
@@ -34,7 +34,7 @@ export default function MyLibraryPage() {
         }
 
         const checkBdd = async () => {
-            const response = await MeDB({ url: `${URL_API}/me/collection`, methodToSend: 'POST', token: auth.token })
+            const response = await MeDB({ url: `${URL_API}/me/collection`, methodToSend: 'GET', token: auth.token })
 
             if (response.responseType === "Error") {
                 return
@@ -57,6 +57,11 @@ export default function MyLibraryPage() {
     const filtrer = (filtre: string) => {
         setFiltreSelect(filtre)
     }
+
+    // Mettre tous les jeux
+    useEffect(() => {
+        gamesFilters = games
+    }, [auth?.favorites])
 
     if (!auth) {
         return (

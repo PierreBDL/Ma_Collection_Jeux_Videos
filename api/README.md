@@ -29,9 +29,10 @@ La documentation interactive des routes est disponible dans Swagger UI à l'adre
 | `POST` | `/auth/register` | Créer un compte et obtenir un token | Non |
 | `POST` | `/auth/login` | Se connecter et obtenir un token | Non |
 | `POST` | `/auth/refresh` | Refresh le token d'accès | token de refresh dans le header `refreshToken` |
-| `PUT` | `/me/updateFavorite` | Mettre à jour les favoris | Oui |
-| `POST` | `/me/collection` | Récupérer les favoris du compte | Oui |
-| `PUT` | `/me/saveGrade` | Enregistrer une note et un commentaire | Oui |
+| `GET` | `/auth/me` | Récupérer l'email et l'id | Oui |
+| `PATCH` | `/me/updateFavorite` | Mettre à jour les favoris | Oui |
+| `GET` | `/me/collection` | Récupérer les favoris du compte | Oui |
+| `PATCH` | `/me/saveGrade` | Enregistrer une note et un commentaire | Oui |
 | `GET` | `/me/getGrade` | Récupérer l'avis du compte pour un jeu (`game_id`) | Oui |
 | `GET` | `/me/getAllGrade` | Récupérer tous les avis du compte | Oui |
 

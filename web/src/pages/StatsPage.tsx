@@ -34,7 +34,7 @@ export default function StatsPage() {
         }
 
         const collectionQuery = async () => {
-            const response = await MeDB({url: `${URL_API}/me/collection`, methodToSend: "POST", token: auth.token})
+            const response = await MeDB({url: `${URL_API}/me/collection`, methodToSend: "GET", token: auth.token})
             
             if (response.dataToResponse) {
                 setFavoris(response.favorites || []);

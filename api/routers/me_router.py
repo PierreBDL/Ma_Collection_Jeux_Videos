@@ -13,7 +13,7 @@ router = APIRouter (
 )
 
 # Update Favorites
-@router.put('/updateFavorite')
+@router.patch('/updateFavorite')
 async def update_favorites (updateInfos: AccountInputUpdateFavorite,token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
     updateInfos.name = token_data["sub"]
     result = update_of_favorites(updateInfos, db)
@@ -22,7 +22,7 @@ async def update_favorites (updateInfos: AccountInputUpdateFavorite,token_data: 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Utilisateur introuvable")
 
 # Get Favorites
-@router.post("/collection")
+@router.get("/collection")
 async def get_favorites (token_data = Depends(check_token), db: Session = Depends(get_db)):
     name = token_data["sub"]
     result = await get_favoris_logic(name, db)
@@ -31,7 +31,7 @@ async def get_favorites (token_data = Depends(check_token), db: Session = Depend
     return {"favorites": result}
 
 # Sauvegarde commentaire et avis
-@router.put("/saveGrade")
+@router.patch("/saveGrade")
 async def save_grade (updateInfos: SaveGradeInput,token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
     updateInfos.name = token_data["sub"]
     result = save_the_grade(updateInfos, db)

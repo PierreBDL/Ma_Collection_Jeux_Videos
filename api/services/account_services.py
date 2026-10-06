@@ -53,3 +53,13 @@ async def test_register(user: AccountRegisterInput, db: Session):
     db.commit()
     db.refresh(newAccount)
     return create_tokens(newAccount)
+
+# Auth me
+async def get_user (username: str, db: Session):
+    statement = select(UsersTable).where(UsersTable.name == username)
+
+    if statement is None :
+        return None
+
+    statement = db.scalars(statement).first()
+    return {"email": statement.email, "id": statement.id}

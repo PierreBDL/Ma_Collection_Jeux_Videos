@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         const saveFavoritesApi = async () => {
             try {
-                let response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PUT',token: auth.token, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
+                let response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PATCH',token: auth.token, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
 
                 if (response.responseType === "Error" && auth.refreshToken) {
 
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                         const newToken = newTokenResponse.response
 
                         // Réessayer
-                        response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PUT', token: newToken, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
+                        response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PATCH', token: newToken, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
                     }
                 }
 
