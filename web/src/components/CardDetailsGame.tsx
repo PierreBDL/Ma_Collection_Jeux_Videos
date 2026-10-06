@@ -35,22 +35,22 @@ export default function CardDetailsGame ({state, setState, grade, opinion, date,
     
     return (
         <div className="relative pt-8 max-w-3xl lg:mb-30">
-                <div className={`absolute h-8 top-0 right-0 px-4 py-1 text-center mx-auto border ${theme === "dark" ? "border-slate-600 bg-slate-300" : "border-white bg-slate-600"} rounded-t-2xl`}>
+                <div className={`absolute h-8 top-0 right-0 px-4 py-1 text-center mx-auto border ${theme === "dark" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" } rounded-t-2xl`}>
                     <select name="state" value={state} onChange={(e) => {setState(e.target.value as StateGame); canSaveFunc(true)}}
                     >
-                        <option value="a_decouvrir" className={`${theme === "dark" ? "text-black bg-slate-400" : "text-white bg-slate-800"}`} defaultChecked >A découvrir</option>
-                        <option value="en_cours" className={`${theme === "dark" ? "text-black bg-slate-400" : "text-white bg-slate-800"}`} >En cours</option>
-                        <option value="termine" className={`${theme === "dark" ? "text-black bg-slate-400" : "text-white bg-slate-800"}`} >Terminé</option>
+                        <option value="a_decouvrir" className={`${theme === "dark" ? "text-white bg-slate-400" : "text-white bg-slate-800"}`} defaultChecked >A découvrir</option>
+                        <option value="en_cours" className={`${theme === "dark" ? "text-white bg-slate-400" : "text-white bg-slate-800"}`} >En cours</option>
+                        <option value="termine" className={`${theme === "dark" ? "text-white bg-slate-400" : "text-white bg-slate-800"}`} >Terminé</option>
                     </select>
                 </div>
-                <div className={`relative p-9 pb-10 max-w-4xlmx-auto border ${theme === "dark" ? "border-slate-600 bg-slate-300" : "border-white bg-slate-600"} rounded-b-2xl rounded-tl-2xl`}>
+                <div className={`relative p-9 pb-10 max-w-4xlmx-auto border  ${theme === "dark" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" } rounded-b-2xl rounded-tl-2xl`}>
                     <div className="flex flex-raw justify-between mb-3">
-                        <div className="flex flex-col">
-                            <h1 className="text-3xl font-bold mb-4">{nom}</h1>
-                            <p className="mb-2"><strong>Studio :</strong> {studio}</p>
-                            <p className="mb-2"><strong>Plateforme :</strong> {plateforme}</p>
-                            <p className="mb-2"><strong>Catégorie :</strong> {genre}</p>
-                            <p className="mb-2"><strong>Année :</strong> {annee}</p>
+                        <div className={`flex flex-col ${theme === "dark" ? "text-black" : "text-white"}`}>
+                            <h1 className={`text-3xl font-bold mb-4`}>{nom}</h1>
+                            <p className={`mb-2`}><strong>Studio :</strong> {studio}</p>
+                            <p className={`mb-2`}><strong>Plateforme :</strong> {plateforme}</p>
+                            <p className={`mb-2`}><strong>Catégorie :</strong> {genre}</p>
+                            <p className={`mb-2`}><strong>Année :</strong> {annee}</p>
                         </div>
                         <div>
                             <img src={`/images/${image}`} className="w-80 h-auto max-h-40 rounded-lg mb-4 mr-4"></img>

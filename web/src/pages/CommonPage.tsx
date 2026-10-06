@@ -80,7 +80,7 @@ export default function CommonPage() {
                                 </div>
                                 <p className={`text-white`}>{username}</p>
                             </div>
-                            <Button style="p-1.5 px-2.5 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
+                            <Button style="p-2 px-3 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>
                         </div>
                     ) : (
                         <div className="flex flex-raw space-x-4">
@@ -101,12 +101,12 @@ export default function CommonPage() {
                 </div>
 
                 {menuIsOpen && (
-                    <nav className={`absolute justify-end ${theme === "dark" ? "bg-slate-800" : "bg-slate-800"} top-full right-0 w-full z-50 flex flex-col p-6 space-y-4 md:hidden`}>
+                    <nav className={`absolute justify-end bg-slate-800 top-full right-0 w-full z-50 flex flex-col p-6 space-y-4 md:hidden`}>
                         <Link onClick={() => toggleMenu()} to="/" className="hover:text-blue-600 font-medium transition-colors">Accueil</Link>
                         <Link onClick={() => toggleMenu()} to="/myLibrary" className="hover:text-blue-600 font-medium transition-colors">Ma bibliothèque</Link>
                         <Link onClick={() => toggleMenu()} to="/stats" className="hover:text-blue-600 font-medium transition-colors">Mes stats</Link>
                         {
-                            auth !== null ? (<Button style="p-1 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>)
+                            auth !== null ? (<Button style="p-2 px-2 rounded text-sm text-white bg-red-600 hover:bg-red-800 cursor-pointer" isDisable={false} handleClick={() => handleLogout()}>Se déconnecter</Button>)
                                 : (
                                     <div className="flex flex-col space-y-4">
                                         <Link onClick={() => toggleMenu()} to="/register" className="hover:text-blue-600 font-medium transition-colors">S'inscrire</Link>

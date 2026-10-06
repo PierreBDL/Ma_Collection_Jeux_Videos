@@ -64,7 +64,7 @@ export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number
     return (
         <div className="grid min-w-0 max-h-[75vh] grid-cols-1 gap-4 overflow-y-auto">
             {games.map(game => (
-                <article key={game.id} className={`flex min-w-0 flex-col gap-3 rounded-lg border ${theme === "light" ? "border-slate-600 bg-slate-800 text-white" : "border-slate-600 bg-slate-300 text-black"} p-4 shadow-sm sm:p-5`}>
+                <article key={game.id} className={`flex min-w-0 flex-col gap-3 rounded-lg border ${theme === "light" ? "border-white bg-slate-800 text-white" : "border-black bg-slate-300 text-black"} p-4 shadow-sm sm:p-5`}>
                     <h3 className="min-w-0 text-sm">{game.nom}</h3>
                     <p className="font-semibold">Note : {game.grade ? (game.grade + "/5") : ("∅")}</p>
                     <p className="min-w-0 text-sm">Mémo: {game.opinion ? (game.opinion) : ("∅")}</p>
