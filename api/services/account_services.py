@@ -6,6 +6,7 @@ from sqlalchemy import select
 
 from security.token_services import *
 from schemas.users_table import UsersTable
+from utils.httpErrors import http_exception
 
 # Charger env
 from dotenv import load_dotenv
@@ -30,7 +31,8 @@ async def test_login(user: AccountInput, db: Session):
     if db_user and pwd.verify(user.password, db_user.password):
         return create_tokens(db_user)
 
-    return None
+    # Erreur
+    http_exception(code=401, message="Courriel ou mot de passe incorrect !")
 
 
 # Register
@@ -40,7 +42,8 @@ async def test_register(user: AccountRegisterInput, db: Session):
     statement = select(UsersTable).where(UsersTable.email == user.email, UsersTable.name == user.name)
     
     if db.scalars(statement).first() is not None:
-        return None
+        # Erreur
+        http_exception(code=409, message="Identifiants déjà pris !")
 
     # Enregistrer
     newAccount = UsersTable (
@@ -68,6 +71,29 @@ async def get_user (username: str, db: Session):
     statement = select(UsersTable).where(UsersTable.name == username)
     user = db.scalars(statement).first()
     if user is None:
-        return None
+        # Erreur
+        http_exception(code=401, message="Informations incorrectes")
 
     return {"email": user.email, "id": user.id, "name": user.name}
+
+# Refresh token
+async def refresh_token (token: str):
+    try:
+        refreshToken = refreshToken.replace("Bearer ", "").strip()
+    
+        token = jwt.decode(refreshToken, secretKey, algorithms=[Algorithm])
+    
+        if token["type"] != "refresh":
+            # Error
+            http_exception(code=401, message="Token invalide")
+        
+        username = token["sub"]
+    
+        access_expire = datetime.now(timezone.utc) + timedelta(minutes=20)
+        access_token = jwt.encode({"sub": username, "exp": access_expire, "type": "access"}, secretKey, algorithm=Algorithm)
+    
+        return access_token
+    
+    except jwt.PyJWTError:
+        # Error
+        http_exception(code=401, message="Token expiré")

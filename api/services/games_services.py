@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, select
 from schemas.games_table import GamesTable
+from utils.httpErrors import http_exception
 
 def counter(skip: int = 0, limit: int = 12):
     return {"skip": skip, "limit": limit}
@@ -46,3 +47,10 @@ def get_see_more_research(therme: str, origin: str, counterResult: dict, db: Ses
         return {"games": result[counterResult["skip"]:counterResult["skip"] + counterResult["limit"]]}
 
     return {"games": []}
+
+# Jeu par id
+def get_by_id (id: int, db: Session):
+    statement = db.get(GamesTable, id)
+    if statement is None:
+        http_exception(code=404, message="Jeu introuvable")
+    return statement

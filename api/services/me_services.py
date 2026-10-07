@@ -8,9 +8,20 @@ from schemas.games_table import GamesTable
 from models.me_model import *
 from schemas.users_favorites_table import UserFavorite
 from schemas.games_table import GamesTable
+from utils.httpErrors import http_exception
+
+# Vérif si le token appartient à l'utilisateur
+def check_token_name (username: str, token_name: str):
+    if username != token_name :
+        http_exception(code=401, message="Token invalide")
+    return
+
 
 # Mise à jour des favoris
-def update_of_favorites(updateInfos: AccountInputUpdateFavorite, db: Session):
+def update_of_favorites(updateInfos: AccountInputUpdateFavorite, username: str, db: Session):
+    # Vérif si le token appartient à l'utilisateur
+    check_token_name(updateInfos.name, username)
+
     statement = select(UsersTable).where(UsersTable.name == updateInfos.name)
     user = db.scalars(statement).first()
     
@@ -23,8 +34,10 @@ def update_of_favorites(updateInfos: AccountInputUpdateFavorite, db: Session):
         user.favorites = favorites_tab
         db.commit()
         db.refresh(user)
-        return True
-    return False
+        return favorites_tab
+
+    # Error
+    http_exception(code=404, message="Utilisateur introuvable")
 
 # Chercher et envoyer favoris
 async def get_favoris_logic (name: str, db: Session) :
@@ -32,7 +45,8 @@ async def get_favoris_logic (name: str, db: Session) :
     user = db.scalars(statement).first()
         
     if user is None :
-        return None
+        # Error
+        http_exception(code=404, message="Utilisateur introuvable")
 
     statement = (select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id))
     favorites = db.execute(statement).all()
@@ -55,17 +69,21 @@ async def get_favoris_logic (name: str, db: Session) :
             "date": favorite.date
         }
         result.append(game)
-    return result
+    return {"favorites": result}
 
 # Sauvegarde de la note
-def save_the_grade(updateInfos: SaveGradeInput, db: Session):
+def save_the_grade(updateInfos: SaveGradeInput, username: str, db: Session):
+    # Vérif si le token appartient à l'utilisateur
+    check_token_name(updateInfos.name, username)
+    
     statement_user = select(UsersTable).where(UsersTable.name == updateInfos.name)
     user = db.scalars(statement_user).first()
 
     game = db.get(GamesTable, updateInfos.game_id)
     
     if user is None or game is None:
-        return False
+        # Error
+        http_exception(code=404, message="Utilisateur introuvable")
 
     statement = select(UserFavorite).where(UserFavorite.game_id == updateInfos.game_id, UserFavorite.user_id == user.id)
     user_favo = db.scalars(statement).first()
@@ -81,8 +99,8 @@ def save_the_grade(updateInfos: SaveGradeInput, db: Session):
             user_favo.date = updateInfos.date 
         db.commit()
         db.refresh(user_favo)
-        return True
-    return False
+        return
+    return
 
 # Récup de la note
 def get_the_grade (username: str, game_id: int, db: Session):
@@ -101,13 +119,15 @@ def get_all_the_grade (username: str, db: Session):
     statement_user = select(UsersTable).where(UsersTable.name == username)
     user = db.scalars(statement_user).first()
     if user is None:
-        return None
+        # Error
+        http_exception(code=404, message="Utilisateur introuvable")
 
     statement = (select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id))
     games = db.execute(statement).all()
 
     if statement is None : 
-        return None
+        # Error
+        http_exception(code=404, message="Aucun jeu trouvé")
 
     games_to_return = []
 
