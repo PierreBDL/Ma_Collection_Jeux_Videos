@@ -7,6 +7,7 @@ import {useAuth} from '../context/Auth'
 import {GetGamesDB} from '../connection/RequestsDb'
 import CardDetailsGame from '../components/CardDetailsGame'
 import UserFormDetails from '../components/UserFormDetails'
+import { type GameResponse } from '../types/api'
 
 type stateGame = "a_decouvrir" | "en_cours" | "termine"
 
@@ -39,7 +40,7 @@ export default function DetailsPage () {
         }
 
         const getGame = (async () => {
-            const response = await GetGamesDB({url: `${URL_API}/games/${id}`, setError: setError})
+            const response = await GetGamesDB<GameResponse>({url: `${URL_API}/games/${id}`, setError: setError})
             
             if (response.dataToResponseSolo !== null && response.dataToResponseSolo) {
                 setGame(response.dataToResponseSolo)

@@ -120,12 +120,12 @@ interface getGameInput {
     setError: (value: string) => void
 }
 
-interface getGameOutput {
-    dataToResponse?: JeuxProps[] | null
-    dataToResponseSolo?: JeuxProps | null
+interface getGameOutput<T> {
+    dataToResponse?: T[] | null
+    dataToResponseSolo?: T | null
 }
 
-export async function GetGamesDB({url, setError}: getGameInput): Promise<getGameOutput> {
+export async function GetGamesDB<T = JeuxProps>({url, setError}: getGameInput): Promise<getGameOutput<T>> {
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -142,9 +142,9 @@ export async function GetGamesDB({url, setError}: getGameInput): Promise<getGame
         } else {
             setError("")
             if (Array.isArray(data.games)) {
-                return { dataToResponse: data.games }
+                return { dataToResponse: data.games as T[] }
             } else {
-                return { dataToResponseSolo: data.game }
+                return { dataToResponseSolo: (data.game ?? data) as T }
             }
         }
     } catch {

@@ -15,3 +15,22 @@ export interface RegisterResponse {
     name: string
     favorites: JeuxProps[] | []
 }
+
+/* --------------------
+      Game by id
+---------------------*/
+
+export interface GameResponse {
+    id: number
+    nom: string
+    studio: string
+    plateforme: string
+    annee: string
+    genre: string
+    description: string
+    image: string
+    opinion?: string
+    grade?: number
+    state?: "a_decouvrir" | "en_cours" | "termine"
+    date?: string
+}
