@@ -34,7 +34,7 @@ export default function Library() {
 
     // Recherche de jeux dans la bdd
     const getGames = async (pageNumber: number) => {
-        const response = await GetGamesDB<AllGamesResponse>({url: `${URL_API}/items?q=${encodeURIComponent(searchTherme.trim())}&categorie=${searchOrigin}&page=${page}&limit=${limit}`, setError: setError})
+        const response = await GetGamesDB<AllGamesResponse>({url: `${URL_API}/items?q=${encodeURIComponent(searchTherme.trim())}&categorie=${searchOrigin}&page=${pageNumber}&limit=${limit}`, setError: setError})
         
         if (!response?.dataHomePage) {
             setIsLoading(false)
@@ -49,7 +49,7 @@ export default function Library() {
         if (Array.isArray(data)) {
             setGames(c => pageNumber === 1 ? data : [...c, ...data])
             // Vérif ssi assez de jeux dans la bdd
-            setIsEnoughtGame(data.length <= limit ? true : false)
+            setIsEnoughtGame(pageNumber * limit < response.dataHomePage.total)
 
             // Enlever le chargement
             setIsLoading(false)
@@ -59,7 +59,7 @@ export default function Library() {
             setIsLoading(false)
         }
 
-        setPage(page === 1 ? 1 : page + 1)
+        setPage(pageNumber)
     }
 
     useEffect(() => {
@@ -124,6 +124,7 @@ export default function Library() {
         </section>
     )
 }
+
 
 
 

@@ -15,7 +15,7 @@ router = APIRouter (
 # Update Favorites
 @router.patch('/updateFavorite')
 async def update_favorites (updateInfos: AccountInputUpdateFavorite,token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
-    return await update_of_favorites(updateInfos, token_data["sub"], db)
+    return update_of_favorites(updateInfos, token_data["sub"], db)
 
 # Get Favorites
 @router.get("/collection")

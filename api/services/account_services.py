@@ -79,7 +79,7 @@ async def get_user (username: str, db: Session):
 # Refresh token
 async def refresh_token (token: str):
     try:
-        refreshToken = refreshToken.replace("Bearer ", "").strip()
+        refreshToken = token.replace("Bearer ", "").strip()
     
         token = jwt.decode(refreshToken, secretKey, algorithms=[Algorithm])
     
