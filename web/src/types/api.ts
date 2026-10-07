@@ -17,6 +17,17 @@ export interface RegisterResponse {
 }
 
 /* --------------------
+        Login
+---------------------*/
+
+export interface LoginResponse {
+    access_token: string
+    refresh_token: string
+    name: string
+    favorites: JeuxProps[]
+}
+
+/* --------------------
       Game by id
 ---------------------*/
 

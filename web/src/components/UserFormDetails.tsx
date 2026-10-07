@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import Button from './Button'
 import {UseTheme} from '../hooks/Theme'
-import {MeDB} from '../connection/RequestsDb'
+import {MeDB} from '../hooks/RequestsDb'
 import { URL_API } from '../utils/Links'
-import {useAuth} from '../context/Auth'
+import {useAuth} from '../hooks/Auth'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'

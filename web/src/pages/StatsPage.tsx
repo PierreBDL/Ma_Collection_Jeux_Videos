@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { URL_API } from '../utils/Links'
-import { useAuth } from '../context/Auth'
+import { useAuth } from '../hooks/Auth'
 import { type JeuxProps } from '../interfaces/gameInt'
-import {MeDB} from '../connection/RequestsDb'
+import {MeDB} from '../hooks/RequestsDb'
 import GraphCircle from '../components/GraphCircle'
 import PrintComments from '../components/PrintsComments'
 import {UseTheme} from '../hooks/Theme'

@@ -3,11 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
-import { AuthDB } from '../connection/RequestsDb'
-import { type JeuxProps } from '../interfaces/gameInt'
-
+import { AuthDB } from '../hooks/RequestsDb'
 import { useLocalStorage } from '../hooks/LocalStorage'
-import { useAuth } from '../context/Auth'
+import { useAuth } from '../hooks/Auth'
 
 import { type RegisterResponse } from '../types/api'
 

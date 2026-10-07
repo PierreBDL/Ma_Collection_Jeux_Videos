@@ -4,16 +4,10 @@ import {useNavigate} from 'react-router-dom'
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
 import {useLocalStorage} from '../hooks/LocalStorage'
-import {useAuth} from '../context/Auth'
-import {AuthDB} from '../connection/RequestsDb'
+import {useAuth} from '../hooks/Auth'
+import {AuthDB} from '../hooks/RequestsDb'
 import {type JeuxProps} from '../interfaces/gameInt'
-
-interface AuthResponse {
-    access_token: string
-    refresh_token: string
-    name: string
-    favorites: JeuxProps[]
-}
+import {type LoginResponse} from '../types/api'
 
 export default function LoginPage() {
 
@@ -55,7 +49,7 @@ export default function LoginPage() {
         /* ----------------------------
                 Demander à l'API
         -----------------------------*/
-        const response = await AuthDB<AuthResponse>({url: `${URL_API}/auth/login`, setError: setError , dataToSend: JSON.stringify({ email, password })})
+        const response = await AuthDB<LoginResponse>({url: `${URL_API}/auth/login`, setError: setError , dataToSend: JSON.stringify({ email, password })})
 
         if (response.dataToResponse) {
             const { access_token, refresh_token, name, favorites } = response.dataToResponse

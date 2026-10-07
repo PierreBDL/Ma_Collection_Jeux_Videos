@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import {type JeuxProps} from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
-import {useAuth} from '../context/Auth'
-import {GetGamesDB} from '../connection/RequestsDb'
+import {useAuth} from '../hooks/Auth'
+import {GetGamesDB} from '../hooks/RequestsDb'
 import CardDetailsGame from '../components/CardDetailsGame'
 import UserFormDetails from '../components/UserFormDetails'
 import { type GameResponse } from '../types/api'

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { URL_API } from '../utils/Links'
-import { useAuth } from '../context/Auth'
-import { MeDB } from '../connection/RequestsDb'
+import { useAuth } from '../hooks/Auth'
+import { MeDB } from '../hooks/RequestsDb'
 import Button from '../components/Button'
 import { UseTheme } from '../hooks/Theme'
 

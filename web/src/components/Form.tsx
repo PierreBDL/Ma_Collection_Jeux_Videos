@@ -27,7 +27,7 @@ interface FormProps {
 export default function Form ({title, setters, getters, action, error, isRegisterPage, name}: FormProps) {
     
     // Hook Theme
-    const { theme, ToggleTheme } = UseTheme()
+    const { theme } = UseTheme()
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()

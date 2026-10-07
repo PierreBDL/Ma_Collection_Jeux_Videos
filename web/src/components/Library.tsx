@@ -8,7 +8,7 @@ import { UseTheme } from '../hooks/Theme'
 import { UseSearch } from '../hooks/Research'
 import erreur404 from '../assets/404.png'
 import Button from './Button';
-import { GetGamesDB } from '../connection/RequestsDb'
+import { GetGamesDB } from '../hooks/RequestsDb'
 
 
 export default function Library() {

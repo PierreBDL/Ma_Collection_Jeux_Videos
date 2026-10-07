@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { data, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../context/Auth'
+import { useAuth } from '../hooks/Auth'
 import { UseTheme } from '../hooks/Theme'
 import GameCard from '../components/GameCard'
 import { URL_API } from '../utils/Links'
 import Button from '../components/Button'
 import { type JeuxProps } from '../interfaces/gameInt';
-import { MeDB } from '../connection/RequestsDb'
+import { MeDB } from '../hooks/RequestsDb'
 
 import erreur404 from '../assets/404.png'
 

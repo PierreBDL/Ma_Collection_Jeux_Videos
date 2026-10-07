@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react'
 import { type JeuxProps } from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
 import { useNavigate } from 'react-router-dom';
-import {MeDB, RefrechTokenDB} from '../connection/RequestsDb'
+import {MeDB, RefrechTokenDB} from '../hooks/RequestsDb'
 
 interface AuthValue {
     token: string

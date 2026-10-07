@@ -1,6 +1,6 @@
 import Button from '../components/Button'
 import {UseTheme} from '../hooks/Theme'
-import {useAuth} from '../context/Auth'
+import {useAuth} from '../hooks/Auth'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
