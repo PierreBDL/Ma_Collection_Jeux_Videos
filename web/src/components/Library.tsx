@@ -36,20 +36,26 @@ export default function Library() {
     const getGames = async (pageNumber: number) => {
         const response = await GetGamesDB<AllGamesResponse>({url: `${URL_API}/items?q=${encodeURIComponent(searchTherme.trim())}&categorie=${searchOrigin}&page=${pageNumber}&limit=${limit}`, setError: setError})
         
-        if (!response?.dataHomePage) {
+        if (!response) {
+            setError("Serveur indisponible")
             setIsLoading(false)
-            setGames([])
-            setIsEnoughtGame(false)
             return
         }
 
-
+        setError("")
+        
         const data = response.dataHomePage?.results
+
+        if (!data) {
+            setError("Serveur indisponible")
+            setIsLoading(false)
+            return
+        }
 
         if (Array.isArray(data)) {
             setGames(c => pageNumber === 1 ? data : [...c, ...data])
             // Vérif ssi assez de jeux dans la bdd
-            setIsEnoughtGame(pageNumber * limit < response.dataHomePage.total)
+            setIsEnoughtGame(data.length <= limit ? true : false)
 
             // Enlever le chargement
             setIsLoading(false)
@@ -59,12 +65,12 @@ export default function Library() {
             setIsLoading(false)
         }
 
-        setPage(pageNumber)
+        setPage(page => page + 1)
     }
 
     useEffect(() => {
-        getGames(1)
-    }, [searchTherme, searchOrigin])
+        getGames(0)
+    }, [searchTherme, searchOrigin, games])
 
     /* ---------------------
             Affichage
@@ -124,7 +130,3 @@ export default function Library() {
         </section>
     )
 }
-
-
-
-
