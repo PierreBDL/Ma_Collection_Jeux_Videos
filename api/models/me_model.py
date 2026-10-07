@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, Field
 from models.game_model import *
 
 class AccountInputUpdateFavorite(BaseModel):

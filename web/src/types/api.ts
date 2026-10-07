@@ -45,3 +45,15 @@ export interface GameResponse {
     state?: "a_decouvrir" | "en_cours" | "termine"
     date?: string
 }
+
+
+/* --------------------
+        Games
+---------------------*/
+
+export interface AllGamesResponse {
+    results: JeuxProps[]
+    limit: number
+    page: number
+    total: number
+}

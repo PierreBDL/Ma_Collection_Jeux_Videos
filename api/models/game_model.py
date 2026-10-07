@@ -1,10 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 # Général
 
 class Game(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     id: int
     nom: str
     studio: str
@@ -16,13 +14,12 @@ class Game(BaseModel):
     etat: str = "a_decouvrir"
     note: float = 0
     commentaire: str = ""
-    date: str
+    date: str = ""
 
 class All_Games(BaseModel):
-    games: list[Game]
+    results: list[Game]
     limit: int
+    page: int
     total: int
-    skip: int
 
-class Search_Games(BaseModel):
-    games: list[Game]
+

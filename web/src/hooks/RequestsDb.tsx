@@ -123,9 +123,10 @@ interface getGameInput {
 interface getGameOutput<T> {
     dataToResponse?: T[] | null
     dataToResponseSolo?: T | null
+    dataHomePage?: T | null;
 }
 
-export async function GetGamesDB<T = JeuxProps>({url, setError}: getGameInput): Promise<getGameOutput<T>> {
+export async function GetGamesDB<T>({url, setError}: getGameInput): Promise<getGameOutput<T>> {
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -141,7 +142,18 @@ export async function GetGamesDB<T = JeuxProps>({url, setError}: getGameInput): 
             return { dataToResponse: null }
         } else {
             setError("")
-            if (Array.isArray(data.games)) {
+
+            // Regarder si il y a une clé page
+            let isPageKey = false
+            for (let i = 0; i < Object.keys(data).length; i++) {
+                if (Object.keys(data)[i] === "page") {
+                    isPageKey = true
+                }
+            }
+
+            if (isPageKey) {
+                return {dataHomePage: data as T}
+            } else if (Array.isArray(data.games)) {
                 return { dataToResponse: data.games as T[] }
             } else {
                 return { dataToResponseSolo: (data.game ?? data) as T }

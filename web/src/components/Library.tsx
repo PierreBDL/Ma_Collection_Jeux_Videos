@@ -9,6 +9,7 @@ import { UseSearch } from '../hooks/Research'
 import erreur404 from '../assets/404.png'
 import Button from './Button';
 import { GetGamesDB } from '../hooks/RequestsDb'
+import { type AllGamesResponse } from '../types/api'
 
 
 export default function Library() {
@@ -18,13 +19,11 @@ export default function Library() {
 
     // Défilement infini
     const limit = 12
-    const [skip, setSkip] = useState<number>(0)
+    const [page, setPage] = useState<number>(1)
     const [isEnoughtGames, setIsEnoughtGame] = useState<boolean>(true)
 
     // Recherche
     const { search: searchTherme, setSearch: setSearchTherme, searchOrigin, setSearchOrigin } = UseSearch()
-    const [searchResult, setSearchResult] = useState<JeuxProps[]>([])
-    const [limitSearch, setLimitSearch] = useState<number>(12)
 
     // Hook Theme
     const { theme } = UseTheme()
@@ -33,66 +32,39 @@ export default function Library() {
         Récup depuis BDD
     ----------------------*/
 
-    const getGames = async (skipNumber: number) => {
-        let response = await GetGamesDB({ url: `${URL_API}/games?limit=${limit}&skip=${skipNumber}`, setError: setError })
-        const data = response.dataToResponse
-
-        if (data !== null && data) {
-
-            // Eviter les doubles requêtes
-            if (skipNumber === 0) {
-                setGames([...data])
-            } else {
-                setGames(g => [...g, ...data])
-            }
-
-            // Vérif si assez de jeu dans la bdd
-            if (data.length < limit) {
-                setIsEnoughtGame(false)
-            }
-
-            setSkip(skipNumber)
-        }
-
-        setIsLoading(false)
-    }
-
-    useEffect(() => {
-        getGames(0)
-    }, [])
-
-
-    /* ---------------------
-            Recherche
-    ----------------------*/
-
-    // Recherche du jeu dans la bdd
-    const searchBDD = async (skipNumber: number) => {
-        const response = await GetGamesDB({url: `${URL_API}/games/search?therme=${encodeURIComponent(searchTherme.trim())}&origin=${searchOrigin}&limit=${limit}&skip=${skipNumber}`, setError: setError})
-        const data = response.dataToResponse
-
-        if (Array.isArray(data)) {
-            setSearchResult(c => skipNumber === 0 ? data : [...c, ...data])
-            setIsEnoughtGame(data.length <= limit ? true : false)
-        } else {
-            setSearchResult([])
+    // Recherche de jeux dans la bdd
+    const getGames = async (pageNumber: number) => {
+        const response = await GetGamesDB<AllGamesResponse>({url: `${URL_API}/items?q=${encodeURIComponent(searchTherme.trim())}&categorie=${searchOrigin}&page=${page}&limit=${limit}`, setError: setError})
+        
+        if (!response?.dataHomePage) {
+            setIsLoading(false)
+            setGames([])
             setIsEnoughtGame(false)
-        }
-    }
-
-    useEffect(() => {
-        if (searchTherme.trim() === "") {
-            setSearchResult(games)
             return
         }
-        searchBDD(0)
-    }, [searchTherme, searchOrigin, games])
+
+
+        const data = response.dataHomePage?.results
+
+        if (Array.isArray(data)) {
+            setGames(c => pageNumber === 1 ? data : [...c, ...data])
+            // Vérif ssi assez de jeux dans la bdd
+            setIsEnoughtGame(data.length <= limit ? true : false)
+
+            // Enlever le chargement
+            setIsLoading(false)
+        } else {
+            setGames([])
+            setIsEnoughtGame(false)
+            setIsLoading(false)
+        }
+
+        setPage(page === 1 ? 1 : page + 1)
+    }
 
     useEffect(() => {
-        setLimitSearch(12)
-        setIsEnoughtGame(true)
+        getGames(1)
     }, [searchTherme, searchOrigin])
-
 
     /* ---------------------
             Affichage
@@ -126,19 +98,16 @@ export default function Library() {
         )
     }
 
-    const gamesToDisplay = searchTherme.trim() === "" ? games : searchResult
-    const gameVisible = gamesToDisplay.slice(0, limitSearch)
-
     return (
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <SearchFilter search={searchTherme} searchFunction={setSearchTherme} searchOrigin={searchOrigin} searchOriginFunction={setSearchOrigin}></SearchFilter>
             <h2 className={`mb-6 text-2xl font-black sm:text-3xl ${theme === "dark" ? "text-slate-900" : "text-white"}`}>Jeux actuellement sur le site</h2>
             <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {
-                    gameVisible.length === 0 ? (<p className={`rounded-2xl border px-4 py-6 text-sm font-medium ${theme === "dark" ? "border-slate-700 bg-slate-900 text-slate-300" : "border-slate-200 bg-white text-slate-600"}`}>Pas de jeux</p>) : null
+                    games.length === 0 ? (<p className={`rounded-2xl border px-4 py-6 text-sm font-medium ${theme === "dark" ? "border-slate-700 bg-slate-900 text-slate-300" : "border-slate-200 bg-white text-slate-600"}`}>Pas de jeux</p>) : null
                 }
                 {
-                    gameVisible.map(game => {
+                    games.map(game => {
                         return (
                             <li className="min-w-0" key={game.id}>
                                 <GameCard id={game.id} nom={game.nom} studio={game.studio} plateforme={game.plateforme} annee={game.annee} genre={game.genre} image={game.image} description={game.description} isMyLibrary={false}></GameCard>
@@ -148,19 +117,13 @@ export default function Library() {
                 }
             </ul>
 
-            <Button isDisable={!isEnoughtGames} handleClick={() => {
-                if (searchTherme.trim() === "") {
-                    if (games.length <= limitSearch) {
-                        getGames(skip + limit)
-                    }
-                } else {
-                    searchBDD(limitSearch)
-                }
-                setLimitSearch(current => current + limit)
-            }}
+            <Button isDisable={!isEnoughtGames} handleClick={() => {getGames(page + 1)}}
                 style="flex place-self-center align-self-center mt-5 rounded-xl bg-blue-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-400 disabled:text-black disabled:hover:bg-slate-500"
             >Voir plus de jeux</Button>
 
         </section>
     )
 }
+
+
+

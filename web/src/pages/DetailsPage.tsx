@@ -16,7 +16,8 @@ export default function DetailsPage () {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [error, setError] = useState<string>("")
     
-    const [canSave, setCanSave] = useState<boolean | null>(null) // Sauvegarder dans la  bdd
+    // Sauvegarder dans la  bdd
+    const [canSave, setCanSave] = useState<boolean | null>(null)
 
     // Etat du jeu
     const [state, setState] = useState<stateGame>("a_decouvrir")
@@ -40,7 +41,7 @@ export default function DetailsPage () {
         }
 
         const getGame = (async () => {
-            const response = await GetGamesDB<GameResponse>({url: `${URL_API}/games/${id}`, setError: setError})
+            const response = await GetGamesDB<GameResponse>({url: `${URL_API}/items/${id}`, setError: setError})
             
             if (response.dataToResponseSolo !== null && response.dataToResponseSolo) {
                 setGame(response.dataToResponseSolo)
