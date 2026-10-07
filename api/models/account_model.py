@@ -18,6 +18,9 @@ class AccountRegisterInput(AccountInput):
     name: str = Field(..., min_length=3, max_length=20)
 
 class AccountRegisterOutput(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
     id: int
     email: EmailStr
     name: str
@@ -32,7 +35,7 @@ class AccountLoginOutput(BaseModel):
     favorites: list[Game] = []
 
 # Me
-class AccountRegisterOutput(BaseModel):
+class AccountMeOutput(BaseModel):
     id: int
     email: EmailStr
     name: str

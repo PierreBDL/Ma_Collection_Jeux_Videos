@@ -30,7 +30,7 @@ async def register(user: AccountRegisterInput, db: Session = Depends(get_db)):
     return result
 
 # Me
-@router.get("/me", response_model=AccountRegisterOutput)
+@router.get("/me", response_model=AccountMeOutput)
 async def get_me (token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
     result = await get_user(token_data["sub"], db)
     if result is None:

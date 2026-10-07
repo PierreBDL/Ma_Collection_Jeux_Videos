@@ -41,7 +41,7 @@ export default function GameCard({ id, nom, image, studio, plateforme, annee, ge
 
     return (
         <article className={`flex h-full min-h-65 flex-col border rounded-xl p-5 text-left hover:-translate-y-1 
-                ${isMyLibrary === false && auth != null && auth.favorites.filter(favoriteGame => favoriteGame.id === id).length > 0 ? (
+                ${isMyLibrary === false && auth != null && auth.favorites && auth.favorites.filter(favoriteGame => favoriteGame.id === id).length > 0 ? (
                     theme === "dark" ? "bg-mist-400 border-black" : "border-white bg-gray-950"
                 ) : (
                     theme === "dark" ? "bg-slate-200 border-black" : "border-white bg-slate-900"

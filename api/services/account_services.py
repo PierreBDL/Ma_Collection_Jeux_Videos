@@ -37,8 +37,9 @@ async def test_login(user: AccountInput, db: Session):
 async def test_register(user: AccountRegisterInput, db: Session):
     
     # Vérif si libre
-    statementEmail = select(UsersTable).where(UsersTable.email == user.email)
-    if db.scalars(statementEmail).first() is not None:
+    statement = select(UsersTable).where(UsersTable.email == user.email, UsersTable.name == user.name)
+    
+    if db.scalars(statement).first() is not None:
         return None
 
     # Enregistrer
@@ -53,7 +54,14 @@ async def test_register(user: AccountRegisterInput, db: Session):
     db.commit()
     db.refresh(newAccount)
 
-    return {"id": newAccount.id, "email": newAccount.email, "name": newAccount.name}
+    token = create_tokens(newAccount)
+
+    return {
+        **token,
+        "id": newAccount.id,
+        "email": newAccount.email,
+        "name": newAccount.name,
+    }
 
 # Auth me
 async def get_user (username: str, db: Session):
