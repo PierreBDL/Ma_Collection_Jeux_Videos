@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { URL_API } from '../utils/Links'
 import { useAuth } from '../context/Auth'
-import {MeDB} from '../connection/RequestsDb'
+import { MeDB } from '../connection/RequestsDb'
 import Button from '../components/Button'
-import {UseTheme} from '../hooks/Theme'
+import { UseTheme } from '../hooks/Theme'
 
 interface PrintCommentsProps {
     id: number
@@ -15,7 +15,7 @@ interface PrintCommentsProps {
     state: "a_decouvrir" | "en_cours" | "termine"
 }
 
-export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number) => void}) {
+export default function PrintComments({ setMoyenne }: { setMoyenne: (value: number) => void }) {
 
     const [games, setGames] = useState<PrintCommentsProps[]>([])
 
@@ -23,7 +23,7 @@ export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number
     const { auth } = useAuth()
 
     // Theme
-    const {theme} = UseTheme()
+    const { theme } = UseTheme()
 
     /* ---------------------
         Récup depuis BDD
@@ -37,8 +37,8 @@ export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number
         }
 
         const getGames = (async () => {
-            const response = await MeDB<PrintCommentsProps[]>({url: `${URL_API}/me/getAllGrade`, token: auth.token, methodToSend: "GET"})
-            
+            const response = await MeDB<PrintCommentsProps[]>({ url: `${URL_API}/me/getAllGrade`, token: auth.token, methodToSend: "GET" })
+
             if (response.dataToResponse !== null && response.dataToResponse && response.responseType === "Success") {
                 setGames(response.dataToResponse)
             }
@@ -50,16 +50,17 @@ export default function PrintComments ({setMoyenne}: {setMoyenne: (value: number
     // Redirection
     const navigate = useNavigate()
 
-    function voirPlus (id: number) {
+    function voirPlus(id: number) {
         navigate(`/details/${id}`)
     }
 
     // Calcul moyenne 
-    let total = 0
-    
-    const gamesWithGrade = games.filter(game => game.grade !== null)
-    gamesWithGrade.map(game => total = total + game.grade)
-    setMoyenne(total / gamesWithGrade.length)
+    useEffect(() => {    
+        let total = 0
+        const gamesWithGrade = games.filter(game => game.grade !== null)
+        gamesWithGrade.map(game => total = total + game.grade)
+        setMoyenne(total / gamesWithGrade.length)
+    }, [games, setMoyenne])
 
     return (
         <div className="grid min-w-0 max-h-[75vh] grid-cols-1 gap-4 overflow-y-auto">

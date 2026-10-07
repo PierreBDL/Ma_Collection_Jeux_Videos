@@ -28,7 +28,7 @@ def update_of_favorites(updateInfos: AccountInputUpdateFavorite, db: Session):
 
 # Chercher et envoyer favoris
 async def get_favoris_logic (name: str, db: Session) :
-    statement = select(UsersTable, UserFavorite).join(UserFavorite, UserFavorite.game_id == UsersTable.id).where(UsersTable.name == name)
+    statement = select(UsersTable).where(UsersTable.name == name)
     user = db.scalars(statement).first()
         
     if user is None :
