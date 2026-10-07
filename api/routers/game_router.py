@@ -1,7 +1,6 @@
 from fastapi import APIRouter, status, HTTPException, Depends
 from database import get_db
 from sqlalchemy.orm import Session
-from sqlalchemy import select
 
 from data.game_data import *
 from models.game_model import *
@@ -16,19 +15,19 @@ router = APIRouter (
 )
 
 # Get games
-@router.get("")
+@router.get("", response_model=All_Games)
 def get_games(counterResult: dict = Depends(counter), db: Session = Depends(get_db)):
     result = get_see_more(counterResult, db)
-    return {"games": result}
+    return result
 
-@router.get("/search")
+@router.get("/search", response_model=Search_Games)
 def get_all_games(therme: str = "", origin: str = "bySearchBar", counterResult: dict = Depends(counter), db: Session = Depends(get_db)):
     result = get_see_more_research(therme, origin, counterResult, db)
     return result
 
-@router.get("/{game_id}")
+@router.get("/{game_id}", response_model=Game)
 def get_game_by_id(game_id: int, db: Session = Depends(get_db)):
     statement = db.get(GamesTable, game_id)
     if statement is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jeu introuvable")
-    return {"game": statement}
+    return statement

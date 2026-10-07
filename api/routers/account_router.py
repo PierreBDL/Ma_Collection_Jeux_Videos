@@ -14,25 +14,25 @@ router = APIRouter (
 
 # Login
 
-@router.post("/login", status_code=status.HTTP_200_OK)
+@router.post("/login", status_code=status.HTTP_200_OK, response_model=AccountLoginOutput)
 async def login(user: AccountInput, db: Session = Depends(get_db)):
     result = await test_login(user, db)
-    if result == {} :
+    if result is None :
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Courriel ou mot de passe incorrect !")
     return result
 
 # Register
-@router.post("/register", status_code=status.HTTP_201_CREATED)
+@router.post("/register", status_code=status.HTTP_201_CREATED, response_model=AccountRegisterOutput)
 async def register(user: AccountRegisterInput, db: Session = Depends(get_db)):
     result = await test_register(user, db)
-    if result == {} :
+    if result is None :
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Identifiants déjà pris !")
     return result
 
 # Me
-@router.get("/me")
+@router.get("/me", response_model=AccountRegisterOutput)
 async def get_me (token_data: dict = Depends(check_token), db: Session = Depends(get_db)):
-    result = get_user(token_data["sub"], db)
+    result = await get_user(token_data["sub"], db)
     if result is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Informations incorrectes")
     return result

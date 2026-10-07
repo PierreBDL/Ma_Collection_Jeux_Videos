@@ -30,7 +30,7 @@ async def test_login(user: AccountInput, db: Session):
     if db_user and pwd.verify(user.password, db_user.password):
         return create_tokens(db_user)
 
-    return {}
+    return None
 
 
 # Register
@@ -39,7 +39,7 @@ async def test_register(user: AccountRegisterInput, db: Session):
     # Vérif si libre
     statementEmail = select(UsersTable).where(UsersTable.email == user.email)
     if db.scalars(statementEmail).first() is not None:
-        return {}
+        return None
 
     # Enregistrer
     newAccount = UsersTable (
@@ -52,14 +52,14 @@ async def test_register(user: AccountRegisterInput, db: Session):
     db.add(newAccount)
     db.commit()
     db.refresh(newAccount)
-    return create_tokens(newAccount)
+
+    return {"id": newAccount.id, "email": newAccount.email, "name": newAccount.name}
 
 # Auth me
 async def get_user (username: str, db: Session):
     statement = select(UsersTable).where(UsersTable.name == username)
-
-    if statement is None :
+    user = db.scalars(statement).first()
+    if user is None:
         return None
 
-    statement = db.scalars(statement).first()
-    return {"email": statement.email, "id": statement.id}
+    return {"email": user.email, "id": user.id, "name": user.name}
