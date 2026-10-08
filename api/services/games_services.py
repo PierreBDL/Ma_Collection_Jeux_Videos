@@ -19,7 +19,8 @@ async def get_see_more(therme: str, origin: str, counterResult: dict, db: Sessio
         jeux_bdd = db.scalars(statement).all()
 
         # Error
-        http_exception(code=404, message="Aucun jeu")
+        if not jeux_bdd:
+            http_exception(code=404, message="Aucun jeu")
 
         # Result
         result = []

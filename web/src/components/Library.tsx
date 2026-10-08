@@ -53,7 +53,7 @@ export default function Library() {
         }
 
         if (Array.isArray(data)) {
-            setGames(c => pageNumber === 1 ? data : [...c, ...data])
+            setGames(c => pageNumber === 0 ? data : [...c, ...data])
             // Vérif ssi assez de jeux dans la bdd
             setIsEnoughtGame(data.length <= limit ? true : false)
 
@@ -70,7 +70,7 @@ export default function Library() {
 
     useEffect(() => {
         getGames(0)
-    }, [searchTherme, searchOrigin, games])
+    }, [searchTherme, searchOrigin])
 
     /* ---------------------
             Affichage
