@@ -13,13 +13,55 @@ from utils.httpErrors import http_exception
 # Vérif si le token appartient à l'utilisateur
 def check_token_name (username: str, token_name: str):
     if username != token_name :
+        # Error
         http_exception(code=401, message="Token invalide")
     return
 
+# Ajout favoris
+def add_favorite(updateInfos: NewFavorisInput, username: str, db: Session):
+    
+    # Vérif si l'utilisateur existe dans la bdd
+    user = db.scalars(select(UsersTable).where(UsersTable.name == username)).first()
+    if user is None:
+        # Error
+        http_exception(code=404, message="Utilisateur introuvable")
 
-# Convertit un favori et son jeu en réponse pour le front existant.
-def _favorite_response(favorite: UserFavorite, game: GamesTable):
-    return {
+    # Chercher le jeu
+    game = db.get(GamesTable, updateInfos.item_id)
+    if game is None:
+        # Error
+        http_exception(code=404, message="Jeu introuvable")
+
+    # Vérif si le jeu est déjà favoris
+    isFavorite = db.scalars(select(UserFavorite).where(UserFavorite.user_id == user.id, UserFavorite.game_id == updateInfos.item_id)).first()
+    if isFavorite is not None:
+        # Error
+        http_exception(code=409, message="Jeu déjà présent")
+
+    # Récup la liste actuelle
+    statement = db.execute(select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id)).all()
+    
+    # Résultat
+    result = []
+    for favoris, i in statement:
+        old_game = {
+            "id": i.id,
+            "nom": i.nom,
+            "studio": i.studio,
+            "plateforme": i.plateforme,
+            "annee": i.annee,
+            "genre": i.genre,
+            "description": i.description,
+            "image": i.image,
+            "etat": favoris.state or "a_decouvrir",
+            "note": favoris.grade or 0,
+            "commentaire": favoris.opinion or "",
+            "date": favoris.date or "",
+        }
+        result.append(old_game)
+        
+    # Nouveau jeu
+    new_game = {
         "id": game.id,
         "nom": game.nom,
         "studio": game.studio,
@@ -28,167 +70,196 @@ def _favorite_response(favorite: UserFavorite, game: GamesTable):
         "genre": game.genre,
         "description": game.description,
         "image": game.image,
-        "opinion": favorite.opinion or "",
-        "grade": favorite.grade or 0,
-        "state": favorite.state or "a_decouvrir",
-        "date": favorite.date
+        "etat": updateInfos.state or "a_decouvrir",
+        "note": updateInfos.grade or 0,
+        "commentaire": updateInfos.opinion or "",
+        "date": updateInfos.date or "",
     }
-
-
-def _entry_response(favorite: UserFavorite, game: GamesTable):
-    return {
-        "id": favorite.game_id,
-        "statut": favorite.state or "a_decouvrir",
-        "note": favorite.grade or None,
-        "commentaire": favorite.opinion,
-        "date_ajout": favorite.date,
-        "item": {
-            "id": game.id,
-            "titre": game.nom,
-            "categorie": game.genre,
-            "description": game.description,
-            "image_url": game.image,
-            "annee": game.annee,
-            "studio": game.studio,
-            "plateforme": game.plateforme,
-        },
-    }
-
-
-# Synchronisation conservée pour le front actuel.
-def update_of_favorites(updateInfos: AccountInputUpdateFavorite, username: str, db: Session):
-    check_token_name(updateInfos.name, username)
-    user = db.scalars(select(UsersTable).where(UsersTable.name == username)).first()
-    if user is None:
-        http_exception(code=404, message="Utilisateur introuvable")
-
-    game_ids = {game.id for game in updateInfos.favorites}
-    games = db.scalars(select(GamesTable).where(GamesTable.id.in_(game_ids))).all() if game_ids else []
-    if len(games) != len(game_ids):
-        http_exception(code=404, message="Jeu introuvable")
-
-    user.favorites = games
-    db.commit()
-    db.refresh(user)
-    return {"favorites": [_favorite_response(favorite, game) for favorite, game in db.execute(
-        select(UserFavorite, GamesTable)
-        .join(GamesTable, UserFavorite.game_id == GamesTable.id)
-        .where(UserFavorite.user_id == user.id)
-    ).all()]}
-
-
-# Ajout favoris
-
-def add_favorite(updateInfos: NewFavorisInput, username: str, db: Session):
-    user = db.scalars(select(UsersTable).where(UsersTable.name == username)).first()
-    if user is None:
-        http_exception(code=404, message="Utilisateur introuvable")
-
-    game = db.get(GamesTable, updateInfos.item_id)
-    if game is None:
-        http_exception(code=404, message="Jeu introuvable")
-
-    favorite = db.scalar(select(UserFavorite).where(
-        UserFavorite.user_id == user.id,
-        UserFavorite.game_id == game.id
-    ))
-    if favorite is not None:
-        http_exception(code=409, message="Jeu déjà présent")
-
+    result.append(new_game)
+    
+    # Nouveau Favorite
     favorite = UserFavorite(
         user_id=user.id,
         game_id=game.id,
-        opinion=updateInfos.commentaire,
-        grade=updateInfos.note or 0,
-        state=updateInfos.statut,
-        date=updateInfos.date_ajout
+        state=updateInfos.state,
+        grade=updateInfos.grade or 0,
+        opinion=updateInfos.opinion or "",
+        date=updateInfos.date or None
     )
     db.add(favorite)
     db.commit()
     db.refresh(favorite)
-    return _entry_response(favorite, game)
+    
+    return {"favorites": result}
 
 
-# Mettre à jour un favori. L'id est le game_id, clé de l'entrée pour cet utilisateur.
-def update_a_favorite(id: int, updateInfos: UpdateFavorisInput, username: str, db: Session):
+# MAJ Favorite
+def update_a_favorite(entry_id: int, updateInfos: UpdateFavorisInput, username: str, db: Session):
+    # Vérif si l'utilisateur existe dans la bdd
     user = db.scalars(select(UsersTable).where(UsersTable.name == username)).first()
     if user is None:
+        # Error
         http_exception(code=404, message="Utilisateur introuvable")
 
-    favorite = db.scalar(select(UserFavorite).where(
-        UserFavorite.user_id == user.id,
-        UserFavorite.game_id == id
-    ))
+    # Vérif si le jeu est favoris
+    favorite = db.scalars(select(UserFavorite).where(UserFavorite.user_id == user.id, UserFavorite.game_id == entry_id)).first()
     if favorite is None:
-        http_exception(code=404, message="Veuillez mettre le jeu en favoris")
+        # Error
+        http_exception(code=404, message="Le jeu n'est pas en favoris")
 
-    game = db.get(GamesTable, id)
-    if game is None:
-        http_exception(code=404, message="Jeu introuvable")
-
-    if "commentaire" in updateInfos.model_fields_set:
-        favorite.opinion = updateInfos.commentaire
-    if "note" in updateInfos.model_fields_set:
-        favorite.grade = updateInfos.note or 0
-    if "statut" in updateInfos.model_fields_set and updateInfos.statut is not None:
-        favorite.state = updateInfos.statut
-    if "date_ajout" in updateInfos.model_fields_set:
-        favorite.date = updateInfos.date_ajout
+    # MAJ des infos
+    if updateInfos.state is not None:
+        favorite.state = updateInfos.state
+    if updateInfos.grade is not None:
+        favorite.grade = updateInfos.grade
+    if updateInfos.opinion is not None:
+        favorite.opinion = updateInfos.opinion
+    if updateInfos.date is not None:
+        favorite.date = updateInfos.date
 
     db.commit()
     db.refresh(favorite)
-    return _entry_response(favorite, game)
+
+    # Récup la liste actuelle
+    statement = db.execute(select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id)).all()
+
+    # Résultat
+    result = []
+    for favoris, i in statement:
+        game = {
+            "id": i.id,
+            "nom": i.nom,
+            "studio": i.studio,
+            "plateforme": i.plateforme,
+            "annee": i.annee,
+            "genre": i.genre,
+            "description": i.description,
+            "image": i.image,
+            "etat": favoris.state or "a_decouvrir",
+            "note": favoris.grade or 0,
+            "commentaire": favoris.opinion or "",
+            "date": favoris.date or "",
+        }
+        result.append(game)
+    return {"favorites": result}
 
 
-# Supprimer un favori
-
-def delete_a_favorite(id: int, username: str, db: Session):
+# Delete Favorite
+def delete_a_favorite(entry_id: int, username: str, db: Session):
+    # Vérif si l'utilisateur existe dans la bdd
     user = db.scalars(select(UsersTable).where(UsersTable.name == username)).first()
     if user is None:
+        # Error
         http_exception(code=404, message="Utilisateur introuvable")
 
-    favorite = db.scalar(select(UserFavorite).where(
-        UserFavorite.user_id == user.id,
-        UserFavorite.game_id == id
-    ))
+    # Vérif si le jeu est favoris
+    favorite = db.get(UserFavorite, (user.id, entry_id))
     if favorite is None:
+        # Error
         http_exception(code=404, message="Le jeu n'est pas en favoris")
 
     db.delete(favorite)
     db.commit()
 
-
-# Chercher et envoyer favoris
-async def get_favoris_logic (name: str, db: Session) :
-    statement = select(UsersTable).where(UsersTable.name == name)
-    user = db.scalars(statement).first()
-        
-    if user is None :
+# Chercher et envoyer les favoris
+async def get_favoris_logic(statut, tri, name: str, db: Session):
+    # Vérif si l'utilisateur existe dans la bdd
+    user = db.scalars(select(UsersTable).where(UsersTable.name == name)).first()
+    if user is None:
         # Error
         http_exception(code=404, message="Utilisateur introuvable")
 
-    statement = (select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id))
+    # Filtre et tri
+    if statut is not None and tri is not None and statut != "tous":
+        if tri == "date":
+            statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut).order_by(UserFavorite.date.asc())
+        elif tri == "note":
+            statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut).order_by(UserFavorite.grade.asc())
+        else:
+            statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut)
+    elif statut is not None and statut != "tous":
+        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut)
+    elif tri == "date":
+        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id).order_by(UserFavorite.date.asc())
+    elif tri == "note":
+        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id).order_by(UserFavorite.grade.asc())
+    else :
+        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id)
+    
     favorites = db.execute(statement).all()
 
+    # Résultat
     result = []
-
-    for favorite, game in favorites:
+    for favoris, i in favorites:
         game = {
-            "id": favorite.game_id,
-            "nom": game.nom,
-            "studio": game.studio,
-            "plateforme": game.plateforme,
-            "annee": game.annee,
-            "genre": game.genre,
-            "description": game.description,
-            "image": game.image,
-            "opinion": favorite.opinion,
-            "grade": favorite.grade,
-            "state": favorite.state or "a_decouvrir",
-            "date": favorite.date
+            "id": i.id,
+            "nom": i.nom,
+            "studio": i.studio,
+            "plateforme": i.plateforme,
+            "annee": i.annee,
+            "genre": i.genre,
+            "description": i.description,
+            "image": i.image,
+            "etat": favoris.state or "a_decouvrir",
+            "note": favoris.grade or 0,
+            "commentaire": favoris.opinion or "",
+            "date": favoris.date or "",
         }
         result.append(game)
     return {"favorites": result}
+
+
+def get_stats(username: str, db: Session):
+    
+    # Vérif si l'utilisateur existe dans la bdd
+    user = db.scalars(select(UsersTable).where(UsersTable.name == username)).first()
+    if user is None:
+        # Error
+        http_exception(code=404, message="Utilisateur introuvable")
+
+    # récup favoris
+    favorites = db.scalars(select(UserFavorite).where(UserFavorite.user_id == user.id)).all()
+    
+    # Varriables
+    statut = {"a_decouvrir": 0, "en_cours": 0, "termine": 0}
+    console = {"PC": 0, "PlayStation": 0, "Nintendo": 0}
+    notes = []
+
+    # Chercher
+    for i in favorites:
+        # State
+        if i.state == "termine":
+            statut["termine"] = statut["termine"] + 1
+        elif i.state == "en_cours":
+            statut["en_cours"] = statut["en_cours"] + 1
+        elif i.state == "a_decouvrir" or None or "":
+            statut["a_decouvrir"] = statut["a_decouvrir"] + 1
+        
+        # Console
+        if "PC".lower in i.state.lower:
+            statut["PC"] = statut["PC"] + 1
+        elif "PlayStation".lower in i.state.lower:
+            statut["PlayStation"] = statut["PlayStation"] + 1
+        elif "Nintendo".lower in i.state.lower:
+            statut["Nintendo"] = statut["Nintendo"] + 1
+         
+        if i.grade is not None:
+            notes.append(i.grade)
+
+    
+    # Moyenne
+    total = 0
+    for i in notes:
+        total = total + i
+        
+    moyenne = total / len(notes) or 0
+    
+    return {
+        "total": len(favorites),
+        "statut": statut,
+        "console": console,
+        "moyenne": moyenne
+    }
 
 # Sauvegarde de la note
 def save_the_grade(updateInfos: SaveGradeInput, username: str, db: Session):

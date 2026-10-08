@@ -27,22 +27,24 @@ class GetGradeInput(BaseModel):
 
 class NewFavorisInput(BaseModel):
     item_id: int
-    statut: Statut = "a_decouvrir"
-    note: int | None = Field(default=None, ge=1, le=5)
-    commentaire: str | None = Field(default=None, max_length=500)
-    date_ajout: str | None = None
+    state: Statut = "a_decouvrir"
+    grade: int | None = Field(default=None, ge=1, le=5)
+    opinion: str | None = Field(default=None, max_length=500)
+    date: str | None = None
 
 
 class UpdateFavorisInput(BaseModel):
-    statut: Statut | None = None
-    note: int | None = Field(default=None, ge=1, le=5)
-    commentaire: str | None = Field(default=None, max_length=500)
-    date_ajout: str | None = None
+    state: Statut | None = None
+    grade: int | None = Field(default=None, ge=1, le=5)
+    opinion: str | None = Field(default=None, max_length=500)
+    date: str | None = None
 
 class FavoriteOutput(BaseModel):
-    id: int
-    statut: Statut
-    note: int | None
-    commentaire: str | None
-    date_ajout: str | None
-    item: Game
+    favorites: list[Game]
+    
+# Stats
+class StatsOutput(BaseModel):
+    total: int
+    statut: object
+    console: object
+    moyenne: float
