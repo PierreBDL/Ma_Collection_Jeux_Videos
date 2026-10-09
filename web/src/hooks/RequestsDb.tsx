@@ -101,6 +101,8 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
 
         if (!response.ok) {
             return { dataToResponse: null, responseType: "Error" }
+        } else if (response.status === 204) {
+            return { dataToResponse: null, responseType: "Success" }
         } else {
             const data = await response.json()
             return { dataToResponse: data as T, favorites: data?.favorites, responseType: "Success" }

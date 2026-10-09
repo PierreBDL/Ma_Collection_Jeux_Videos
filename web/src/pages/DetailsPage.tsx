@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {type JeuxProps} from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
 import {useAuth} from '../hooks/Auth'
-import {GetGamesDB} from '../hooks/RequestsDb'
+import {GetGamesDB, MeDB} from '../hooks/RequestsDb'
 import CardDetailsGame from '../components/CardDetailsGame'
 import UserFormDetails from '../components/UserFormDetails'
 import { type GameResponse } from '../types/api'
@@ -59,7 +59,7 @@ export default function DetailsPage () {
 
     const {auth, setAuth} = useAuth()
 
-    function handleFavorite () {
+    async function handleFavorite () {
         // Si l'utilisateur pas connecté
         if (!auth) {
             navigate("/login")
@@ -74,16 +74,14 @@ export default function DetailsPage () {
 
         // Chercher si le jeu est déjà favoris
         const searchFavoris = auth.favorites.filter(favoriteGame => favoriteGame.id === game.id)
-        
-        let newListFavorites: JeuxProps[]
 
         if (searchFavoris.length > 0) {
-            newListFavorites = auth.favorites.filter(favoriteGame => favoriteGame.id !== game.id)
+            await MeDB({url: `${URL_API}/me/collection/${game.id}`, methodToSend: 'DELETE', token: auth.token})
+            setAuth({...auth, favorites: auth.favorites.filter(favorite => game.id === favorite.id)})
         } else {
-            newListFavorites = [...auth.favorites, game]
-        }
-
-        setAuth({...auth, favorites: newListFavorites})
+            await MeDB({url: `${URL_API}/me/collection`, methodToSend: 'POST', token: auth.token, dataToSend: JSON.stringify({item_id: game.id, state})})
+            setAuth({...auth, favorites: [...auth.favorites, game]})
+        }   
     }
 
     /* ---------------------

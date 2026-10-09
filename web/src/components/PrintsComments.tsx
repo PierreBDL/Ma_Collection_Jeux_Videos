@@ -37,10 +37,10 @@ export default function PrintComments() {
         }
 
         const getGames = (async () => {
-            const response = await MeDB<PrintCommentsProps[]>({ url: `${URL_API}/me/getAllGrade`, token: auth.token, methodToSend: "GET" })
+            const response = await MeDB<PrintCommentsProps[]>({ url: `${URL_API}/me/collection`, token: auth.token, methodToSend: "GET" })
 
             if (response.dataToResponse !== null && response.dataToResponse && response.responseType === "Success") {
-                setGames(response.dataToResponse)
+                setGames((response.favorites) as PrintCommentsProps[])
             }
         })
 

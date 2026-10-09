@@ -1,8 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
 import { type JeuxProps } from '../interfaces/gameInt'
-import { URL_API } from '../utils/Links'
-import { useNavigate } from 'react-router-dom';
-import {MeDB, RefrechTokenDB} from '../hooks/RequestsDb'
 
 interface AuthValue {
     token: string
@@ -28,55 +25,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     })
 
-    // Hook navigate
-    const navigate = useNavigate()
-
-    // Enregistrement dans le local storage les données de l'utilisateur et dans l'api
+    // Enregistrement local des données de l'utilisateur
     useEffect(() => {
         if (!auth) {
+            localStorage.removeItem('auth')
             return
         }
 
-        // Sauvegarde dans le local storage
         localStorage.setItem('auth', JSON.stringify(auth))
-
-        const saveFavoritesApi = async () => {
-            try {
-                let response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PATCH',token: auth.token, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
-
-                if (response.responseType === "Error" && auth.refreshToken) {
-
-                    // Refresh token
-                    const newTokenResponse = await RefrechTokenDB({url: `${URL_API}/auth/refresh`, token: auth.refreshToken})
-
-                    if (newTokenResponse.responseType === "Error") {
-                        localStorage.removeItem("auth")
-                        localStorage.removeItem("token")
-                        setAuth(null)
-                        navigate("/login")
-                        return
-                    } else {
-                        // Sauvegarder nouveau token
-                        setAuth({ ...auth, token: newTokenResponse.response})
-
-                        const newToken = newTokenResponse.response
-
-                        // Réessayer
-                        response = await MeDB({url: `${URL_API}/me/updateFavorite`, methodToSend: 'PATCH', token: newToken, dataToSend: JSON.stringify({ name: auth.name, favorites: auth.favorites })})
-                    }
-                }
-
-                if (response.responseType === "Error") {
-                    alert("Modifications non sauvegardées")
-                }
-            } catch {
-
-            }
-        }
-
-        saveFavoritesApi()
-
-    }, [auth?.favorites])
+    }, [auth])
 
     // Provider
     return (

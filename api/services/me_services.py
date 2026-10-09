@@ -285,8 +285,8 @@ def save_the_grade(updateInfos: SaveGradeInput, username: str, db: Session):
             user_favo.date = updateInfos.date 
         db.commit()
         db.refresh(user_favo)
-        return
-    return
+        return True
+    return False
 
 # Récup de la note
 def get_the_grade (username: str, game_id: int, db: Session):
