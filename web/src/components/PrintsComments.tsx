@@ -15,7 +15,7 @@ interface PrintCommentsProps {
     state: "a_decouvrir" | "en_cours" | "termine"
 }
 
-export default function PrintComments({ setMoyenne }: { setMoyenne: (value: number) => void }) {
+export default function PrintComments() {
 
     const [games, setGames] = useState<PrintCommentsProps[]>([])
 
@@ -53,14 +53,6 @@ export default function PrintComments({ setMoyenne }: { setMoyenne: (value: numb
     function voirPlus(id: number) {
         navigate(`/details/${id}`)
     }
-
-    // Calcul moyenne 
-    useEffect(() => {    
-        let total = 0
-        const gamesWithGrade = games.filter(game => game.grade !== null)
-        gamesWithGrade.map(game => total = total + game.grade)
-        setMoyenne(total / gamesWithGrade.length)
-    }, [games, setMoyenne])
 
     return (
         <div className="grid min-w-0 max-h-[75vh] grid-cols-1 gap-4 overflow-y-auto">

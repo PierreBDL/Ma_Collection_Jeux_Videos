@@ -33,6 +33,6 @@ async def get_favorites (statut: str = None, tri: str = None, token_data = Depen
     return await get_favoris_logic(statut, tri, token_data["sub"], db)
 
 # Stats
-@router.get("/stats", response_model=FavoriteOutput)
+@router.get("/stats", response_model=StatsOutput)
 async def get_favorites (token_data = Depends(check_token), db: Session = Depends(get_db)):
-    return await get_stats(token_data["sub"], db)
+    return get_stats(token_data["sub"], db)

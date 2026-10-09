@@ -1,4 +1,3 @@
-import { type JeuxProps } from '../interfaces/gameInt'
 import { UseTheme } from '../hooks/Theme'
 
 interface partOfGraph {
@@ -7,9 +6,9 @@ interface partOfGraph {
     color: string
 }
 
-export default function Graph({ favoris }: { favoris: JeuxProps[] }) {
+export default function Graph({ data, dataType, totalGames }: { dataType: string, data: Record<string, number>, totalGames: number }) {
     // Hook thème
-    const {theme} = UseTheme()
+    const { theme } = UseTheme()
 
     // Valeurs pour le render
     const rayon: number = 15.9155
@@ -28,20 +27,31 @@ export default function Graph({ favoris }: { favoris: JeuxProps[] }) {
         "#6366f1",
     ];
 
-    const plateformes: string[] = [
-        "Nintendo - GameBoy Advance",
-        "Nintendo - Switch",
-        "PC",
-        "PlayStation 5",
-        "PlayStation 4"
+    let keys = Object.keys(data)
 
-    ]
+    let repartition: partOfGraph[] = []
 
-    let jeuxRepartition: partOfGraph[] = plateformes.map((plateforme, index) => {
-        const nbGame: number = favoris.filter(p => p.plateforme.toLowerCase() === plateforme.toLowerCase()).length
-        const percent: number = favoris.length === 0 ? 0 : (nbGame / favoris.length) * 100
-        return { label: plateforme, val: percent, color: colors[index] }
-    })
+    if (dataType === "statut") {
+        for (let i = 0; i < keys.length; i++) {
+            repartition.push(
+                {
+                    label: keys[i] === "a_decouvrir" ? "A Découvrir" : (keys[i] === "en_cours" ? "En cours" : "Terminé"),
+                    val: (Number(data[keys[i]]) / totalGames) * 100,
+                    color: colors[i]
+                }
+            )
+        }
+    } else {
+        for (let i = 0; i < keys.length; i++) {
+            repartition.push(
+                {
+                    label: keys[i],
+                    val: (Number(data[keys[i]]) / totalGames) * 100,
+                    color: colors[i]
+                }
+            )
+        }
+    }
 
     return (
         <div className="flex flex-row">
@@ -55,7 +65,7 @@ export default function Graph({ favoris }: { favoris: JeuxProps[] }) {
                     stroke="white"
                 ></circle>
                 {
-                    jeuxRepartition.map((value, i) => {
+                    repartition.map((value, i) => {
                         const strokeDashoffset = total
 
                         total = total + value.val
@@ -78,7 +88,7 @@ export default function Graph({ favoris }: { favoris: JeuxProps[] }) {
             </svg>
 
             <div className="flex flex-col gap-4 justify-center">
-                {jeuxRepartition.map((item, i) => (
+                {repartition.map((item, i) => (
                     <div key={i} className={`flex items-center gap-2 text-sm font-medium ${theme === "dark" ? "text-black" : "text-white"}`}>
                         <span className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
                         <span>{item.label} ({Math.round(item.val)}%)</span>

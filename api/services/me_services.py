@@ -217,8 +217,12 @@ def get_stats(username: str, db: Session):
         # Error
         http_exception(code=404, message="Utilisateur introuvable")
 
-    # récup favoris
-    favorites = db.scalars(select(UserFavorite).where(UserFavorite.user_id == user.id)).all()
+    # récup favoris avec les jeux pour obtenir leur plateforme
+    favorites = db.execute(
+        select(UserFavorite, GamesTable)
+        .join(GamesTable, UserFavorite.game_id == GamesTable.id)
+        .where(UserFavorite.user_id == user.id)
+    ).all()
     
     # Varriables
     statut = {"a_decouvrir": 0, "en_cours": 0, "termine": 0}
@@ -226,33 +230,25 @@ def get_stats(username: str, db: Session):
     notes = []
 
     # Chercher
-    for i in favorites:
-        # State
-        if i.state == "termine":
-            statut["termine"] = statut["termine"] + 1
-        elif i.state == "en_cours":
-            statut["en_cours"] = statut["en_cours"] + 1
-        elif i.state == "a_decouvrir" or None or "":
-            statut["a_decouvrir"] = statut["a_decouvrir"] + 1
-        
-        # Console
-        if "PC".lower in i.state.lower:
-            statut["PC"] = statut["PC"] + 1
-        elif "PlayStation".lower in i.state.lower:
-            statut["PlayStation"] = statut["PlayStation"] + 1
-        elif "Nintendo".lower in i.state.lower:
-            statut["Nintendo"] = statut["Nintendo"] + 1
-         
-        if i.grade is not None:
-            notes.append(i.grade)
+    for favorite, game in favorites:
+        state = favorite.state or "a_decouvrir"
+        if state in statut:
+            statut[state] += 1
+
+        platform = game.plateforme.lower()
+        if "pc" in platform or "windows" in platform:
+            console["PC"] += 1
+        elif "playstation" in platform:
+            console["PlayStation"] += 1
+        elif "nintendo" in platform:
+            console["Nintendo"] += 1
+
+        if favorite.grade is not None and favorite.grade > 0:
+            notes.append(favorite.grade)
 
     
     # Moyenne
-    total = 0
-    for i in notes:
-        total = total + i
-        
-    moyenne = total / len(notes) or 0
+    moyenne = sum(notes) / len(notes) if notes else 0
     
     return {
         "total": len(favorites),

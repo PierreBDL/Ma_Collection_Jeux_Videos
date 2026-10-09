@@ -57,3 +57,13 @@ export interface AllGamesResponse {
     page: number
     total: number
 }
+
+/* --------------------
+        Stats
+---------------------*/
+export interface StatsResponse {
+    total: number
+    statut: Record<Statut, number>
+    console: Record<string, number>
+    moyenne: number
+}
