@@ -1,4 +1,4 @@
-type Statut = "a_decouvrir" | "en_cours" | "termine";
+export type Statut = "a_decouvrir" | "en_cours" | "termine";
 
 import {type JeuxProps} from '../interfaces/gameInt'
 
@@ -44,6 +44,25 @@ export interface GameResponse {
     grade?: number
     state?: "a_decouvrir" | "en_cours" | "termine"
     date?: string
+}
+
+export interface FavoriteResponse {
+    id: number
+    nom: string
+    studio: string
+    plateforme: string
+    annee: string
+    genre: string
+    description: string
+    image: string
+    note: number
+    commentaire: string
+    etat: Statut
+    date: string
+}
+
+export interface FavoritesResponse {
+    favorites: FavoriteResponse[]
 }
 
 

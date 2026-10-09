@@ -5,18 +5,12 @@ import {UseTheme} from '../hooks/Theme'
 import {MeDB} from '../hooks/RequestsDb'
 import { URL_API } from '../utils/Links'
 import {useAuth} from '../hooks/Auth'
+import {type FavoritesResponse, type Statut} from '../types/api'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
 
-type StateType = "a_decouvrir" | "en_cours" | "termine"
-
-interface GradeResponse {
-    grade: number
-    opinion: string
-    state: StateType
-    date: string | null
-}
+type StateType = Statut
 
 interface UserFormDetailsprops {
     gameId: number
@@ -62,7 +56,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
         setIsSuccess(null)
 
         const createdAt = new Date().toLocaleString();
-        const response = await MeDB<boolean>({url: `${URL_API}/me/saveGrade`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ game_id: gameId, name: auth.name, opinion: opinion, grade: grade, state: state, date: createdAt })})
+        const response = await MeDB<FavoritesResponse>({url: `${URL_API}/me/collection/${gameId}`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ opinion, grade, state, date: createdAt })})
     
         if (response.responseType === "Success") {
             setDate(createdAt)
@@ -92,13 +86,20 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
             setError("")
             setIsSuccess(null)
 
-            const response = await MeDB<GradeResponse>({url: `${URL_API}/me/getGrade?game_id=${gameId}`, methodToSend: 'GET', token: auth.token})
+            const response = await MeDB<FavoritesResponse>({url: `${URL_API}/me/collection`, methodToSend: 'GET', token: auth.token})
 
             if (response.responseType === "Success" && response.dataToResponse) {
-                setGrade(response.dataToResponse.grade)
-                setOpinion(response.dataToResponse.opinion)
-                setState(response.dataToResponse.state)
-                setDate(response.dataToResponse.date ?? "")
+                const favorite = response.dataToResponse.favorites.find(game => game.id === gameId)
+                if (!favorite) {
+                    setIsSuccess(false)
+                    setError("Veuillez d'abord mettre le jeu en favoris")
+                    return
+                }
+
+                setGrade(favorite.note)
+                setOpinion(favorite.commentaire)
+                setState(favorite.etat)
+                setDate(favorite.date ?? "")
                 setError("")
             } else {
                 setIsSuccess(false)

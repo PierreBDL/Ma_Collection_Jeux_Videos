@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/Auth'
 import { MeDB } from '../hooks/RequestsDb'
 import Button from '../components/Button'
 import { UseTheme } from '../hooks/Theme'
+import {type FavoritesResponse} from '../types/api'
 
 interface PrintCommentsProps {
     id: number
@@ -37,10 +38,16 @@ export default function PrintComments() {
         }
 
         const getGames = (async () => {
-            const response = await MeDB<PrintCommentsProps[]>({ url: `${URL_API}/me/collection`, token: auth.token, methodToSend: "GET" })
+            const response = await MeDB<FavoritesResponse>({ url: `${URL_API}/me/collection`, token: auth.token, methodToSend: "GET" })
 
-            if (response.dataToResponse !== null && response.dataToResponse && response.responseType === "Success") {
-                setGames((response.favorites) as PrintCommentsProps[])
+            if (response.dataToResponse && response.responseType === "Success") {
+                setGames(response.dataToResponse.favorites.map(game => ({
+                    id: game.id,
+                    nom: game.nom,
+                    grade: game.note,
+                    opinion: game.commentaire,
+                    state: game.etat
+                })))
             }
         })
 
