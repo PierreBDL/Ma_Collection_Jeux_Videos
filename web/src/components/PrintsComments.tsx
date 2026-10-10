@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { URL_API } from '../utils/Links'
-import { useAuth } from '../hooks/Auth'
-import { MeDB } from '../hooks/RequestsDb'
+import { useAuth } from '../context/AuthContext'
+import { MeDB } from '../services/RequestsDb'
 import Button from '../components/Button'
 import { UseTheme } from '../hooks/Theme'
 import {type FavoritesResponse} from '../types/api'

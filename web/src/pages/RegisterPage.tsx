@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
-import { AuthDB } from '../hooks/RequestsDb'
+import { AuthDB } from '../services/RequestsDb'
 import { useLocalStorage } from '../hooks/LocalStorage'
-import { useAuth } from '../hooks/Auth'
+import { useAuth } from '../context/AuthContext'
 
 import { type RegisterResponse, type LoginResponse } from '../types/api'
 

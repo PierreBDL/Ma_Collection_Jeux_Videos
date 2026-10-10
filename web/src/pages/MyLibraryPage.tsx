@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../hooks/Auth'
+import { useAuth } from '../context/AuthContext'
 import { UseTheme } from '../hooks/Theme'
 import GameCard from '../components/GameCard'
 import { URL_API } from '../utils/Links'
 import Button from '../components/Button'
 import { type JeuxProps } from '../interfaces/gameInt';
-import { MeDB } from '../hooks/RequestsDb'
+import { MeDB } from '../services/RequestsDb'
 import { type FavoritesResponse } from '../types/api'
 import TestConnect from '../utils/TestConnect'
 

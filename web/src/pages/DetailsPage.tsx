@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import {type JeuxProps} from '../interfaces/gameInt'
 import { URL_API } from '../utils/Links'
-import {useAuth} from '../hooks/Auth'
-import {GetGamesDB, MeDB} from '../hooks/RequestsDb'
+import {useAuth} from '../context/AuthContext'
+import {GetGamesDB, MeDB} from '../services/RequestsDb'
 import CardDetailsGame from '../components/CardDetailsGame'
 import UserFormDetails from '../components/UserFormDetails'
 import { type GameResponse, type FavoriteResponse, type DeleteFavoriteResponse } from '../types/api'

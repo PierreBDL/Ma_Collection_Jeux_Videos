@@ -4,8 +4,8 @@ import {useNavigate} from 'react-router-dom'
 import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
 import {useLocalStorage} from '../hooks/LocalStorage'
-import {useAuth} from '../hooks/Auth'
-import {AuthDB, MeDB} from '../hooks/RequestsDb'
+import {useAuth} from '../context/AuthContext'
+import {AuthDB, MeDB} from '../services/RequestsDb'
 import {type LoginResponse, type MeResponse, type FavoritesResponse} from '../types/api'
 
 export default function LoginPage() {

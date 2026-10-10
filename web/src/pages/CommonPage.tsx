@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { useState } from 'react';
 
 import { UseTheme } from '../hooks/Theme'
-import { useAuth } from '../hooks/Auth'
+import { useAuth } from '../context/AuthContext'
 
 import Button from '../components/Button'
 import SearchBar from '../components/SearchBar'

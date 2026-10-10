@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
-
 import Button from './Button'
 import {UseTheme} from '../hooks/Theme'
-import {MeDB} from '../hooks/RequestsDb'
+import {MeDB} from '../services/RequestsDb'
 import { URL_API } from '../utils/Links'
-import {useAuth} from '../hooks/Auth'
+import {useAuth} from '../context/AuthContext'
 import {type FavoritesResponse, type FavoriteResponse, type Statut} from '../types/api'
-
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
-
 type StateType = Statut
 
 interface UserFormDetailsprops {
@@ -18,7 +15,6 @@ interface UserFormDetailsprops {
     setState: (value: StateType) => void
     canSave: boolean | null
 }
-
 
 export default function UserFormDetails ({gameId, state, setState, canSave}: UserFormDetailsprops) {
     const [grade, setGrade] = useState<number>(0)
@@ -32,7 +28,8 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
 
     // hook Auth
     const {auth, setAuth} = useAuth()
-    const isFavorite = auth?.favorites.some(game => game.id === gameId) ?? false
+
+    const isFavorite = auth?.favorites.some(game => game.id === gameId) !== undefined && auth?.favorites.some(game => game.id === gameId) !== null ? true : false
 
     // Sauvegarde du formulaire
     async function handleSaveForm () {
@@ -82,7 +79,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
 
         const getBdd = async () => {
             // Vérif favoris
-            if (!auth.favorites.some(game => game.id === gameId)) {
+            if (isFavorite === false) {
                 setIsSuccess(false)
                 setError("Veuillez d'abord mettre le jeu en favoris")
                 return
@@ -119,7 +116,6 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
         getBdd()
     }, [auth?.token, gameId, isFavorite])
 
-
     return (
         <div className={`w-full mt-4 relative pt-8 max-w-3xl lg:mb-30 flex flex-col p-6 rounded-lg border ${theme === "dark" ? "border-black bg-white text-gray-800" : "border-white bg-slate-600 text-white" }`}>
             <h1 className="text-xl font-semibold text-center mb-2">Votre mémo sur le jeu</h1>
@@ -143,7 +139,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
 
                 {isSuccess !== null && (
                     <div className={isSuccess  === true ? "text-green-500" : "text-red-400"}>
-                        {isSuccess === true ? <p>Avis posté</p> : <p>{error}</p>}
+                        {isSuccess === true ? <p>Sauvegardé</p> : <p>{error}</p>}
                     </div>
                 )}
                 <Button style="mt-2 w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors disabled:bg-slate-700 disabled:text-white disabled:hover:bg-slate-800 disabled:cursor-not-allowed hover:bg-blue-700" isDisable={!isFavorite} handleClick={() => handleSaveForm()}>Enregistrer</Button>

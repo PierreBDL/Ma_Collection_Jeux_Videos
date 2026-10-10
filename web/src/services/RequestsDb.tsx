@@ -1,41 +1,24 @@
 import { type JeuxProps } from '../interfaces/gameInt'
+import type * as DbTypes from '../types/DbTypes'
 
 /* ----------------------------------
                 Auth
 -----------------------------------*/
 
-interface AuthDBPropsInput {
-    url: string
-    setError: (value: string) => void
-    dataToSend: string
-}
-
-interface AuthDBPropsOutput<T> {
-    dataToResponse: T | null
-}
-
-export async function AuthDB<T>({ url, setError, dataToSend }: AuthDBPropsInput): Promise<AuthDBPropsOutput<T>> {
+export async function AuthDB<T>({ url, setError, dataToSend }: DbTypes.AuthDBPropsInput): Promise<DbTypes.AuthDBPropsOutput<T>> {
     try {
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: {'Content-Type': 'application/json'},
             body: dataToSend,
         })
 
         const data = await response.json()
 
         if (!response.ok) {
-
             let reponse;
-
-            if (data !== null && data.detail && data.detail !== undefined && data.detail !== null) {
-                reponse = data.detail
-            } else {
-                reponse = "Erreur lors de la requête au serveur"
-            }
-
+            data !== null && data.detail && data.detail !== undefined && data.detail !== null ? reponse = data.detail : reponse = "Erreur lors de la requête au serveur"
+            
             setError(reponse)
             return { dataToResponse: null }
         } else if (data === null) {
@@ -51,37 +34,18 @@ export async function AuthDB<T>({ url, setError, dataToSend }: AuthDBPropsInput)
     }
 }
 
-interface RefrechTokenDBPropsInput {
-    url: string
-    token: string
-}
-
-interface RefrechTokenDBPropsOutput {
-    response: string
-    responseType: "Error" | "Success"
-}
-
-export async function RefrechTokenDB({ url, token }: RefrechTokenDBPropsInput): Promise<RefrechTokenDBPropsOutput> {
+export async function RefrechTokenDB({ url, token }: DbTypes.RefrechTokenDBPropsInput): Promise<DbTypes.RefrechTokenDBPropsOutput> {
     try {
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'refreshToken': `Bearer ${token}`
-            }
+            headers: {'Content-Type': 'application/json', 'refreshToken': `Bearer ${token}`}
         })
 
         const data = await response.json()
 
         if (!response.ok) {
             let reponse;
-
-            if (data.detail !== null) {
-                reponse = data.detail
-            } else {
-                reponse = "Token expiré"
-            }
-
+            data !== null && data.detail && data.detail !== undefined && data.detail !== null ? reponse = data.detail : reponse = "Token expiré"
             return { responseType: "Error", response: reponse }
         } else {
             return { responseType: "Success", response: data }
@@ -95,28 +59,11 @@ export async function RefrechTokenDB({ url, token }: RefrechTokenDBPropsInput): 
                 ME
 -----------------------------------*/
 
-interface MeDBPropsInput {
-    url: string
-    methodToSend: string
-    token: string
-    dataToSend?: string
-}
-
-interface MeDBPropsOutput<T> {
-    dataToResponse: T | null
-    favorites?: JeuxProps[]
-    responseType: "Error" | "Success"
-    error?: string
-}
-
-export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBPropsInput): Promise<MeDBPropsOutput<T>> {
+export async function MeDB<T>({ url, methodToSend, token, dataToSend }: DbTypes.MeDBPropsInput): Promise<DbTypes.MeDBPropsOutput<T>> {
     try {
         const response = await fetch(url, {
             method: methodToSend,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
             body: dataToSend,
         })
 
@@ -128,12 +75,7 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
         const data = await response.json().catch(() => null)
 
         let reponse;
-
-        if (data !== null && data.detail && data.detail !== undefined && data.detail !== null) {
-            reponse = data.detail
-        } else {
-            reponse = "Erreur lors de la connexion au serveur"
-        }
+        data !== null && data.detail && data.detail !== undefined && data.detail !== null ? reponse = data.detail : reponse = "Erreur lors de la connexion au serveur"
 
         if (!response.ok) {
             return { dataToResponse: null, responseType: "Error", error: reponse }
@@ -155,38 +97,22 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
                     grade: favorite.grade,
                     state: favorite.state,
                     date: favorite.date
-                })),
-                responseType: "Success"
-            }
+                })), responseType: "Success"}
         }
     } catch {
         return { dataToResponse: null, responseType: "Error", error: "Serveur indisponible" }
     }
 }
 
-
 /* ----------------------------------
                 Games
 -----------------------------------*/
 
-interface getGameInput {
-    url: string
-    setError: (value: string) => void
-}
-
-interface getGameOutput<T> {
-    dataToResponse?: T[] | null
-    dataToResponseSolo?: T | null
-    dataHomePage?: T | null;
-}
-
-export async function GetGamesDB<T>({ url, setError }: getGameInput): Promise<getGameOutput<T>> {
+export async function GetGamesDB<T>({ url, setError }: DbTypes.getGameInput): Promise<DbTypes.getGameOutput<T>> {
     try {
         const response = await fetch(url, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
+            headers: {'Content-Type': 'application/json'}
         })
 
         const data = await response.json()

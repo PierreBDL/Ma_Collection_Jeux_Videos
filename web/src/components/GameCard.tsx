@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import type { JeuxProps } from '../interfaces/gameInt'
 import { UseTheme } from '../hooks/Theme'
-import { useAuth } from '../hooks/Auth'
+import { useAuth } from '../context/AuthContext'
 import Button from './Button';
 
 export default function GameCard({ id, nom, image, studio, plateforme, annee, genre, opinion, grade, state, isMyLibrary = false }: JeuxProps & { isMyLibrary?: boolean }) {
