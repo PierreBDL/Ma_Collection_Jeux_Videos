@@ -229,11 +229,7 @@ def get_stats(username: str, db: Session):
         http_exception(code=404, message="Utilisateur introuvable")
 
     # récup favoris avec les jeux pour obtenir leur plateforme
-    favorites = db.execute(
-        select(UserFavorite, GamesTable)
-        .join(GamesTable, UserFavorite.game_id == GamesTable.id)
-        .where(UserFavorite.user_id == user.id)
-    ).all()
+    favorites = db.execute(select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id)).all()
     
     # Varriables
     statut = {"a_decouvrir": 0, "en_cours": 0, "termine": 0}
@@ -268,74 +264,78 @@ def get_stats(username: str, db: Session):
         "moyenne": moyenne
     }
 
+##############################################################
+
+# Anciennes fonctions pour des routes qui n'existent plus
+
 # Sauvegarde de la note
-def save_the_grade(updateInfos: SaveGradeInput, username: str, db: Session):
-    # Vérif si le token appartient à l'utilisateur
-    check_token_name(updateInfos.name, username)
+# def save_the_grade(updateInfos: SaveGradeInput, username: str, db: Session):
+#     # Vérif si le token appartient à l'utilisateur
+#     check_token_name(updateInfos.name, username)
     
-    statement_user = select(UsersTable).where(UsersTable.name == updateInfos.name)
-    user = db.scalars(statement_user).first()
+#     statement_user = select(UsersTable).where(UsersTable.name == updateInfos.name)
+#     user = db.scalars(statement_user).first()
 
-    game = db.get(GamesTable, updateInfos.game_id)
+#     game = db.get(GamesTable, updateInfos.game_id)
     
-    if user is None or game is None:
-        # Error
-        http_exception(code=404, message="Utilisateur introuvable")
+#     if user is None or game is None:
+#         # Error
+#         http_exception(code=404, message="Utilisateur introuvable")
 
-    statement = select(UserFavorite).where(UserFavorite.game_id == updateInfos.game_id, UserFavorite.user_id == user.id)
-    user_favo = db.scalars(statement).first()
+#     statement = select(UserFavorite).where(UserFavorite.game_id == updateInfos.game_id, UserFavorite.user_id == user.id)
+#     user_favo = db.scalars(statement).first()
     
-    if user_favo is not None :
-        if updateInfos.grade is not None:
-            user_favo.grade = updateInfos.grade
-        if updateInfos.opinion is not None:
-            user_favo.opinion = updateInfos.opinion
-        if updateInfos.state is not None:
-            user_favo.state = updateInfos.state
-        if updateInfos.date is not None:
-            user_favo.date = updateInfos.date 
-        db.commit()
-        db.refresh(user_favo)
-        return True
-    return False
+#     if user_favo is not None :
+#         if updateInfos.grade is not None:
+#             user_favo.grade = updateInfos.grade
+#         if updateInfos.opinion is not None:
+#             user_favo.opinion = updateInfos.opinion
+#         if updateInfos.state is not None:
+#             user_favo.state = updateInfos.state
+#         if updateInfos.date is not None:
+#             user_favo.date = updateInfos.date 
+#         db.commit()
+#         db.refresh(user_favo)
+#         return True
+#     return False
 
-# Récup de la note
-def get_the_grade (username: str, game_id: int, db: Session):
-    statement_user = select(UsersTable).where(UsersTable.name == username)
-    user = db.scalars(statement_user).first()
+# # Récup de la note
+# def get_the_grade (username: str, game_id: int, db: Session):
+#     statement_user = select(UsersTable).where(UsersTable.name == username)
+#     user = db.scalars(statement_user).first()
 
-    statement = db.get(UserFavorite, (user.id, game_id))
+#     statement = db.get(UserFavorite, (user.id, game_id))
 
-    if statement is None : 
-        return {"id": game_id, "opinion": "", "grade": 0, "state": "a_decouvrir", "date": None}
+#     if statement is None : 
+#         return {"id": game_id, "opinion": "", "grade": 0, "state": "a_decouvrir", "date": None}
 
-    return {"id": game_id, "opinion": statement.opinion, "grade": statement.grade, "state": statement.state, "date": statement.date}
+#     return {"id": game_id, "opinion": statement.opinion, "grade": statement.grade, "state": statement.state, "date": statement.date}
 
-# Récup des notes
-def get_all_the_grade (username: str, db: Session):
-    statement_user = select(UsersTable).where(UsersTable.name == username)
-    user = db.scalars(statement_user).first()
-    if user is None:
-        # Error
-        http_exception(code=404, message="Utilisateur introuvable")
+# # Récup des notes
+# def get_all_the_grade (username: str, db: Session):
+#     statement_user = select(UsersTable).where(UsersTable.name == username)
+#     user = db.scalars(statement_user).first()
+#     if user is None:
+#         # Error
+#         http_exception(code=404, message="Utilisateur introuvable")
 
-    statement = (select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id))
-    games = db.execute(statement).all()
+#     statement = (select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id))
+#     games = db.execute(statement).all()
 
-    if statement is None : 
-        # Error
-        http_exception(code=404, message="Aucun jeu trouvé")
+#     if statement is None : 
+#         # Error
+#         http_exception(code=404, message="Aucun jeu trouvé")
 
-    games_to_return = []
+#     games_to_return = []
 
-    for favoris, game_data in games:
-        game = {
-            "id": favoris.game_id,
-            "nom": game_data.nom,
-            "opinion": favoris.opinion,
-            "grade": favoris.grade,
-            "state": favoris.state
-        }
-        games_to_return.append(game)
+#     for favoris, game_data in games:
+#         game = {
+#             "id": favoris.game_id,
+#             "nom": game_data.nom,
+#             "opinion": favoris.opinion,
+#             "grade": favoris.grade,
+#             "state": favoris.state
+#         }
+#         games_to_return.append(game)
 
-    return games_to_return
+#     return games_to_return
