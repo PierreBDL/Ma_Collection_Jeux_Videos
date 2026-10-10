@@ -23,10 +23,15 @@ Le projet est composé d'un frontend en React et TypeScript, d'une API en Python
 
 ```text
 Ma_Collection/
-├── api/       # API FastAPI, logique métier et accès à PostgreSQL
-├── web/       # Application frontend React et TypeScript
-└── README.md  # Présentation générale du projet (Ce fichier)
+    ├── README.md (Ce fichier)
+    ├── api/
+    └── web/
+
 ```
+
+Plus d'infos :
+
+[![Architecture diagram of pierrebdl/ma_collection_jeux_videos](https://gitdiagram.com/pierrebdl/ma_collection_jeux_videos/diagram.png)](https://gitdiagram.com/pierrebdl/ma_collection_jeux_videos?utm_source=readme&utm_medium=picture)
 
 ## Technologies
 
