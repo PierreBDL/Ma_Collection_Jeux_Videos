@@ -49,6 +49,6 @@ class FavoriteOutput(BaseModel):
 # Stats
 class StatsOutput(BaseModel):
     total: int
-    statut: list[string, int]
-    console: object
+    statut: dict[str, int]
+    console: dict[str, int]
     moyenne: float

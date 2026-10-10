@@ -103,10 +103,10 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
                     return
                 }
 
-                setGrade(favorite.note)
-                setOpinion(favorite.commentaire)
-                setState(favorite.etat)
-                setDate(favorite.date ?? "")
+                setGrade(favorite.note === null || favorite.note === undefined ? 0 : favorite.note)
+                setOpinion(favorite.commentaire === null || favorite.commentaire === undefined ? "" : favorite.commentaire)
+                setState(favorite.etat === null || favorite.etat === undefined ? "a_decouvrir" : favorite.etat)
+                setDate(favorite.date === null || favorite.date === undefined ? "" : favorite.date)
                 setError("")
             } else {
                 setIsSuccess(false)
