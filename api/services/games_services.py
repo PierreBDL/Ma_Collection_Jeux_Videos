@@ -3,9 +3,7 @@ from sqlalchemy import func, select
 from schemas.games_table import GamesTable
 from utils.httpErrors import http_exception
 
-def counter(page: int = 1, limit: int = 12):
-    if page == 1 :
-       return {"page": 0, "limit": limit} 
+def counter(page: int = 0, limit: int = 12):
     return {"page": page, "limit": limit}
 
 async def get_see_more(therme: str, origin: str, counterResult: dict, db: Session):
@@ -18,9 +16,9 @@ async def get_see_more(therme: str, origin: str, counterResult: dict, db: Sessio
         statement = select(GamesTable).offset(page * limit).limit(limit)
         jeux_bdd = db.scalars(statement).all()
 
-        # Error
+        # Fin des résultats
         if not jeux_bdd:
-            http_exception(code=404, message="Aucun jeu")
+            return {"results": [], "limit": limit, "total": total, "page": page}
 
         # Result
         result = []
@@ -76,18 +74,28 @@ async def get_see_more(therme: str, origin: str, counterResult: dict, db: Sessio
             return {
                 "results": result[page * limit : page * limit + limit],
                 "limit": limit,
-                "total": total + len(result),
+                "total": len(result),
                 "page": (total / limit),
             }
         
         if origin == "byFilters":
             for i in statement:
                 if term in i.genre.lower() or term in i.plateforme.lower():
-                    result.append(i)
+                    game = {
+                        "id": i.id,
+                        "nom": i.nom,
+                        "studio": i.studio,
+                        "plateforme": i.plateforme,
+                        "annee": i.annee,
+                        "genre": i.genre,
+                        "description": i.description,
+                        "image": i.image
+                    }
+                    result.append(game)
             return {
                 "results": result[page * limit : page * limit + limit],
                 "limit": limit,
-                "total": total,
+                "total": len(result),
                 "page": (total / limit),
             }
         

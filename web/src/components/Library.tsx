@@ -19,7 +19,7 @@ export default function Library() {
 
     // Défilement infini
     const limit = 12
-    const [page, setPage] = useState<number>(1)
+    const [page, setPage] = useState<number>(0)
     const [isEnoughtGames, setIsEnoughtGame] = useState<boolean>(true)
 
     // Recherche
@@ -53,9 +53,10 @@ export default function Library() {
         }
 
         if (Array.isArray(data)) {
+            // vérif si c'est page 1 : data sinon mettre à la suite
             setGames(c => pageNumber === 0 ? data : [...c, ...data])
             // Vérif ssi assez de jeux dans la bdd
-            setIsEnoughtGame(data.length <= limit ? true : false)
+            setIsEnoughtGame(data.length === limit ? true : false)
 
             // Enlever le chargement
             setIsLoading(false)
@@ -65,7 +66,7 @@ export default function Library() {
             setIsLoading(false)
         }
 
-        setPage(page => page + 1)
+        setPage(pageNumber)
     }
 
     useEffect(() => {
