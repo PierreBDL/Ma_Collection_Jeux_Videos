@@ -60,7 +60,7 @@ Déplacement et installation des dépendances:
 cd api
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install fastapi "uvicorn[standard]" sqlalchemy "psycopg[binary]" python-dotenv PyJWT passlib
+python -m pip install fastapi "uvicorn[standard]" sqlalchemy "psycopg[binary]" python-dotenv PyJWT passlib pydantic[email]
 ```
 
 Créez et configurez ensuite `api/.env` comme l'exemple .env.example
