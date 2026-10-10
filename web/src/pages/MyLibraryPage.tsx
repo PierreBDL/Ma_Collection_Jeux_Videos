@@ -46,7 +46,7 @@ export default function MyLibraryPage() {
 
             if (response.favorites) {
                 setGames(response.favorites)
-                setAuth({...auth, favorites: response.favorites})
+                setAuth({ ...auth, favorites: response.favorites })
             }
         }
 
@@ -59,7 +59,7 @@ export default function MyLibraryPage() {
     -------------*/
 
     // Filtrer
-    const filtrer = ({state, sort}: {state: statePossibleType, sort: sortPossibleType}) => {
+    const filtrer = ({ state, sort }: { state: statePossibleType, sort: sortPossibleType }) => {
         setSortSelect(sort ?? sortSelect)
         setStateSelect(state ?? stateSelect)
     }
@@ -87,17 +87,21 @@ export default function MyLibraryPage() {
     return (
         <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
             <h2 className={`justify-self-center mb-6 text-2xl font-bold ${theme === "light" ? "text-white" : "text-slate-900"}`}>Jeux actuellement en favoris</h2>
-            <div className={`mb-6 flex gap-3 max-w-full justify-center justify-self-center rounded-md border p-2 px-2.5 ${theme === "light" ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-100"}`}>
-                <Button style={`rounded px-3 py-2 ${stateSelect === "tous" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "tous" ? true : false} handleClick={() => filtrer({state: "tous", sort: sortSelect})}>Tous</Button>
-                <Button style={`rounded px-3 py-2 ${stateSelect === "a_decouvrir" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "a_decouvrir" ? true : false} handleClick={() => filtrer({state: "a_decouvrir", sort: sortSelect})}>A Découvrir</Button>
-                <Button style={`rounded px-3 py-2 ${stateSelect === "en_cours" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "en_cours" ? true : false} handleClick={() => filtrer({state: "en_cours", sort: sortSelect})}>En Cours</Button>
-                <Button style={`rounded px-3 py-2 ${stateSelect === "termine" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "termine" ? true : false} handleClick={() => filtrer({state: "termine", sort: sortSelect})}>Terminé</Button>
+            <div className={`mb-6 flex w-full max-w-full flex-col gap-3 justify-center justify-self-center xl:w-auto xl:flex-row rounded-md border p-2 px-2.5 ${theme === "light" ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-slate-100"}`}>
+                <div className="flex flex-wrap justify-center gap-2">
+                    <Button style={`rounded px-3 py-2 ${stateSelect === "tous" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "tous" ? true : false} handleClick={() => filtrer({ state: "tous", sort: sortSelect })}>Tous</Button>
+                    <Button style={`rounded px-3 py-2 ${stateSelect === "a_decouvrir" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "a_decouvrir" ? true : false} handleClick={() => filtrer({ state: "a_decouvrir", sort: sortSelect })}>A Découvrir</Button>
+                    <Button style={`rounded px-3 py-2 ${stateSelect === "en_cours" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "en_cours" ? true : false} handleClick={() => filtrer({ state: "en_cours", sort: sortSelect })}>En Cours</Button>
+                    <Button style={`rounded px-3 py-2 ${stateSelect === "termine" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={stateSelect === "termine" ? true : false} handleClick={() => filtrer({ state: "termine", sort: sortSelect })}>Terminé</Button>
+                </div>
 
-                <div className={`min-h-5 max-h-7 w-1 ${theme === "dark" ? "bg-black" : "bg-white"} flex place-self-center`}></div>
+                <div className={`hidden xl:block min-h-5 max-h-7 w-1 ${theme === "dark" ? "bg-black" : "bg-white"} flex place-self-center`}></div>
 
-                <Button style={`rounded px-3 py-2 ${sortSelect === "tous" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={sortSelect === "tous" ? true : false} handleClick={() => filtrer({state: stateSelect, sort: "tous"})}>Tous</Button>
-                <Button style={`rounded px-3 py-2 ${sortSelect === "date" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={sortSelect === "date" ? true : false} handleClick={() => filtrer({state: stateSelect, sort: "date"})}>Date</Button>
-                <Button style={`rounded px-3 py-2 ${sortSelect === "note" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={sortSelect === "note" ? true : false} handleClick={() => filtrer({state: stateSelect, sort: "note"})}>Note</Button>
+                <div className="flex flex-wrap justify-center gap-2">
+                    <Button style={`rounded px-3 py-2 ${sortSelect === "tous" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={sortSelect === "tous" ? true : false} handleClick={() => filtrer({ state: stateSelect, sort: "tous" })}>Tous</Button>
+                    <Button style={`rounded px-3 py-2 ${sortSelect === "date" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={sortSelect === "date" ? true : false} handleClick={() => filtrer({ state: stateSelect, sort: "date" })}>Date</Button>
+                    <Button style={`rounded px-3 py-2 ${sortSelect === "note" ? "bg-blue-600 text-white hover:bg-blue-700" : theme === "light" ? "bg-slate-800 text-slate-300 hover:bg-slate-900" : "bg-slate-200 text-slate-600 hover:bg-slate-300"}`} isDisable={sortSelect === "note" ? true : false} handleClick={() => filtrer({ state: stateSelect, sort: "note" })}>Note</Button>
+                </div>
             </div>
             <ul className="grid grid-cols-1 gap-15 sm:grid-cols-2 lg:grid-cols-3 mb-4">
                 {
