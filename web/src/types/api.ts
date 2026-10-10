@@ -41,17 +41,11 @@ export interface GameResponse {
 
 export interface FavoriteGameResponse {
     id: number
-    nom: string
-    studio: string
-    plateforme: string
-    annee: string
-    genre: string
-    description: string
-    image: string
     grade: number
     opinion: string
     state: Statut
     date: string
+    item: GameResponse
 }
 
 export interface FavoritesResponse {

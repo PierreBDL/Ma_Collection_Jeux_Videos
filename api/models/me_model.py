@@ -44,11 +44,13 @@ class UpdateFavorisInput(BaseModel):
     date: str | None = None
 
 # Favorite
-class FavoriteGame(Game):
+class FavoriteGame(BaseModel):
+    id: int
     state: Statut
     grade: int
     opinion: str
     date: str
+    item: Game
 
 
 class FavoriteOutput(BaseModel):

@@ -55,34 +55,40 @@ def add_favorite(updateInfos: NewFavorisInput, username: str, db: Session):
     for favoris, i in statement:
         old_game = {
             "id": i.id,
-            "nom": i.nom,
-            "studio": i.studio,
-            "plateforme": i.plateforme,
-            "annee": i.annee,
-            "genre": i.genre,
-            "description": i.description,
-            "image": i.image,
             "state": favoris.state or "a_decouvrir",
             "grade": favoris.grade or 0,
             "opinion": favoris.opinion or "",
             "date": favoris.date or "",
+            "item": {
+                "id": i.id,
+                "nom": i.nom,
+                "studio": i.studio,
+                "plateforme": i.plateforme,
+                "annee": i.annee,
+                "genre": i.genre,
+                "description": i.description,
+                "image": i.image,
+            }
         }
         result.append(old_game)
         
     # Nouveau jeu
     new_game = {
         "id": game.id,
-        "nom": game.nom,
-        "studio": game.studio,
-        "plateforme": game.plateforme,
-        "annee": game.annee,
-        "genre": game.genre,
-        "description": game.description,
-        "image": game.image,
         "state": updateInfos.state or "a_decouvrir",
         "grade": updateInfos.grade or 0,
         "opinion": updateInfos.opinion or "",
         "date": updateInfos.date or "",
+        "item": {
+            "id": game.id,
+            "nom": game.nom,
+            "studio": game.studio,
+            "plateforme": game.plateforme,
+            "annee": game.annee,
+            "genre": game.genre,
+            "description": game.description,
+            "image": game.image,
+        }
     }
     result.append(new_game)
     
@@ -137,17 +143,20 @@ def update_a_favorite(entry_id: int, updateInfos: UpdateFavorisInput, username: 
     for favoris, i in statement:
         game = {
             "id": i.id,
-            "nom": i.nom,
-            "studio": i.studio,
-            "plateforme": i.plateforme,
-            "annee": i.annee,
-            "genre": i.genre,
-            "description": i.description,
-            "image": i.image,
             "state": favoris.state or "a_decouvrir",
             "grade": favoris.grade or 0,
             "opinion": favoris.opinion or "",
             "date": favoris.date or "",
+            "item": {
+                "id": i.id,
+                "nom": i.nom,
+                "studio": i.studio,
+                "plateforme": i.plateforme,
+                "annee": i.annee,
+                "genre": i.genre,
+                "description": i.description,
+                "image": i.image,
+            }
         }
         result.append(game)
     return {"favorites": result}
@@ -204,17 +213,21 @@ async def get_favoris_logic(statut, tri, name: str, db: Session):
     for favoris, i in favorites:
         game = {
             "id": i.id,
-            "nom": i.nom,
-            "studio": i.studio,
-            "plateforme": i.plateforme,
-            "annee": i.annee,
-            "genre": i.genre,
-            "description": i.description,
-            "image": i.image,
             "state": favoris.state or "a_decouvrir",
             "grade": favoris.grade or 0,
             "opinion": favoris.opinion or "",
             "date": favoris.date or "",
+            "item": {
+                "id": i.id,
+                "nom": i.nom,
+                "studio": i.studio,
+                "plateforme": i.plateforme,
+                "annee": i.annee,
+                "genre": i.genre,
+                "description": i.description,
+                "image": i.image,
+            }
+            
         }
         result.append(game)
     return {"favorites": result}

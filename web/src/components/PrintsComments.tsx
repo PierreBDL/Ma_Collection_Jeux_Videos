@@ -7,6 +7,7 @@ import { MeDB } from '../hooks/RequestsDb'
 import Button from '../components/Button'
 import { UseTheme } from '../hooks/Theme'
 import {type FavoritesResponse} from '../types/api'
+import { type JeuxProps } from '../interfaces/gameInt'
 
 interface PrintCommentsProps {
     id: number
@@ -14,11 +15,12 @@ interface PrintCommentsProps {
     opinion: string
     grade: number
     state: "a_decouvrir" | "en_cours" | "termine"
+    item: JeuxProps
 }
 
 export default function PrintComments() {
 
-    const [games, setGames] = useState<PrintCommentsProps[]>([])
+    const [games, setGames] = useState<FavoritesResponse>({favorites: []})
 
     // Hook auth
     const { auth } = useAuth()
@@ -33,7 +35,7 @@ export default function PrintComments() {
     useEffect(() => {
         // Si pas connecté
         if (!auth) {
-            setGames([])
+            setGames({favorites: []})
             return
         }
 
@@ -41,13 +43,7 @@ export default function PrintComments() {
             const response = await MeDB<FavoritesResponse>({ url: `${URL_API}/me/collection`, token: auth.token, methodToSend: "GET" })
 
             if (response.dataToResponse && response.responseType === "Success") {
-                setGames(response.dataToResponse.favorites.map(game => ({
-                    id: game.id,
-                    nom: game.nom,
-                    grade: game.grade,
-                    opinion: game.opinion,
-                    state: game.state
-                })))
+                setGames(response.dataToResponse)
             }
         })
 
@@ -63,9 +59,9 @@ export default function PrintComments() {
 
     return (
         <div className="grid min-w-0 max-h-[75vh] grid-cols-1 gap-4 overflow-y-auto">
-            {games.map(game => (
+            {games.favorites.map(game => (
                 <article key={game.id} className={`flex min-w-0 flex-col gap-3 rounded-lg border ${theme === "light" ? "border-white bg-slate-800 text-white" : "border-black bg-slate-300 text-black"} p-4 shadow-sm sm:p-5`}>
-                    <h3 className="min-w-0 text-sm">{game.nom}</h3>
+                    <h3 className="min-w-0 text-sm">{game.item.nom}</h3>
                     <p className="font-semibold">Note : {game.grade ? (game.grade + "/5") : ("∅")}</p>
                     <p className="min-w-0 text-sm">Mémo: {game.opinion ? (game.opinion) : ("∅")}</p>
                     <Button isDisable={false} handleClick={() => voirPlus(game.id)} style="rounded-lg mt-2 p-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors cursor-pointer">Aller sur la page</Button>

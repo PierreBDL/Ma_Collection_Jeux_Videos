@@ -126,7 +126,7 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
 
         let reponse;
 
-        if (data !== null && data.detail !== null) {
+        if (data.detail !== null) {
             reponse = data.detail
         } else {
             reponse = "Erreur lors de la connexion au serveur"
@@ -138,7 +138,23 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
             return { dataToResponse: null, responseType: "Error", error: reponse }
         } else {
             return {
-                dataToResponse: data as T, favorites: data?.favorites, responseType: "Success"}
+                dataToResponse: data as T,
+                favorites: data?.favorites?.map((favorite: {game: JeuxProps, opinion: string, grade: number, state: JeuxProps["state"], date: string}) => ({
+                    id: favorite.game.id,
+                    nom: favorite.game.nom,
+                    image: favorite.game.image,
+                    studio: favorite.game.studio,
+                    plateforme: favorite.game.plateforme,
+                    annee: favorite.game.annee,
+                    genre: favorite.game.genre,
+                    description: favorite.game.description,
+                    opinion: favorite.opinion,
+                    grade: favorite.grade,
+                    state: favorite.state,
+                    date: favorite.date
+                })),
+                responseType: "Success"
+            }
         }
     } catch {
         return { dataToResponse: null, responseType: "Error", error: "Serveur indisponible" }

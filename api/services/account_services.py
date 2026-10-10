@@ -51,11 +51,12 @@ async def test_login(user: AccountInput, db: Session):
 async def test_register(user: AccountRegisterInput, db: Session):
     
     # Vérif si libre
-    statement = select(UsersTable).where(UsersTable.email == user.email or UsersTable.name == user.name)
+    statement_courriel = select(UsersTable).where(UsersTable.email == user.email)
+    statement_name = select(UsersTable).where(UsersTable.name == user.name)
     
-    if db.scalars(statement).first() is not None:
+    if db.scalars(statement_courriel).first() is not None or db.scalars(statement_name).first() is not None:
         # Erreur
-        http_exception(code=409, message="Identifiants déjà pris !")
+        http_exception(code=409, message="Identifiants déjà utilisé")
 
     # Save
     newAccount = UsersTable (
