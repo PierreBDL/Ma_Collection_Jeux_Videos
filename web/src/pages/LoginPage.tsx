@@ -6,7 +6,6 @@ import { URL_API } from '../utils/Links'
 import {useLocalStorage} from '../hooks/LocalStorage'
 import {useAuth} from '../hooks/Auth'
 import {AuthDB} from '../hooks/RequestsDb'
-import {type JeuxProps} from '../interfaces/gameInt'
 import {type LoginResponse} from '../types/api'
 
 export default function LoginPage() {

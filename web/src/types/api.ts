@@ -46,7 +46,7 @@ export interface GameResponse {
     date?: string
 }
 
-export interface FavoriteResponse {
+export interface FavoriteGameResponse {
     id: number
     nom: string
     studio: string
@@ -62,8 +62,18 @@ export interface FavoriteResponse {
 }
 
 export interface FavoritesResponse {
-    favorites: FavoriteResponse[]
+    favorites: FavoriteGameResponse[]
 }
+
+/* --------------------
+        Favorite
+---------------------*/
+export interface FavoriteResponse {
+    favorites: FavoriteGameResponse[]
+}
+
+// Delete
+export type DeleteFavoriteResponse = null
 
 
 /* --------------------

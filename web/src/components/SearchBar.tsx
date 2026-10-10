@@ -1,13 +1,9 @@
 import Button from './Button'
 import Effacer from '../assets/effacer.png'
 import { UseSearch } from '../hooks/Research'
-import { UseTheme } from '../hooks/Theme'
 
 export default function SearchBar() {
     const { search, setSearch, searchOrigin, setSearchOrigin } = UseSearch()
-    
-    // Hook Theme
-    const { theme } = UseTheme()
 
     return (
         <div className="col-span-2 row-start-2 w-full max-w-md md:col-span-1 md:row-auto md:justify-self-center">

@@ -5,7 +5,7 @@ import {UseTheme} from '../hooks/Theme'
 import {MeDB} from '../hooks/RequestsDb'
 import { URL_API } from '../utils/Links'
 import {useAuth} from '../hooks/Auth'
-import {type FavoritesResponse, type Statut} from '../types/api'
+import {type FavoritesResponse, type FavoriteResponse, type Statut} from '../types/api'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
@@ -57,7 +57,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
         setIsSuccess(null)
 
         const createdAt = new Date().toLocaleString();
-        const response = await MeDB<FavoritesResponse>({url: `${URL_API}/me/collection/${gameId}`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ opinion, grade, state, date: createdAt })})
+        const response = await MeDB<FavoriteResponse>({url: `${URL_API}/me/collection/${gameId}`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ opinion, grade, state, date: createdAt })})
     
         if (response.responseType === "Success") {
             if (response.favorites) {

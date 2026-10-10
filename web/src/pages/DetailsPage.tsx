@@ -7,7 +7,7 @@ import {useAuth} from '../hooks/Auth'
 import {GetGamesDB, MeDB} from '../hooks/RequestsDb'
 import CardDetailsGame from '../components/CardDetailsGame'
 import UserFormDetails from '../components/UserFormDetails'
-import { type GameResponse } from '../types/api'
+import { type GameResponse, type FavoriteResponse, type DeleteFavoriteResponse } from '../types/api'
 
 type stateGame = "a_decouvrir" | "en_cours" | "termine"
 
@@ -76,14 +76,14 @@ export default function DetailsPage () {
         const searchFavoris = auth.favorites.filter(favoriteGame => favoriteGame.id === game.id)
 
         if (searchFavoris.length > 0) {
-            const response = await MeDB({url: `${URL_API}/me/collection/${game.id}`, methodToSend: 'DELETE', token: auth.token})
+            const response = await MeDB<DeleteFavoriteResponse>({url: `${URL_API}/me/collection/${game.id}`, methodToSend: 'DELETE', token: auth.token})
             if (response.responseType === "Error") {
                 setError(response.error ?? "Erreur lors de la suppression")
                 return
             }
             setAuth({...auth, favorites: auth.favorites.filter(favorite => game.id !== favorite.id)})
         } else {
-            const response = await MeDB({url: `${URL_API}/me/collection`, methodToSend: 'POST', token: auth.token, dataToSend: JSON.stringify({item_id: game.id, state})})
+            const response = await MeDB<FavoriteResponse>({url: `${URL_API}/me/collection`, methodToSend: 'POST', token: auth.token, dataToSend: JSON.stringify({item_id: game.id, state})})
             if (response.responseType === "Error") {
                 setError(response.error ?? "Erreur lors de l'ajout")
                 return

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { data, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../hooks/Auth'
 import { UseTheme } from '../hooks/Theme'
@@ -8,6 +8,7 @@ import { URL_API } from '../utils/Links'
 import Button from '../components/Button'
 import { type JeuxProps } from '../interfaces/gameInt';
 import { MeDB } from '../hooks/RequestsDb'
+import { type FavoritesResponse } from '../types/api'
 
 import erreur404 from '../assets/404.png'
 
@@ -37,7 +38,7 @@ export default function MyLibraryPage() {
         }
 
         const checkBdd = async () => {
-            const response = await MeDB({ url: `${URL_API}/me/collection?statut=${stateSelect}&tri=${sortSelect}`, methodToSend: 'GET', token: auth.token })
+            const response = await MeDB<FavoritesResponse>({ url: `${URL_API}/me/collection?statut=${stateSelect}&tri=${sortSelect}`, methodToSend: 'GET', token: auth.token })
 
             if (response.responseType === "Error") {
                 return
