@@ -9,6 +9,7 @@ import PrintComments from '../components/PrintsComments'
 import {UseTheme} from '../hooks/Theme'
 import Button from '../components/Button'
 import {type StatsResponse} from '../types/api'
+import TestConnect from '../utils/TestConnect'
 
 import notFavoriteImg from '../assets/etoile_vide.png'
 import favoriteImg from '../assets/etoile.png'
@@ -25,6 +26,9 @@ export default function StatsPage() {
 
     // Navigate
     const navigate = useNavigate()
+
+    // Test connect
+    const testConnect = TestConnect()
 
     // Récup données bdd
     useEffect(() => {
@@ -47,6 +51,11 @@ export default function StatsPage() {
 
         collectionQuery()
     }, [auth?.token])
+
+    // Tester si connecté
+    useEffect(() => {
+        testConnect()
+    }, [auth?.token, navigate])
 
     // Si pas de jeux
     if (auth && auth?.favorites.length <= 0 || !data) {

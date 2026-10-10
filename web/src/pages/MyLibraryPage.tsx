@@ -9,6 +9,7 @@ import Button from '../components/Button'
 import { type JeuxProps } from '../interfaces/gameInt';
 import { MeDB } from '../hooks/RequestsDb'
 import { type FavoritesResponse } from '../types/api'
+import TestConnect from '../utils/TestConnect'
 
 import erreur404 from '../assets/404.png'
 
@@ -29,6 +30,14 @@ export default function MyLibraryPage() {
     // Navigate 
     const navigate = useNavigate()
 
+    // Test connect
+    const testConnect = TestConnect()
+
+    // Tester si connecté
+    useEffect(() => {
+        testConnect()
+    }, [auth?.token, navigate])
+
     /* ----------------------------------------------
         Vérif syncro entre favoris back et front
     -----------------------------------------------*/
@@ -46,7 +55,12 @@ export default function MyLibraryPage() {
 
             if (response.favorites) {
                 setGames(response.favorites)
-                setAuth({ ...auth, favorites: response.favorites })
+                if (localStorage.getItem("auth") === null) {
+                    setAuth(null)
+                    return
+                }
+                const favorites = response.favorites
+                setAuth(currentAuth => currentAuth ? { ...currentAuth, favorites } : null)
             }
         }
 
@@ -60,8 +74,8 @@ export default function MyLibraryPage() {
 
     // Filtrer
     const filtrer = ({ state, sort }: { state: statePossibleType, sort: sortPossibleType }) => {
-        setSortSelect(sort ?? sortSelect)
-        setStateSelect(state ?? stateSelect)
+        setSortSelect(sort === null || sort === undefined ? sortSelect : sort)
+        setStateSelect(state === null || state === undefined ? stateSelect : state)
     }
 
     if (!auth) {

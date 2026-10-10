@@ -29,6 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if (!auth) {
             localStorage.removeItem('auth')
+            localStorage.removeItem('token')
             return
         }
 
