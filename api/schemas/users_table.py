@@ -1,7 +1,11 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from schemas.base_class import Base
+
+# Tables SQL pour créer la table de liaison
 from models.game_model import Game
 from schemas.users_favorites_table import UserFavorite
+
+##############################################################
 
 class UsersTable(Base):
     __tablename__ = "users"

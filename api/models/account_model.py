@@ -1,5 +1,9 @@
 from pydantic import BaseModel, EmailStr, Field
+
+# Model
 from models.game_model import *
+
+##############################################################
 
 # Général
 

@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from schemas.base_class import Base
 
+##############################################################
+
 class GamesTable(Base):
     __tablename__ = "games"
 

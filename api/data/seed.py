@@ -1,14 +1,22 @@
 
 from schemas.games_table import GamesTable
-from database import get_db
 from sqlalchemy import select
+
+# BDD
+from database import get_db
+
+# Données des jeux
 from data.game_data import jeux
+
+##############################################################
 
 # Remplir la bdd
 def fill_bdd ():
+    # Création d'une session temporaire pour remplir la bdd
     db = next(get_db())
     
     try:
+        # Regarder s'il y a un jeu et remplir s'il n'y en a pas
         statement = select(GamesTable)
         if db.scalars(statement).first() is not None:
             return

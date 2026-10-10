@@ -1,14 +1,23 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
+# Models
 from models.account_model import *
-from data.account_data import *
+from models.me_model import *
+
+# Compte hardcodé
+#from data.account_data import *
+
+# Tables bdd
+from schemas.users_favorites_table import UserFavorite
 from schemas.users_table import UsersTable
 from schemas.games_table import GamesTable
-from models.me_model import *
-from schemas.users_favorites_table import UserFavorite
-from schemas.games_table import GamesTable
+
+# HTTP Exceptions
 from utils.httpErrors import http_exception
+
+##############################################################
+
 
 # Vérif si le token appartient à l'utilisateur
 def check_token_name (username: str, token_name: str):

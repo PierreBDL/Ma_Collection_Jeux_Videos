@@ -1,11 +1,18 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+# Logique
 from services.me_services import *
 from security.token_services import *
+
+# Models
 from models.account_model import *
 from models.me_model import *
+
+# Bdd
 from database import get_db
+
+##############################################################
 
 router = APIRouter (
     prefix="/me",

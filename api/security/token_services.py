@@ -4,7 +4,11 @@ import jwt
 from passlib.context import CryptContext
 from datetime import *
 
+# Model
 from models.account_model import *
+
+##############################################################
+
 
 # Charger env
 from dotenv import load_dotenv

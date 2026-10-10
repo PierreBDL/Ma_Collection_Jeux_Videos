@@ -2,12 +2,19 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from database import get_db
 from sqlalchemy.orm import Session
 
+# Données des jeux
 from data.game_data import *
+
+# Model
 from models.game_model import *
 
+# Table SQL
 from schemas.games_table import GamesTable
 
+# Logique
 from services.games_services import *
+
+##############################################################
 
 router = APIRouter (
     prefix="/items",

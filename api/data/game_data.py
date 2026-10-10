@@ -1,5 +1,8 @@
 from datetime import datetime
 
+##############################################################
+
+# Date d'enregistrement dans la bdd au format fr
 now = datetime.now()
 dateFr = now.strftime("%d %m %Y")
 

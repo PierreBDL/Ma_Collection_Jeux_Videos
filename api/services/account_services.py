@@ -1,12 +1,24 @@
-from models.account_model import *
-from data.account_data import *
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 
+# Gestion du token
 from security.token_services import *
+
+# Model
+from models.account_model import *
+
+# Compte hardcodé
+# from data.account_data import *
+
+# Table SQL
 from schemas.users_table import UsersTable
+
+# HTTP Exception
 from utils.httpErrors import http_exception
+
+##############################################################
+
 
 # Charger env
 from dotenv import load_dotenv
@@ -18,10 +30,10 @@ pwd = CryptContext(schemes=[PwdAlgo])
 secretKey = os.getenv('SECRET')
 Algorithm = os.getenv('ALGORITHM')
 
-# Hash du mdp hardcodé
-def hash_mdp () :
-    for i in account :
-        i["password"] = pwd.hash(i["password"])
+# Hash du mdp hardcodé 
+# def hash_mdp () :
+#    for i in account :
+#       i["password"] = pwd.hash(i["password"])
 
 # Login
 async def test_login(user: AccountInput, db: Session):

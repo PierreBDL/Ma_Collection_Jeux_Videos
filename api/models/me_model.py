@@ -1,6 +1,10 @@
 from typing import Literal
 from pydantic import BaseModel, Field
+
+# Model
 from models.game_model import Game
+
+##############################################################
 
 Statut = Literal["a_decouvrir", "en_cours", "termine"]
 

@@ -2,6 +2,8 @@ from sqlalchemy import ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from schemas.base_class import Base
 
+##############################################################
+
 class UserFavorite(Base):
     __tablename__ = "user_favorites"
 

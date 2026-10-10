@@ -1,11 +1,22 @@
 from fastapi import APIRouter, status, Header
 from sqlalchemy.orm import Session
 
-from data.account_data import *
+# Compte hardcodé
+#from data.account_data import *
+
+# Model
 from models.account_model import *
+
+# Logique
 from services.account_services import *
+
+# BDD
 from database import get_db
+
+# Token logique
 from security.token_services import check_token
+
+##############################################################
 
 router = APIRouter (
     prefix="/auth",

@@ -1,11 +1,20 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, select
+
+# Table SQL
 from schemas.games_table import GamesTable
+
+# HTTP Exception
 from utils.httpErrors import http_exception
 
+##############################################################
+
+
+# Compteur de pages (btn voir plus)
 def counter(page: int = 0, limit: int = 12):
     return {"page": page, "limit": limit}
 
+# Page accueil
 async def get_see_more(therme: str, origin: str, counterResult: dict, db: Session):
     term = therme.strip().lower()
     page = counterResult["page"]
@@ -16,7 +25,7 @@ async def get_see_more(therme: str, origin: str, counterResult: dict, db: Sessio
         statement = select(GamesTable).offset(page * limit).limit(limit)
         jeux_bdd = db.scalars(statement).all()
 
-        # Fin des résultats
+        # Si pas de jeux dans la bdd
         if not jeux_bdd:
             return {"results": [], "limit": limit, "total": total, "page": page}
 

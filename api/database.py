@@ -4,6 +4,7 @@ from data.game_data import *
 from fastapi import Depends
 from schemas.base_class import Base
 
+# Tables SQL
 from schemas.games_table import GamesTable
 from schemas.users_table import UsersTable
 from schemas.users_favorites_table import UserFavorite
