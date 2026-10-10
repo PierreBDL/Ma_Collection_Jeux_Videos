@@ -45,33 +45,40 @@ Ma_Collection/
 
 ## Installation et lancement
 
-Le frontend et l'API se lancent dans deux terminaux distincts. Configurez d'abord la base de données et l'API en suivant le guide de [`api/README.md`](api/README.md).
+Le Frontend et l'API se lancent dans deux terminaux distincts. 
 
-Depuis la racine du projet, dans un premier terminal, démarrez l'API :
+- ### Serveur (API) (Plus d'infos: [`Guide de l'API`](api/README.md))
+
+Déplacement et installation des dépendances:
 
 ```powershell
 cd api
-python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install fastapi "uvicorn[standard]" sqlalchemy "psycopg[binary]" python-dotenv PyJWT passlib
 ```
 
-Configurez ensuite `api/.env` selon [`api/README.md`](api/README.md), puis lancez PostgreSQL et l'API depuis le dossier `api` :
+Créez et configurez ensuite `api/.env` comme l'exemple .env.example
+
+Lancez PostgreSQL et l'API depuis le dossier `api` :
 
 ```bash
-docker compose up -d
-uvicorn main:app --reload
+docker compose up -d ; uvicorn main:app --reload
 ```
 
-Dans un second terminal, lancez le frontend :
+- ### Frontend (Plus d'infos: [`Guide du frontend`](web/README.md))
+
+Déplacement et lancement :
 
 ```bash
 cd web
-npm install
-npm run dev
+npm install ; npm run dev
 ```
 
-Le frontend est disponible par défaut sur [http://localhost:5173](http://localhost:5173), l'API sur [http://127.0.0.1:8000](http://127.0.0.1:8000), et sa documentation interactive sur [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+- ### Résultat
+
+  - Le frontend : [http://localhost:5173](http://localhost:5173)
+  - L'API sur [http://127.0.0.1:8000](http://127.0.0.1:8000)
+  - Documentation de l'API sur [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
 ## Documentation détaillée
 

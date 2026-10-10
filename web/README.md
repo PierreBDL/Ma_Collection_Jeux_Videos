@@ -63,14 +63,12 @@
   web/
   ├── public/images/        # Images des jeux
   └── src/
-      ├── components/       # Composants d'interface réutilisables
-      ├── connection/       # Requêtes vers l'API
-      ├── context/          # Contexte d'authentification
+      ├── components/       # Composants d'interface
       ├── hooks/            # Hooks de thème et de stockage local
       ├── interfaces/       # Interfaces TypeScript
       ├── pages/            # Pages associées aux routes
       ├── types/            # Types et options de recherche
-      └── utils/            # Configuration et utilitaires
+      └── utils/            # Utilitaires
   ```
 
   ## Scripts disponibles
