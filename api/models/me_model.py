@@ -43,8 +43,16 @@ class UpdateFavorisInput(BaseModel):
     opinion: str | None = Field(default=None, max_length=500)
     date: str | None = None
 
+# Favorite
+class FavoriteGame(Game):
+    state: Statut
+    grade: int
+    opinion: str
+    date: str
+
+
 class FavoriteOutput(BaseModel):
-    favorites: list[Game]
+    favorites: list[FavoriteGame]
     
 # Stats
 class StatsOutput(BaseModel):

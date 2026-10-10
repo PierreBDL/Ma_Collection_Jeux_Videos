@@ -126,7 +126,7 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
 
         let reponse;
 
-        if (data.detail !== null) {
+        if (data !== null && data.detail !== null) {
             reponse = data.detail
         } else {
             reponse = "Erreur lors de la connexion au serveur"

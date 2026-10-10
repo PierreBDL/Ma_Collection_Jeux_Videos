@@ -37,8 +37,9 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
     // Sauvegarde du formulaire
     async function handleSaveForm () {
         // Vérif entrées
-        if (grade <= 0 || grade > 5) {
+        if (grade < 0 || grade > 5) {
             setError("La note doit être comprise entre 1 et 5")
+            setIsSuccess(false)
             return
         }
 
@@ -56,8 +57,9 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
         setError("")
         setIsSuccess(null)
 
+        // Save dans la bdd
         const createdAt = new Date().toLocaleString();
-        const response = await MeDB<FavoriteResponse>({url: `${URL_API}/me/collection/${gameId}`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ opinion, grade, state, date: createdAt })})
+        const response = await MeDB<FavoriteResponse>({url: `${URL_API}/me/collection/${gameId}`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ opinion, grade: grade === 0 ? undefined : grade, state, date: createdAt })})
     
         if (response.responseType === "Success") {
             if (response.favorites) {
@@ -67,7 +69,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
             setIsSuccess(true)
         } else {
             setIsSuccess(false)
-            setError(response.error ?? "Erreur lors de l'enregistrement")
+            setError(response.error === null || response.error === undefined ? "Erreur lors de l'enregistrement" : response.error)
         }
     }
 
@@ -103,14 +105,14 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
                     return
                 }
 
-                setGrade(favorite.note === null || favorite.note === undefined ? 0 : favorite.note)
-                setOpinion(favorite.commentaire === null || favorite.commentaire === undefined ? "" : favorite.commentaire)
-                setState(favorite.etat === null || favorite.etat === undefined ? "a_decouvrir" : favorite.etat)
+                setGrade(favorite.grade === null || favorite.grade === undefined ? 0 : favorite.grade)
+                setOpinion(favorite.opinion === null || favorite.opinion === undefined ? "" : favorite.opinion)
+                setState(favorite.state === null || favorite.state === undefined ? "a_decouvrir" : favorite.state)
                 setDate(favorite.date === null || favorite.date === undefined ? "" : favorite.date)
                 setError("")
             } else {
                 setIsSuccess(false)
-                setError(response.error ?? "Erreur de connexion au serveur")
+                setError(response.error === null || response.error === undefined ? "Erreur de connexion au serveur" : response.error)
             }
         }
 
@@ -125,7 +127,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
 
                 <label>Note :</label>
                 <div className="flex flex-row gap-3">
-                    <Button isDisable={grade <= 0 ? true : false} style="w-7 h-7 bg-blue-600 rounded-full border border-blue-600 hover:bg-blue-700 hover:border-white disabled:bg-gray-400 disabled:border-gray-400 disabled:hover:cursor-not-allowed" handleClick={() => setGrade(s => s - 1)}>-</Button>
+                    <Button isDisable={grade <= 1 ? true : false} style="w-7 h-7 bg-blue-600 rounded-full border border-blue-600 hover:bg-blue-700 hover:border-white disabled:bg-gray-400 disabled:border-gray-400 disabled:hover:cursor-not-allowed" handleClick={() => setGrade(s => s - 1)}>-</Button>
                     <div className="flex flex-row gap-3">
                         {[1, 2, 3, 4, 5].map(star => (
                             <img key={star} src={star <= grade ? favoriteImg : notFavoriteImg } alt={`${star}`} className="w-7 h-7" />
@@ -144,7 +146,7 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
                         {isSuccess === true ? <p>Avis posté</p> : <p>{error}</p>}
                     </div>
                 )}
-                <Button style="mt-2 w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors disabled:bg-slate-700 disabled:text-white disabled:hover:bg-slate-800 disabled:cursor-not-allowed hover:bg-blue-700" isDisable={!canSave && grade <= 0} handleClick={() => handleSaveForm()}>Enregistrer</Button>
+                <Button style="mt-2 w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors disabled:bg-slate-700 disabled:text-white disabled:hover:bg-slate-800 disabled:cursor-not-allowed hover:bg-blue-700" isDisable={!isFavorite} handleClick={() => handleSaveForm()}>Enregistrer</Button>
             </form>
         </div>
     )

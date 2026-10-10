@@ -44,9 +44,9 @@ export default function PrintComments() {
                 setGames(response.dataToResponse.favorites.map(game => ({
                     id: game.id,
                     nom: game.nom,
-                    grade: game.note,
-                    opinion: game.commentaire,
-                    state: game.etat
+                    grade: game.grade,
+                    opinion: game.opinion,
+                    state: game.state
                 })))
             }
         })

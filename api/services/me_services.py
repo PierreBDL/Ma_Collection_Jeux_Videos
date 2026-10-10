@@ -62,9 +62,9 @@ def add_favorite(updateInfos: NewFavorisInput, username: str, db: Session):
             "genre": i.genre,
             "description": i.description,
             "image": i.image,
-            "etat": favoris.state or "a_decouvrir",
-            "note": favoris.grade or 0,
-            "commentaire": favoris.opinion or "",
+            "state": favoris.state or "a_decouvrir",
+            "grade": favoris.grade or 0,
+            "opinion": favoris.opinion or "",
             "date": favoris.date or "",
         }
         result.append(old_game)
@@ -79,9 +79,9 @@ def add_favorite(updateInfos: NewFavorisInput, username: str, db: Session):
         "genre": game.genre,
         "description": game.description,
         "image": game.image,
-        "etat": updateInfos.state or "a_decouvrir",
-        "note": updateInfos.grade or 0,
-        "commentaire": updateInfos.opinion or "",
+        "state": updateInfos.state or "a_decouvrir",
+        "grade": updateInfos.grade or 0,
+        "opinion": updateInfos.opinion or "",
         "date": updateInfos.date or "",
     }
     result.append(new_game)
@@ -144,9 +144,9 @@ def update_a_favorite(entry_id: int, updateInfos: UpdateFavorisInput, username: 
             "genre": i.genre,
             "description": i.description,
             "image": i.image,
-            "etat": favoris.state or "a_decouvrir",
-            "note": favoris.grade or 0,
-            "commentaire": favoris.opinion or "",
+            "state": favoris.state or "a_decouvrir",
+            "grade": favoris.grade or 0,
+            "opinion": favoris.opinion or "",
             "date": favoris.date or "",
         }
         result.append(game)
@@ -211,9 +211,9 @@ async def get_favoris_logic(statut, tri, name: str, db: Session):
             "genre": i.genre,
             "description": i.description,
             "image": i.image,
-            "etat": favoris.state or "a_decouvrir",
-            "note": favoris.grade or 0,
-            "commentaire": favoris.opinion or "",
+            "state": favoris.state or "a_decouvrir",
+            "grade": favoris.grade or 0,
+            "opinion": favoris.opinion or "",
             "date": favoris.date or "",
         }
         result.append(game)

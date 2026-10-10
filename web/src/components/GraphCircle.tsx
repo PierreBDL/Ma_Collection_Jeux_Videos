@@ -6,7 +6,13 @@ interface partOfGraph {
     color: string
 }
 
-export default function Graph({ data, dataType, totalGames }: { dataType: string, data: Record<string, number>, totalGames: number }) {
+interface GraphProps {
+    data: Record<string, number>
+    dataType: string
+    totalGames: number
+}
+
+export default function Graph({ data, dataType, totalGames }: GraphProps) {
     // Hook thème
     const { theme } = UseTheme()
 
@@ -14,7 +20,8 @@ export default function Graph({ data, dataType, totalGames }: { dataType: string
     const rayon: number = 15.9155
     let total: number = 0
 
-    const colors: string[] = [
+    // Couleurs
+    const colors = [
         "#3b82f6",
         "#ef4444",
         "#10b981",
@@ -37,7 +44,7 @@ export default function Graph({ data, dataType, totalGames }: { dataType: string
                 {
                     label: keys[i] === "a_decouvrir" ? "A Découvrir" : (keys[i] === "en_cours" ? "En cours" : "Terminé"),
                     val: (Number(data[keys[i]]) / totalGames) * 100,
-                    color: colors[i]
+                    color: keys[i] === "a_decouvrir" ? "#2563eb" : (keys[i] === "en_cours" ? "#ea580c" : "#16a34a")
                 }
             )
         }

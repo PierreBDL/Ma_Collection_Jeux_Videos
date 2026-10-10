@@ -48,9 +48,9 @@ export interface FavoriteGameResponse {
     genre: string
     description: string
     image: string
-    note: number
-    commentaire: string
-    etat: Statut
+    grade: number
+    opinion: string
+    state: Statut
     date: string
 }
 
