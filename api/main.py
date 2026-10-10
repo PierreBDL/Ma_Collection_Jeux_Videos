@@ -22,6 +22,24 @@ fill_bdd()
 
 app = FastAPI()
 
+# Format d'erreur du sujet
+async def api_error(request, exception):
+    code = getattr(exception, "status_code", 400)
+    message = getattr(exception, "detail", "Paramètres invalides")
+    if not isinstance(message, str):
+        message = "Paramètres invalides"
+    return app.router.default_response_class.value(
+        status_code=code,
+        content={"erreur": {"code": code, "message": message}},
+        headers=getattr(exception, "headers", None)
+    )
+
+# Réutiliser les handlers déjà présents dans FastAPI
+for exception_type in list(app.exception_handlers):
+    if exception_type.__name__ in ("HTTPException", "RequestValidationError"):
+        app.add_exception_handler(exception_type, api_error)
+
+
 # Création du CORS
 app.add_middleware(
     CORSMiddleware,

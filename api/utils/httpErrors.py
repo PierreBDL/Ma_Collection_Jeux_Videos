@@ -1,6 +1,8 @@
 from fastapi import HTTPException, status
 
 def http_exception (code: int, message: str):
+    if code == 400:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=message)
     if code == 401:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=message)
     if code == 404:

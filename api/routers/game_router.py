@@ -23,7 +23,7 @@ router = APIRouter (
 
 # Get games
 @router.get("", response_model=All_Games)
-async def get_games(q: str = "", categorie: str = "bySearchBar", counterResult: dict = Depends(counter), db: Session = Depends(get_db)):
+async def get_games(q: str = "", categorie: str = "", counterResult: dict = Depends(counter), db: Session = Depends(get_db)):
     return await get_see_more(q, categorie, counterResult, db)
 
 @router.get("/{game_id}", response_model=Game)

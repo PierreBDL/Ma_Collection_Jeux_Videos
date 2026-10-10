@@ -6,17 +6,13 @@ from pydantic import BaseModel
 
 class Game(BaseModel):
     id: int
-    nom: str
+    titre: str
+    categorie: str
+    description: str
+    image_url: str
+    annee: str
     studio: str
     plateforme: str
-    annee: str
-    genre: str
-    description: str
-    image: str
-    etat: str = "a_decouvrir"
-    note: float = 0
-    commentaire: str = ""
-    date: str = ""
 
 class All_Games(BaseModel):
     results: list[Game]

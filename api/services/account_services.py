@@ -51,13 +51,13 @@ async def test_login(user: AccountInput, db: Session):
 async def test_register(user: AccountRegisterInput, db: Session):
     
     # Vérif si libre
-    statement = select(UsersTable).where(UsersTable.email == user.email, UsersTable.name == user.name)
+    statement = select(UsersTable).where(UsersTable.email == user.email or UsersTable.name == user.name)
     
     if db.scalars(statement).first() is not None:
         # Erreur
         http_exception(code=409, message="Identifiants déjà pris !")
 
-    # Enregistrer
+    # Save
     newAccount = UsersTable (
         name=user.name,
         email=user.email,
@@ -69,14 +69,7 @@ async def test_register(user: AccountRegisterInput, db: Session):
     db.commit()
     db.refresh(newAccount)
 
-    token = create_tokens(newAccount)
-
-    return {
-        **token,
-        "id": newAccount.id,
-        "email": newAccount.email,
-        "name": newAccount.name,
-    }
+    return {"id": newAccount.id, "email": newAccount.email}
 
 # Auth me
 async def get_user (username: str, db: Session):
@@ -86,7 +79,7 @@ async def get_user (username: str, db: Session):
         # Erreur
         http_exception(code=401, message="Informations incorrectes")
 
-    return {"email": user.email, "id": user.id, "name": user.name}
+    return {"email": user.email, "id": user.id}
 
 # Refresh token
 async def refresh_token (token: str):

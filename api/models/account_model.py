@@ -19,24 +19,16 @@ class AccountOutput(BaseModel):
 
 # Inscription
 class AccountRegisterInput(AccountInput):
-    name: str = Field(..., min_length=3, max_length=20)
+    name: str = Field(min_length=3, max_length=20)
 
 class AccountRegisterOutput(BaseModel):
-    access_token: str
-    refresh_token: str
-    token_type: str
     id: int
     email: EmailStr
-    name: str
-    favorites: list[Game] = []
 
 # Login
 class AccountLoginOutput(BaseModel):
     access_token: str
-    refresh_token: str
     token_type: str
-    name: str
-    favorites: list[Game] = []
 
 # Me
 class AccountMeOutput(BaseModel):
