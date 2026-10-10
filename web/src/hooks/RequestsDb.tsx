@@ -1,4 +1,4 @@
-import {type JeuxProps} from '../interfaces/gameInt'
+import { type JeuxProps } from '../interfaces/gameInt'
 
 /* ----------------------------------
                 Auth
@@ -27,7 +27,16 @@ export async function AuthDB<T>({ url, setError, dataToSend }: AuthDBPropsInput)
         const data = await response.json()
 
         if (!response.ok) {
-            setError(data.detail)
+
+            let reponse;
+
+            if (data.detail !== null) {
+                reponse = data.detail
+            } else {
+                reponse = "Erreur lors de la requête au serveur"
+            }
+
+            setError(reponse)
             return { dataToResponse: null }
         } else {
             setError("")
@@ -51,7 +60,7 @@ interface RefrechTokenDBPropsOutput {
 
 export async function RefrechTokenDB({ url, token }: RefrechTokenDBPropsInput): Promise<RefrechTokenDBPropsOutput> {
     try {
-        const result = await fetch(url, {
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,12 +68,20 @@ export async function RefrechTokenDB({ url, token }: RefrechTokenDBPropsInput): 
             }
         })
 
-        const data = await result.json()
+        const data = await response.json()
 
-        if (!result.ok) {
-            return { responseType: "Error", response: data.detail || "Token expiré" }
+        if (!response.ok) {
+            let reponse;
+
+            if (data.detail !== null) {
+                reponse = data.detail
+            } else {
+                reponse = "Token expiré"
+            }
+
+            return { responseType: "Error", response: reponse }
         } else {
-            return { responseType: "Success", response: data}
+            return { responseType: "Success", response: data }
         }
     } catch {
         return { responseType: "Error", response: "Serveur indisponible" }
@@ -107,13 +124,21 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
 
         const data = await response.json().catch(() => null)
 
-        if (!response.ok) {
-            return {dataToResponse: null, responseType: "Error", error:  data.detail ?? "Erreur lors de la demande au serveur"
-            }
-        } else if (data === null) {
-            return { dataToResponse: null, responseType: "Error", error: "Réponse du serveur invalide" }
+        let reponse;
+
+        if (data.detail !== null) {
+            reponse = data.detail
         } else {
-            return { dataToResponse: data as T, favorites: data?.favorites, responseType: "Success" }
+            reponse = "Erreur lors de la connexion au serveur"
+        }
+
+        if (!response.ok) {
+            return { dataToResponse: null, responseType: "Error", error: reponse }
+        } else if (data === null) {
+            return { dataToResponse: null, responseType: "Error", error: reponse }
+        } else {
+            return {
+                dataToResponse: data as T, favorites: data?.favorites, responseType: "Success"}
         }
     } catch {
         return { dataToResponse: null, responseType: "Error", error: "Serveur indisponible" }
@@ -136,7 +161,7 @@ interface getGameOutput<T> {
     dataHomePage?: T | null;
 }
 
-export async function GetGamesDB<T>({url, setError}: getGameInput): Promise<getGameOutput<T>> {
+export async function GetGamesDB<T>({ url, setError }: getGameInput): Promise<getGameOutput<T>> {
     try {
         const response = await fetch(url, {
             method: 'GET',
@@ -148,7 +173,7 @@ export async function GetGamesDB<T>({url, setError}: getGameInput): Promise<getG
         const data = await response.json()
 
         if (!response.ok) {
-            setError("Le serveur a renvoyé une erreur")
+            setError(data?.erreur?.message ?? data?.detail ?? "Le serveur a renvoyé une erreur")
             return { dataToResponse: null }
         } else {
             setError("")
@@ -162,7 +187,7 @@ export async function GetGamesDB<T>({url, setError}: getGameInput): Promise<getG
             }
 
             if (isPageKey) {
-                return {dataHomePage: data as T}
+                return { dataHomePage: data as T }
             } else if (Array.isArray(data.games)) {
                 return { dataToResponse: data.games as T[] }
             } else {

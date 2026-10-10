@@ -19,7 +19,7 @@ export default function Library() {
 
     // Défilement infini
     const limit = 12
-    const [page, setPage] = useState<number>(0)
+    const [page, setPage] = useState<number>(1)
     const [isEnoughtGames, setIsEnoughtGame] = useState<boolean>(true)
 
     // Recherche
@@ -34,7 +34,7 @@ export default function Library() {
 
     // Recherche de jeux dans la bdd
     const getGames = async (pageNumber: number) => {
-        const response = await GetGamesDB<AllGamesResponse>({url: `${URL_API}/items?q=${encodeURIComponent(searchTherme.trim())}&categorie=${searchOrigin}&page=${pageNumber}&limit=${limit}`, setError: setError})
+        const response = await GetGamesDB<AllGamesResponse>({url: `${URL_API}/items?q=${searchOrigin === "bySearchBar" ? encodeURIComponent(searchTherme.trim()) : ""}&categorie=${searchOrigin === "byFilters" ? encodeURIComponent(searchTherme.trim()) : ""}&page=${pageNumber}&limit=${limit}`, setError: setError})
         
         if (!response) {
             setError("Serveur indisponible")
@@ -42,21 +42,20 @@ export default function Library() {
             return
         }
 
-        setError("")
-        
-        const data = response.dataHomePage?.results
-
-        if (!data) {
-            setError("Serveur indisponible")
+        if (!response.dataHomePage) {
             setIsLoading(false)
             return
         }
 
-        if (Array.isArray(data)) {
+        const dataResponse = response.dataHomePage?.results
+
+        setError("")
+
+        if (Array.isArray(dataResponse)) {
             // vérif si c'est page 1 : data sinon mettre à la suite
-            setGames(c => pageNumber === 0 ? data : [...c, ...data])
+            setGames(c => pageNumber === 1 ? dataResponse : [...c, ...dataResponse])
             // Vérif ssi assez de jeux dans la bdd
-            setIsEnoughtGame(data.length === limit ? true : false)
+            setIsEnoughtGame(dataResponse.length === limit ? true : false)
 
             // Enlever le chargement
             setIsLoading(false)
@@ -70,7 +69,7 @@ export default function Library() {
     }
 
     useEffect(() => {
-        getGames(0)
+        getGames(1)
     }, [searchTherme, searchOrigin])
 
     /* ---------------------

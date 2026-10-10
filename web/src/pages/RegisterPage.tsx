@@ -7,7 +7,7 @@ import { AuthDB } from '../hooks/RequestsDb'
 import { useLocalStorage } from '../hooks/LocalStorage'
 import { useAuth } from '../hooks/Auth'
 
-import { type RegisterResponse } from '../types/api'
+import { type RegisterResponse, type LoginResponse } from '../types/api'
 
 export default function RegisterPage() {
     /* ----------------------------------
@@ -61,11 +61,18 @@ export default function RegisterPage() {
         const response = await AuthDB<RegisterResponse>({ url: `${URL_API}/auth/register`, setError: setError, dataToSend: JSON.stringify({ name, email, password }) })
 
         if (response.dataToResponse) {
-            const { access_token, refresh_token, name, favorites } = response.dataToResponse
+            // Login après création
+            const response = await AuthDB<LoginResponse>({url: `${URL_API}/auth/login`, setError: setError, dataToSend: JSON.stringify({email, password})})
+            
+            // Si pas de réponse
+            if (response.dataToResponse === null) {
+                return
+            }
+            const { access_token } = response.dataToResponse
 
             // Stockage du token et du username
             setToken(access_token)
-            setAuth({ token: access_token, refreshToken: refresh_token, name: name, favorites: favorites })
+            setAuth({ token: access_token, refreshToken: "", name: name, favorites: [] })
 
             // Redirection
             navigate("/")

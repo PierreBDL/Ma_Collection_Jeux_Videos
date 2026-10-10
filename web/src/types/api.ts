@@ -1,19 +1,12 @@
 export type Statut = "a_decouvrir" | "en_cours" | "termine";
 
-import {type JeuxProps} from '../interfaces/gameInt'
-
 /* --------------------
         Register
 ---------------------*/
 
 export interface RegisterResponse {
-    access_token: string
-    refresh_token: string
-    token_type: string
     id: number
     email: string
-    name: string
-    favorites: JeuxProps[] | []
 }
 
 /* --------------------
@@ -22,9 +15,13 @@ export interface RegisterResponse {
 
 export interface LoginResponse {
     access_token: string
-    refresh_token: string
+    token_type: string
+}
+
+export interface MeResponse {
+    id: number
+    email: string
     name: string
-    favorites: JeuxProps[]
 }
 
 /* --------------------
@@ -40,10 +37,6 @@ export interface GameResponse {
     genre: string
     description: string
     image: string
-    opinion?: string
-    grade?: number
-    state?: "a_decouvrir" | "en_cours" | "termine"
-    date?: string
 }
 
 export interface FavoriteGameResponse {
@@ -81,7 +74,7 @@ export type DeleteFavoriteResponse = null
 ---------------------*/
 
 export interface AllGamesResponse {
-    results: JeuxProps[]
+    results: GameResponse[]
     limit: number
     page: number
     total: number

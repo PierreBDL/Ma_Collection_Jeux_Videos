@@ -5,8 +5,8 @@ import Form from '../components/Form'
 import { URL_API } from '../utils/Links'
 import {useLocalStorage} from '../hooks/LocalStorage'
 import {useAuth} from '../hooks/Auth'
-import {AuthDB} from '../hooks/RequestsDb'
-import {type LoginResponse} from '../types/api'
+import {AuthDB, MeDB} from '../hooks/RequestsDb'
+import {type LoginResponse, type MeResponse, type FavoritesResponse} from '../types/api'
 
 export default function LoginPage() {
 
@@ -51,11 +51,25 @@ export default function LoginPage() {
         const response = await AuthDB<LoginResponse>({url: `${URL_API}/auth/login`, setError: setError , dataToSend: JSON.stringify({ email, password })})
 
         if (response.dataToResponse) {
-            const { access_token, refresh_token, name, favorites } = response.dataToResponse
+            const { access_token } = response.dataToResponse
+
+            // Get user
+            const user = await MeDB<MeResponse>({url: `${URL_API}/auth/me`, methodToSend: "GET", token: access_token})
+            if (!user.dataToResponse) {
+                setError(user.error ?? "Utilisateur introuvable")
+                return
+            }
+
+            // Get favoris
+            const collection = await MeDB<FavoritesResponse>({url: `${URL_API}/me/collection`, methodToSend: "GET", token: access_token})
+            if (!collection.favorites) {
+                setError(collection.error ?? "Favoris indisponibles")
+                return
+            }
 
             // Stockage du token et du username
             setToken(access_token)
-            setAuth({token: access_token, refreshToken: refresh_token, name: name, favorites: favorites})
+            setAuth({token: access_token, refreshToken: "", name: user.dataToResponse.name, favorites: collection.favorites})
 
             // Redirection
             navigate("/")

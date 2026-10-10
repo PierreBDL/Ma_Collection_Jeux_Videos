@@ -6,10 +6,10 @@ from pydantic import BaseModel
 
 class Game(BaseModel):
     id: int
-    titre: str
-    categorie: str
+    nom: str
+    genre: str
     description: str
-    image_url: str
+    image: str
     annee: str
     studio: str
     plateforme: str

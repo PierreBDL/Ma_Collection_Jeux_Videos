@@ -31,27 +31,28 @@ async def get_see_more(therme: str, origin: str, counterResult: dict, db: Sessio
     # Recherche / filtre
     result = []
     for i in statement:
+        ok: bool = True
         if term and term not in i.nom.lower():
             ok = False
-        if categorie and categorie != i.genre.lower() and categorie not in i.plateforme.lower():
+        if categorie != i.genre.lower() and categorie not in i.plateforme.lower():
             ok = False
 
         if ok == True :
             # Result
             game = {
                 "id": i.id,
-                "titre": i.nom,
-                "categorie": i.genre,
+                "nom": i.nom,
+                "genre": i.genre,
                 "studio": i.studio,
                 "plateforme": i.plateforme,
-                "annee": int(i.annee),
+                "annee": i.annee,
                 "description": i.description,
-                "image_url": "/images/" + i.image
+                "image": i.image
             }
             result.append(game)
         
-        # Result
-        page_precedente = page - 1
+    # Result
+    page_precedente = page - 1
 
     return {
         "results": result[page_precedente * limit : page * limit],
@@ -67,11 +68,11 @@ def get_by_id(id: int, db: Session):
         http_exception(code=404, message="Jeu introuvable")
     return {
         "id": game_bdd.id,
-        "titre": game_bdd.nom,
-        "categorie": game_bdd.genre,
+        "nom": game_bdd.nom,
+        "genre": game_bdd.genre,
         "studio": game_bdd.studio,
         "plateforme": game_bdd.plateforme,
         "annee": game_bdd.annee,
         "description": game_bdd.description,
-        "image_url": game_bdd.image
+        "image": game_bdd.image
     }

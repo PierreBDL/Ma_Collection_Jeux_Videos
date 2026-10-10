@@ -44,9 +44,9 @@ export default function DetailsPage () {
             const response = await GetGamesDB<GameResponse>({url: `${URL_API}/items/${id}`, setError: setError})
             
             if (response.dataToResponseSolo !== null && response.dataToResponseSolo) {
-                setGame(response.dataToResponseSolo)
-                setIsLoading(false)
+                setGame({nom: response.dataToResponseSolo.nom, studio: response.dataToResponseSolo.studio, plateforme: response.dataToResponseSolo.plateforme, annee: String(response.dataToResponseSolo.annee), genre: response.dataToResponseSolo.genre, description: response.dataToResponseSolo.description, image: response.dataToResponseSolo.image, id: response.dataToResponseSolo.id})
             }
+            setIsLoading(false)
         })
 
         getGame()

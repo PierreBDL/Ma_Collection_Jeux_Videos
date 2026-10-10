@@ -79,7 +79,7 @@ async def get_user (username: str, db: Session):
         # Erreur
         http_exception(code=401, message="Informations incorrectes")
 
-    return {"email": user.email, "id": user.id}
+    return {"email": user.email, "id": user.id, "name": user.name}
 
 # Refresh token
 async def refresh_token (token: str):
