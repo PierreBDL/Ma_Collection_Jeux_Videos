@@ -30,11 +30,11 @@ La documentation interactive des routes est disponible dans Swagger UI à l'adre
 | `POST` | `/auth/login` | Se connecter et obtenir un token | Non |
 | `POST` | `/auth/refresh` | Refresh le token d'accès | token de refresh dans le header `refreshToken` |
 | `GET` | `/auth/me` | Récupérer l'email et l'id | Oui |
-| `PATCH` | `/me/updateFavorite` | Mettre à jour les favoris | Oui |
+| `POST` | `/me/collection` | Ajouter un jeu aux favoris | Oui |
 | `GET` | `/me/collection` | Récupérer les favoris du compte | Oui |
-| `PATCH` | `/me/saveGrade` | Enregistrer une note et un commentaire | Oui |
-| `GET` | `/me/getGrade` | Récupérer l'avis du compte pour un jeu (`game_id`) | Oui |
-| `GET` | `/me/getAllGrade` | Récupérer tous les avis du compte | Oui |
+| `PATCH` | `/me/collection/{entry_id}` | Modifier l'état, la note, le commentaire ou la date d'un favori | Oui |
+| `DELETE` | `/me/collection/{entry_id}` | Retirer un jeu des favoris | Oui |
+| `GET` | `/me/stats` | Récupérer les statistiques de l'utilisateur | Oui |
 
 Les routes `/me` attendent un token d'accès au format bearer dans le header `Authorization`. Les détails des paramètres et des formats de réponse sont disponibles dans Swagger UI.
 
@@ -74,19 +74,13 @@ Depuis le dossier `Ma_Collection` :
 
 3. Configurez les variables d'environnement dans `api/.env` comme montré dans `api/.env.example`.
 
-4. Démarrez PostgreSQL avec Docker Compose, depuis le dossier `api` :
+4. Démarrez PostgreSQL avec Docker Compose et le serveur, depuis le dossier `api` :
 
 	```bash
-	docker compose up -d
+	docker compose up -d; uvicorn main:app --reload
 	```
 
-5. Démarrez l'API, toujours depuis `api` :
-
-	```bash
-	uvicorn main:app --reload
-	```
-
-L'API est alors accessible sur `http://127.0.0.1:8000`. Pour arrêter PostgreSQL, utilisez `docker compose down` depuis `api`.
+L'API est alors accessible sur `http://127.0.0.1:8000`. Pour arrêter PostgreSQL, utilisez `docker compose down` depuis `api/`.
 
 ### Configuration
 

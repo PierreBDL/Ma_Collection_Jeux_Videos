@@ -17,7 +17,7 @@ export default function MyLibraryPage() {
     let gamesFilters: JeuxProps[] = filtreSelect === "tous" ? games : games.filter(game => game.state === filtreSelect)
 
     // Hook Auth
-    const { auth } = useAuth()
+    const { auth, setAuth } = useAuth()
 
     // Hook Theme
     const { theme } = UseTheme()
@@ -42,6 +42,7 @@ export default function MyLibraryPage() {
 
             if (response.favorites) {
                 setGames(response.favorites)
+                setAuth({...auth, favorites: response.favorites})
             }
         }
 

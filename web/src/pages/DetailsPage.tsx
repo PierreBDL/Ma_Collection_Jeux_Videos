@@ -76,11 +76,21 @@ export default function DetailsPage () {
         const searchFavoris = auth.favorites.filter(favoriteGame => favoriteGame.id === game.id)
 
         if (searchFavoris.length > 0) {
-            await MeDB({url: `${URL_API}/me/collection/${game.id}`, methodToSend: 'DELETE', token: auth.token})
-            setAuth({...auth, favorites: auth.favorites.filter(favorite => game.id === favorite.id)})
+            const response = await MeDB({url: `${URL_API}/me/collection/${game.id}`, methodToSend: 'DELETE', token: auth.token})
+            if (response.responseType === "Error") {
+                setError(response.error ?? "Erreur lors de la suppression")
+                return
+            }
+            setAuth({...auth, favorites: auth.favorites.filter(favorite => game.id !== favorite.id)})
         } else {
-            await MeDB({url: `${URL_API}/me/collection`, methodToSend: 'POST', token: auth.token, dataToSend: JSON.stringify({item_id: game.id, state})})
-            setAuth({...auth, favorites: [...auth.favorites, game]})
+            const response = await MeDB({url: `${URL_API}/me/collection`, methodToSend: 'POST', token: auth.token, dataToSend: JSON.stringify({item_id: game.id, state})})
+            if (response.responseType === "Error") {
+                setError(response.error ?? "Erreur lors de l'ajout")
+                return
+            }
+            if (response.favorites) {
+                setAuth({...auth, favorites: response.favorites})
+            }
         }   
     }
 

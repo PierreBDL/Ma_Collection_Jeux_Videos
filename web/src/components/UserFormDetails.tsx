@@ -31,7 +31,8 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
     const { theme } = UseTheme()
 
     // hook Auth
-    const {auth} = useAuth()
+    const {auth, setAuth} = useAuth()
+    const isFavorite = auth?.favorites.some(game => game.id === gameId) ?? false
 
     // Sauvegarde du formulaire
     async function handleSaveForm () {
@@ -59,11 +60,14 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
         const response = await MeDB<FavoritesResponse>({url: `${URL_API}/me/collection/${gameId}`, methodToSend: 'PATCH', token: auth.token, dataToSend: JSON.stringify({ opinion, grade, state, date: createdAt })})
     
         if (response.responseType === "Success") {
+            if (response.favorites) {
+                setAuth({...auth, favorites: response.favorites})
+            }
             setDate(createdAt)
             setIsSuccess(true)
         } else {
             setIsSuccess(false)
-            setError("Erreur lors de l'enregistrement")
+            setError(response.error ?? "Erreur lors de l'enregistrement")
         }
     }
 
@@ -89,7 +93,10 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
             const response = await MeDB<FavoritesResponse>({url: `${URL_API}/me/collection`, methodToSend: 'GET', token: auth.token})
 
             if (response.responseType === "Success" && response.dataToResponse) {
+                // Chercher le jeu dans le tableau du serv
                 const favorite = response.dataToResponse.favorites.find(game => game.id === gameId)
+
+                // Vérif s'il existe
                 if (!favorite) {
                     setIsSuccess(false)
                     setError("Veuillez d'abord mettre le jeu en favoris")
@@ -103,12 +110,12 @@ export default function UserFormDetails ({gameId, state, setState, canSave}: Use
                 setError("")
             } else {
                 setIsSuccess(false)
-                setError("Erreur lors de la récupération depuis le serveur")
+                setError(response.error ?? "Erreur de connexion au serveur")
             }
         }
 
         getBdd()
-    }, [auth?.token, gameId])
+    }, [auth?.token, gameId, isFavorite])
 
 
     return (

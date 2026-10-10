@@ -86,6 +86,7 @@ interface MeDBPropsOutput<T> {
     dataToResponse: T | null
     favorites?: JeuxProps[]
     responseType: "Error" | "Success"
+    error?: string
 }
 
 export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBPropsInput): Promise<MeDBPropsOutput<T>> {
@@ -99,16 +100,23 @@ export async function MeDB<T>({ url, methodToSend, token, dataToSend }: MeDBProp
             body: dataToSend,
         })
 
-        if (!response.ok) {
-            return { dataToResponse: null, responseType: "Error" }
-        } else if (response.status === 204) {
+        // Delete
+        if (response.status === 204) {
             return { dataToResponse: null, responseType: "Success" }
+        }
+
+        const data = await response.json().catch(() => null)
+
+        if (!response.ok) {
+            return {dataToResponse: null, responseType: "Error", error:  data.detail ?? "Erreur lors de la demande au serveur"
+            }
+        } else if (data === null) {
+            return { dataToResponse: null, responseType: "Error", error: "Réponse du serveur invalide" }
         } else {
-            const data = await response.json()
             return { dataToResponse: data as T, favorites: data?.favorites, responseType: "Success" }
         }
     } catch {
-        return { dataToResponse: null, responseType: "Error" }
+        return { dataToResponse: null, responseType: "Error", error: "Serveur indisponible" }
     }
 }
 
