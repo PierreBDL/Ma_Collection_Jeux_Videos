@@ -44,7 +44,7 @@ Plus d'infos :
 
 ## Prérequis
 
-- Node.js et npm
+- Node.js 22.12+ et npm
 - Python 3.10 ou supérieur et pip
 - Docker Desktop avec Docker Compose, ou une instance PostgreSQL accessible
 
@@ -58,6 +58,7 @@ Déplacement et installation des dépendances:
 
 ```powershell
 cd api
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install fastapi "uvicorn[standard]" sqlalchemy "psycopg[binary]" python-dotenv PyJWT passlib
 ```
@@ -89,3 +90,7 @@ npm install ; npm run dev
 
 - [Guide du frontend](web/README.md) : installation, pages et organisation de l'interface
 - [Guide de l'API](api/README.md) : configuration, base de données, routes et lancement du backend
+
+
+## Bugs connus
+- Les refresh tokens peuvent ne pas fonctionner

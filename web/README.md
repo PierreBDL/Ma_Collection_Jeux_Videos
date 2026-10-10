@@ -6,11 +6,11 @@
 
   - Catalogue de jeux récupéré depuis l'API, avec chargement progressif par lots de 12 jeux
   - Recherche par nom et filtres par genre ou plateforme
-  - Fiche détaillée d'un jeu : studio, plateforme, genre, année et description
+  - Fiche détaillée d'un jeu : studio, plateforme, genre, année et description, etc
   - Création de compte et connexion
   - Ajout et retrait de jeux favoris, synchronisés avec le compte
-  - Consultation et filtrage de sa bibliothèque personnelle par statut : à découvrir, en cours ou terminé
-  - Possibilité de mettre un status (à découvrir, en cours ou terminé) une note et un commentaire, avec affichage de la date de mise à jour
+  - Consultation et filtrage de sa bibliothèque personnelle par statut : à découvrir, en cours ou terminé ou trier par date ou par note
+  - Possibilité de mettre un statut (à découvrir, en cours ou terminé) une note et un commentaire, avec affichage de la date de mise à jour
   - Page de statistiques sur la collection et les avis
   - Thème clair et sombre
   - Bouton pour revenir en haut de la page
@@ -19,16 +19,13 @@
 
   | Partie | Technologie |
   |---|---|
-  | Interface | React, TypeScript, HTML et CSS |
-  | Développement local | Vite |
-  | Styles | Tailwind CSS 4 |
-  | Navigation | React Router |
-  | API | Backend Python avec FastAPI |
-  | Base de données | PostgreSQL, via l'API |
+  | Interface | HTML, JSX |
+  | CSS | Tailwind CSS 4 |
+  | Logique | TypeScript, React |
 
   ## Prérequis
 
-  - Node.js et npm
+  - Node.js 22.12+ et npm
   - L'API Python du projet en cours d'exécution
   - PostgreSQL configuré et accessible par l'API
 
@@ -42,9 +39,9 @@
   npm run dev
   ```
 
-  Vite affiche l'adresse locale dans le terminal. Par défaut, l'application est disponible sur [http://localhost:5173](http://localhost:5173).
+  Accéder au site : [http://localhost:5173](http://localhost:5173).
 
-  Le frontend appelle l'API à l'adresse `http://127.0.0.1:8000`. Démarrez et configurez l'API avant d'utiliser le catalogue, l'authentification ou les données de compte. La configuration de la base de données et les variables d'environnement sont à renseigner côté `api`.
+  Veuillez démarrer le serveur via le [`tutoriel API`](../api/README.md).
 
   ## Parcours dans l'application
 
