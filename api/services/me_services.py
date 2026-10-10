@@ -169,22 +169,24 @@ async def get_favoris_logic(statut, tri, name: str, db: Session):
         # Error
         http_exception(code=404, message="Utilisateur introuvable")
 
-    # Filtre et tri
-    if statut is not None and tri is not None and statut != "tous":
-        if tri == "date":
-            statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut).order_by(UserFavorite.date.asc())
-        elif tri == "note":
-            statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut).order_by(UserFavorite.grade.asc())
-        else:
-            statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut)
-    elif statut is not None and statut != "tous":
-        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id, UserFavorite.state == statut)
-    elif tri == "date":
-        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id).order_by(UserFavorite.date.asc())
-    elif tri == "note":
-        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id).order_by(UserFavorite.grade.asc())
-    else :
-        statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id)
+    # Requête de base
+    statement = select(UserFavorite, GamesTable).join(GamesTable, UserFavorite.game_id == GamesTable.id).where(UserFavorite.user_id == user.id)
+    
+    # Filtre state
+    if statut is not None:
+        if statut == "tous":
+            pass
+        else :
+            statement = statement.where(UserFavorite.state == statut)
+    
+    # Filtre tri
+    if tri is not None:
+        if tri == "tous":
+            pass
+        elif tri == "date" :
+            statement = statement.order_by(UserFavorite.date.asc())
+        elif tri == "note" :
+            statement = statement.order_by(UserFavorite.grade.asc())
     
     favorites = db.execute(statement).all()
 

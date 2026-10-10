@@ -26,15 +26,15 @@ export default function GameCard({ id, nom, image, studio, plateforme, annee, ge
     const states = {
         "a_decouvrir": {
             label: "À découvrir",
-            color: theme === "dark" ? "bg-blue-900 text-white" : "bg-blue-300 text-black",
+            color: "bg-blue-800 text-white",
         },
         "en_cours": {
             label: "En cours",
-            color: theme === "dark" ? "bg-orange-900 text-white" : "bg-orange-300 text-black",
+            color: "bg-orange-800 text-white",
         },
         "termine": {
             label: "Terminé",
-            color: theme === "dark" ? "bg-green-900 text-white" : "bg-green-300 text-black",
+            color: "bg-green-800 text-white",
         }
     }
 
@@ -49,7 +49,7 @@ export default function GameCard({ id, nom, image, studio, plateforme, annee, ge
 
             {
                 isMyLibrary != undefined && isMyLibrary === true ? (
-                    <p className={`mb-5 w-full text-center place-self-center items-center gap-2 rounded-md border px-3 py-1.5 font-semibold ${state && states[state] ? states[state].color : null}`}>
+                    <p className={`mb-5 w-full text-center place-self-center items-center gap-2 rounded-md px-3 py-1.5 font-semibold ${state && states[state] ? states[state].color : "bg-red-900"}`}>
                         <span className={`p-1 ${state && states[state] ? states[state].color : null}`}> {state && states[state] ? states[state].label : "Pas d'état"} </span>
                     </p>
                 ) : null
